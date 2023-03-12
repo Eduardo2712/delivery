@@ -71,7 +71,7 @@ const Login: NextPage = () => {
         >
             {({ handleChange, handleBlur, values, errors, touched }) => (
                 <Form method="post">
-                    <Flex minH={"100vh"} align={"center"} justify={"center"}>
+                    <Flex minH={"calc(100vh - 168px)"} align={"center"} justify={"center"}>
                         <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
                             <Stack align={"center"}>
                                 <Heading fontSize={"4xl"}>Login</Heading>

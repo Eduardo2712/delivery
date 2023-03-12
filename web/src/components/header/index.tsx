@@ -2,7 +2,8 @@ import { faBell, faGear, faRightFromBracket } from "@fortawesome/free-solid-svg-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useAuth } from "../../context/auth";
-import { Box, Button, Container, Flex, Hide, Input, Text } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Hide, Input, Text, Link as LinkChakra } from "@chakra-ui/react";
+import Link from "next/link";
 
 const Header = () => {
     const { logout, user } = useAuth();
@@ -10,7 +11,7 @@ const Header = () => {
 
     return (
         <Box bg={"blue.400"} color={"gray.50"}>
-            <Container maxW={"6xl"} backgroundColor={"blue.400"} color={"gray.50"} padding={"0.9rem"}>
+            <Container maxW={"6xl"} backgroundColor={"blue.400"} color={"gray.50"} padding={"2rem"}>
                 <Flex justifyContent={"space-between"} alignItems={"center"}>
                     <Hide below="md">
                         <Box flex={"1"}></Box>
@@ -36,7 +37,7 @@ const Header = () => {
 
                     <Hide below="md">
                         <Box flex={"1"}>
-                            {user && (
+                            {user ? (
                                 <Flex justifyContent={"center"} alignItems={"flex-end"} flexDirection={"column"} gap={"1rem"}>
                                     <Flex gap={"1rem"}>
                                         <FontAwesomeIcon fontSize={"1.2rem"} cursor={"pointer"} title="Notifications" icon={faBell} />
@@ -53,6 +54,16 @@ const Header = () => {
                                     </Flex>
 
                                     <Text fontSize="md" as={"b"}>{`Hello, ${user.use_name.split(" ")[0]}`}</Text>
+                                </Flex>
+                            ) : (
+                                <Flex justifyContent={"flex-end"} gap={"0.3rem"}>
+                                    <LinkChakra color={"gray.50"} fontWeight={"bold"}>
+                                        <Link href={"/register"}>Register</Link>
+                                    </LinkChakra>
+                                    /
+                                    <LinkChakra color={"gray.50"} fontWeight={"bold"}>
+                                        <Link href={"/login"}>Login</Link>
+                                    </LinkChakra>
                                 </Flex>
                             )}
                         </Box>

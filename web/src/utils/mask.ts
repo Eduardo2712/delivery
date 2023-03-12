@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const maskCEP = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
@@ -42,8 +40,4 @@ export const maskPhone = (e: React.ChangeEvent<HTMLInputElement>) => {
         .replace(/(\d{4})-(\d)(\d{4})/, "$1$2-$3")
         .replace(/(-\d{4})\d+$/, "$1");
     return e;
-};
-
-export const getCEP = async (cep: string) => {
-    return await axios.get(`https://viacep.com.br/ws/${cep}/json`);
 };

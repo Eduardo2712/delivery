@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { getCEP, maskCEP, maskPhone } from "../../utils/utils";
+import { maskCEP, maskPhone } from "../../utils/mask";
 import { useRef, useState } from "react";
 import { useRouter } from "next/router";
 import {
@@ -21,6 +21,7 @@ import {
 } from "@chakra-ui/react";
 import { SmallCloseIcon } from "@chakra-ui/icons";
 import { createUser } from "../../requests/user.request";
+import { getCEP } from "../../requests/cep.request";
 
 const Register = () => {
     type Form = {
@@ -40,7 +41,7 @@ const Register = () => {
         add_state: string;
     };
 
-    const [step, setStep] = useState(0);
+    const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [image, setImage] = useState(null);
 
@@ -49,7 +50,7 @@ const Register = () => {
     const router = useRouter();
     const toast = useToast();
 
-    const initialValues = {
+    const initialValues: Form = {
         email: "",
         password: "",
         password_confirmation: "",
@@ -183,7 +184,7 @@ const Register = () => {
         <Formik initialValues={initialValues} validationSchema={schema} validateOnMount onSubmit={onSubmit}>
             {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
                 <form onSubmit={handleSubmit}>
-                    <Flex minH={"100vh"} align={"center"} justify={"center"}>
+                    <Flex minH={"calc(100vh - 168px)"} align={"center"} justify={"center"}>
                         <Stack spacing={4} w={"full"} maxW={"container.md"} rounded={"xl"} boxShadow={"lg"} p={6} my={12}>
                             <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }}>
                                 {step === 0 ? "Personal information" : "Address information"}

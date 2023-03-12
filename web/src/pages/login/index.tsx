@@ -6,19 +6,7 @@ import { User } from "../../types";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Link from "next/link";
-import {
-    Flex,
-    Box,
-    FormControl,
-    FormLabel,
-    Input,
-    Stack,
-    Link as LinkChakra,
-    Button,
-    Heading,
-    Text,
-    useToast
-} from "@chakra-ui/react";
+import { Flex, Box, FormControl, FormLabel, Input, Stack, Link as LinkChakra, Button, Heading, Text, useToast } from "@chakra-ui/react";
 
 const Login: NextPage = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -27,12 +15,8 @@ const Login: NextPage = () => {
     const toast = useToast();
 
     const schema = Yup.object().shape({
-        email: Yup.string()
-            .email("Fill in a valid e-mail!")
-            .required("Fill in this field!"),
-        password: Yup.string()
-            .min(6, "Must contain at least 6 characters!")
-            .required("Fill in this field!")
+        email: Yup.string().email("Fill in a valid e-mail!").required("Fill in this field!"),
+        password: Yup.string().min(6, "Must contain at least 6 characters!").required("Fill in this field!")
     });
 
     const onSubmit = async (values: Pick<User, "email" | "password">) => {
@@ -64,9 +48,7 @@ const Login: NextPage = () => {
             } else {
                 toast({
                     title: "Error.",
-                    description:
-                        error?.response?.data?.message ??
-                        "An error has occurred",
+                    description: error?.response?.data?.message ?? "An error has occurred",
                     status: "error",
                     duration: 5000,
                     isClosable: true
@@ -90,13 +72,7 @@ const Login: NextPage = () => {
             {({ handleChange, handleBlur, values, errors, touched }) => (
                 <Form method="post">
                     <Flex minH={"100vh"} align={"center"} justify={"center"}>
-                        <Stack
-                            spacing={8}
-                            mx={"auto"}
-                            maxW={"lg"}
-                            py={12}
-                            px={6}
-                        >
+                        <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
                             <Stack align={"center"}>
                                 <Heading fontSize={"4xl"}>Login</Heading>
                             </Stack>
@@ -105,22 +81,10 @@ const Login: NextPage = () => {
                                     <FormControl id="email">
                                         <FormLabel>Email address</FormLabel>
 
-                                        <Input
-                                            name="email"
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            value={values.email}
-                                        />
+                                        <Input name="email" onChange={handleChange} onBlur={handleBlur} value={values.email} />
 
-                                        <Text
-                                            fontSize="md"
-                                            color={"red.500"}
-                                            fontWeight={"semibold"}
-                                            mt={2}
-                                        >
-                                            {errors.email &&
-                                                touched.email &&
-                                                errors.email}
+                                        <Text fontSize="md" color={"red.500"} fontWeight={"semibold"} mt={2}>
+                                            {errors.email && touched.email && errors.email}
                                         </Text>
                                     </FormControl>
 
@@ -135,15 +99,8 @@ const Login: NextPage = () => {
                                             value={values.password}
                                         />
 
-                                        <Text
-                                            fontSize="md"
-                                            color={"red.500"}
-                                            fontWeight={"semibold"}
-                                            mt={2}
-                                        >
-                                            {errors.password &&
-                                                touched.password &&
-                                                errors.password}
+                                        <Text fontSize="md" color={"red.500"} fontWeight={"semibold"} mt={2}>
+                                            {errors.password && touched.password && errors.password}
                                         </Text>
                                     </FormControl>
 
@@ -157,9 +114,7 @@ const Login: NextPage = () => {
                                             justify={"space-between"}
                                         >
                                             <Link href="/register">
-                                                <LinkChakra color={"blue.400"}>
-                                                    {"I don't have an account"}
-                                                </LinkChakra>
+                                                <LinkChakra color={"blue.400"}>{"I don't have an account"}</LinkChakra>
                                             </Link>
                                         </Stack>
 

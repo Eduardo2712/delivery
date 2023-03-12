@@ -11,6 +11,7 @@
   "dependencies": {
     "@chakra-ui/icons": "^2.0.17",
     "@chakra-ui/react": "^2.5.1",
+    "@chakra-ui/system": "^2.5.1",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@fortawesome/fontawesome-svg-core": "^6.3.0",
@@ -24,7 +25,7 @@
     "axios": "^0.27.2",
     "date-fns": "^2.29.2",
     "formik": "^2.2.9",
-    "framer-motion": "^10.0.2",
+    "framer-motion": "^10.2.4",
     "next": "12.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -36,8 +37,8 @@
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^12.3.4",
-    "@types/node": "18.0.6",
-    "@types/react": "18.0.15",
+    "@types/node": "^18.0.6",
+    "@types/react": "^18.0.15",
     "@types/react-dom": "18.0.6",
     "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^5.53.0",

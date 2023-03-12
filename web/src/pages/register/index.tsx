@@ -69,18 +69,11 @@ const Register = () => {
     const schema =
         step === 0
             ? Yup.object().shape({
-                  email: Yup.string()
-                      .email("Fill in with a valid e-mail!")
-                      .required("Fill in this field!"),
-                  password: Yup.string()
-                      .min(8, "Password must be at least 8 characters long!")
-                      .required("Fill in this field!"),
+                  email: Yup.string().email("Fill in with a valid e-mail!").required("Fill in this field!"),
+                  password: Yup.string().min(8, "Password must be at least 8 characters long!").required("Fill in this field!"),
                   password_confirmation: Yup.string()
                       .min(8, "Password must be at least 8 characters long!")
-                      .oneOf(
-                          [Yup.ref("password"), null],
-                          "Passwords must be the same!"
-                      )
+                      .oneOf([Yup.ref("password"), null], "Passwords must be the same!")
                       .required("Fill in this field!"),
                   use_name: Yup.string().required("Fill in this field!"),
                   use_username: Yup.string().required("Fill in this field!"),
@@ -124,9 +117,7 @@ const Register = () => {
             } else {
                 toast({
                     title: "Error.",
-                    description:
-                        error?.response?.data?.message[0] ??
-                        "An error has occurred",
+                    description: error?.response?.data?.message[0] ?? "An error has occurred",
                     status: "error",
                     duration: 5000,
                     isClosable: true
@@ -137,14 +128,7 @@ const Register = () => {
         }
     };
 
-    const searchCEP = async (
-        cep: string,
-        setFieldValue: (
-            field: string,
-            value: any,
-            shouldValidate?: boolean | undefined
-        ) => void
-    ) => {
+    const searchCEP = async (cep: string, setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => void) => {
         const format_cep = cep.replaceAll("-", "");
 
         if (format_cep.length !== 8) {
@@ -186,9 +170,7 @@ const Register = () => {
             } else {
                 toast({
                     title: "Error.",
-                    description:
-                        error?.response?.data?.message[0] ??
-                        "An error has occurred",
+                    description: error?.response?.data?.message[0] ?? "An error has occurred",
                     status: "error",
                     duration: 5000,
                     isClosable: true
@@ -198,60 +180,22 @@ const Register = () => {
     };
 
     return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={schema}
-            validateOnMount
-            onSubmit={onSubmit}
-        >
-            {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                setFieldValue
-            }) => (
+        <Formik initialValues={initialValues} validationSchema={schema} validateOnMount onSubmit={onSubmit}>
+            {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
                 <form onSubmit={handleSubmit}>
                     <Flex minH={"100vh"} align={"center"} justify={"center"}>
-                        <Stack
-                            spacing={4}
-                            w={"full"}
-                            maxW={"container.md"}
-                            rounded={"xl"}
-                            boxShadow={"lg"}
-                            p={6}
-                            my={12}
-                        >
-                            <Heading
-                                lineHeight={1.1}
-                                fontSize={{ base: "2xl", sm: "3xl" }}
-                            >
-                                {step === 0
-                                    ? "Personal information"
-                                    : "Address information"}
+                        <Stack spacing={4} w={"full"} maxW={"container.md"} rounded={"xl"} boxShadow={"lg"} p={6} my={12}>
+                            <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }}>
+                                {step === 0 ? "Personal information" : "Address information"}
                             </Heading>
 
                             {step === 0 ? (
                                 <>
                                     <FormControl id="userName">
                                         <FormLabel>User image</FormLabel>
-                                        <Stack
-                                            direction={["column", "row"]}
-                                            spacing={6}
-                                        >
+                                        <Stack direction={["column", "row"]} spacing={6}>
                                             <Center>
-                                                <Avatar
-                                                    size="xl"
-                                                    src={
-                                                        image
-                                                            ? URL.createObjectURL(
-                                                                  image
-                                                              )
-                                                            : ""
-                                                    }
-                                                >
+                                                <Avatar size="xl" src={image ? URL.createObjectURL(image) : ""}>
                                                     <AvatarBadge
                                                         as={IconButton}
                                                         size="sm"
@@ -259,39 +203,22 @@ const Register = () => {
                                                         top="-10px"
                                                         colorScheme="red"
                                                         aria-label="remove image"
-                                                        icon={
-                                                            <SmallCloseIcon />
-                                                        }
-                                                        onClick={() =>
-                                                            setImage(null)
-                                                        }
+                                                        icon={<SmallCloseIcon />}
+                                                        onClick={() => setImage(null)}
                                                     />
                                                 </Avatar>
                                             </Center>
-                                            <Center
-                                                w="full"
-                                                justifyContent={"flex-start"}
-                                            >
+                                            <Center w="full" justifyContent={"flex-start"}>
                                                 <Input
                                                     type={"file"}
                                                     name="file"
                                                     hidden={true}
                                                     ref={refFile}
-                                                    onChange={(e: any) =>
-                                                        setImage(
-                                                            e?.target?.files[0]
-                                                        )
-                                                    }
+                                                    onChange={(e: any) => setImage(e?.target?.files[0])}
                                                     accept="image/png, image/jpeg"
                                                 />
 
-                                                <Button
-                                                    w="full"
-                                                    maxW={"sm"}
-                                                    onClick={() =>
-                                                        refFile?.current?.click()
-                                                    }
-                                                >
+                                                <Button w="full" maxW={"sm"} onClick={() => refFile?.current?.click()}>
                                                     Change image
                                                 </Button>
                                             </Center>
@@ -314,15 +241,8 @@ const Register = () => {
                                                 onBlur={handleBlur}
                                             />
 
-                                            <Text
-                                                fontSize="sm"
-                                                color={"red.500"}
-                                                fontWeight={"semibold"}
-                                                mt={1}
-                                            >
-                                                {errors.use_name &&
-                                                    touched.use_name &&
-                                                    errors.use_name}
+                                            <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
+                                                {errors.use_name && touched.use_name && errors.use_name}
                                             </Text>
                                         </FormControl>
 
@@ -341,15 +261,8 @@ const Register = () => {
                                                 onBlur={handleBlur}
                                             />
 
-                                            <Text
-                                                fontSize="sm"
-                                                color={"red.500"}
-                                                fontWeight={"semibold"}
-                                                mt={1}
-                                            >
-                                                {errors.use_username &&
-                                                    touched.use_username &&
-                                                    errors.use_username}
+                                            <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
+                                                {errors.use_username && touched.use_username && errors.use_username}
                                             </Text>
                                         </FormControl>
                                     </Box>
@@ -366,23 +279,12 @@ const Register = () => {
                                                 type="text"
                                                 name="use_phone"
                                                 value={values.use_phone}
-                                                onChange={(e) =>
-                                                    handleChange(maskPhone(e))
-                                                }
-                                                onBlur={(e) =>
-                                                    handleBlur(maskPhone(e))
-                                                }
+                                                onChange={(e) => handleChange(maskPhone(e))}
+                                                onBlur={(e) => handleBlur(maskPhone(e))}
                                             />
 
-                                            <Text
-                                                fontSize="sm"
-                                                color={"red.500"}
-                                                fontWeight={"semibold"}
-                                                mt={1}
-                                            >
-                                                {errors.use_phone &&
-                                                    touched.use_phone &&
-                                                    errors.use_phone}
+                                            <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
+                                                {errors.use_phone && touched.use_phone && errors.use_phone}
                                             </Text>
                                         </FormControl>
 
@@ -401,15 +303,8 @@ const Register = () => {
                                                 onBlur={handleBlur}
                                             />
 
-                                            <Text
-                                                fontSize="sm"
-                                                color={"red.500"}
-                                                fontWeight={"semibold"}
-                                                mt={1}
-                                            >
-                                                {errors.email &&
-                                                    touched.email &&
-                                                    errors.email}
+                                            <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
+                                                {errors.email && touched.email && errors.email}
                                             </Text>
                                         </FormControl>
                                     </Box>
@@ -430,22 +325,13 @@ const Register = () => {
                                                 onBlur={handleBlur}
                                             />
 
-                                            <Text
-                                                fontSize="sm"
-                                                color={"red.500"}
-                                                fontWeight={"semibold"}
-                                                mt={1}
-                                            >
-                                                {errors.password &&
-                                                    touched.password &&
-                                                    errors.password}
+                                            <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
+                                                {errors.password && touched.password && errors.password}
                                             </Text>
                                         </FormControl>
 
                                         <FormControl isRequired>
-                                            <FormLabel>
-                                                Password confirmation
-                                            </FormLabel>
+                                            <FormLabel>Password confirmation</FormLabel>
 
                                             <Input
                                                 placeholder="Password confirmation"
@@ -454,22 +340,13 @@ const Register = () => {
                                                 }}
                                                 type="password"
                                                 name="password_confirmation"
-                                                value={
-                                                    values.password_confirmation
-                                                }
+                                                value={values.password_confirmation}
                                                 onChange={handleChange}
                                                 onBlur={handleBlur}
                                             />
 
-                                            <Text
-                                                fontSize="sm"
-                                                color={"red.500"}
-                                                fontWeight={"semibold"}
-                                                mt={1}
-                                            >
-                                                {errors.password_confirmation &&
-                                                    touched.password_confirmation &&
-                                                    errors.password_confirmation}
+                                            <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
+                                                {errors.password_confirmation && touched.password_confirmation && errors.password_confirmation}
                                             </Text>
                                         </FormControl>
                                     </Box>
@@ -490,15 +367,8 @@ const Register = () => {
                                                 onBlur={handleBlur}
                                             />
 
-                                            <Text
-                                                fontSize="sm"
-                                                color={"red.500"}
-                                                fontWeight={"semibold"}
-                                                mt={1}
-                                            >
-                                                {errors.use_date_birth &&
-                                                    touched.use_date_birth &&
-                                                    errors.use_date_birth}
+                                            <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
+                                                {errors.use_date_birth && touched.use_date_birth && errors.use_date_birth}
                                             </Text>
                                         </FormControl>
                                     </Box>
@@ -517,26 +387,12 @@ const Register = () => {
                                                 type="text"
                                                 name="add_cep"
                                                 value={values.add_cep}
-                                                onChange={(e) =>
-                                                    handleChange(maskCEP(e))
-                                                }
-                                                onBlur={(e) =>
-                                                    searchCEP(
-                                                        maskCEP(e).target.value,
-                                                        setFieldValue
-                                                    )
-                                                }
+                                                onChange={(e) => handleChange(maskCEP(e))}
+                                                onBlur={(e) => searchCEP(maskCEP(e).target.value, setFieldValue)}
                                             />
 
-                                            <Text
-                                                fontSize="sm"
-                                                color={"red.500"}
-                                                fontWeight={"semibold"}
-                                                mt={1}
-                                            >
-                                                {errors.add_cep &&
-                                                    touched.add_cep &&
-                                                    errors.add_cep}
+                                            <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
+                                                {errors.add_cep && touched.add_cep && errors.add_cep}
                                             </Text>
                                         </FormControl>
 
@@ -555,15 +411,8 @@ const Register = () => {
                                                 onBlur={handleBlur}
                                             />
 
-                                            <Text
-                                                fontSize="sm"
-                                                color={"red.500"}
-                                                fontWeight={"semibold"}
-                                                mt={1}
-                                            >
-                                                {errors.add_street &&
-                                                    touched.add_street &&
-                                                    errors.add_street}
+                                            <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
+                                                {errors.add_street && touched.add_street && errors.add_street}
                                             </Text>
                                         </FormControl>
                                     </Box>
@@ -584,15 +433,8 @@ const Register = () => {
                                                 onBlur={handleBlur}
                                             />
 
-                                            <Text
-                                                fontSize="sm"
-                                                color={"red.500"}
-                                                fontWeight={"semibold"}
-                                                mt={1}
-                                            >
-                                                {errors.add_number &&
-                                                    touched.add_number &&
-                                                    errors.add_number}
+                                            <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
+                                                {errors.add_number && touched.add_number && errors.add_number}
                                             </Text>
                                         </FormControl>
 
@@ -611,15 +453,8 @@ const Register = () => {
                                                 onBlur={handleBlur}
                                             />
 
-                                            <Text
-                                                fontSize="sm"
-                                                color={"red.500"}
-                                                fontWeight={"semibold"}
-                                                mt={1}
-                                            >
-                                                {errors.add_complement &&
-                                                    touched.add_complement &&
-                                                    errors.add_complement}
+                                            <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
+                                                {errors.add_complement && touched.add_complement && errors.add_complement}
                                             </Text>
                                         </FormControl>
                                     </Box>
@@ -640,15 +475,8 @@ const Register = () => {
                                                 onBlur={handleBlur}
                                             />
 
-                                            <Text
-                                                fontSize="sm"
-                                                color={"red.500"}
-                                                fontWeight={"semibold"}
-                                                mt={1}
-                                            >
-                                                {errors.add_district &&
-                                                    touched.add_district &&
-                                                    errors.add_district}
+                                            <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
+                                                {errors.add_district && touched.add_district && errors.add_district}
                                             </Text>
                                         </FormControl>
 
@@ -667,15 +495,8 @@ const Register = () => {
                                                 onBlur={handleBlur}
                                             />
 
-                                            <Text
-                                                fontSize="sm"
-                                                color={"red.500"}
-                                                fontWeight={"semibold"}
-                                                mt={1}
-                                            >
-                                                {errors.add_city &&
-                                                    touched.add_city &&
-                                                    errors.add_city}
+                                            <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
+                                                {errors.add_city && touched.add_city && errors.add_city}
                                             </Text>
                                         </FormControl>
                                     </Box>
@@ -696,15 +517,8 @@ const Register = () => {
                                                 onBlur={handleBlur}
                                             />
 
-                                            <Text
-                                                fontSize="sm"
-                                                color={"red.500"}
-                                                fontWeight={"semibold"}
-                                                mt={1}
-                                            >
-                                                {errors.add_state &&
-                                                    touched.add_state &&
-                                                    errors.add_state}
+                                            <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
+                                                {errors.add_state && touched.add_state && errors.add_state}
                                             </Text>
                                         </FormControl>
                                     </Box>
@@ -721,9 +535,7 @@ const Register = () => {
                                         bg: "red.500"
                                     }}
                                     onClick={() => {
-                                        step === 0
-                                            ? router.push("/login")
-                                            : setStep((bef) => bef - 1);
+                                        step === 0 ? router.push("/login") : setStep((bef) => bef - 1);
                                     }}
                                 >
                                     {step === 0 ? "Cancel" : "Return"}

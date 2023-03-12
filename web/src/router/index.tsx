@@ -8,24 +8,13 @@ export type Props = {
 
 const ProtectedRoute = (props: Props) => {
     const { auth } = useAuth();
-    const PUBLIC_ROUTES = ["/login", "/register"];
+    const PRIVATE_ROUTES = ["/order"];
 
-    // if (
-    //     !auth &&
-    //     !PUBLIC_ROUTES.includes(props.router.pathname) &&
-    //     !localStorage.getItem("user")
-    // ) {
-    //     props.router.push("/login");
-    // } else if (
-    //     auth &&
-    //     props.router.pathname === "/login" &&
-    //     localStorage.getItem("user")
-    // ) {
-    //     props.router.push("/feed");
-    // } else {
-    //     return props.children;
-    // }
-    return props.children;
+    if (!auth && PRIVATE_ROUTES.includes(props.router.pathname) && !localStorage.getItem("user")) {
+        props.router.push("/");
+    } else {
+        return props.children;
+    }
 };
 
 export default ProtectedRoute;

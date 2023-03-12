@@ -1,55 +1,66 @@
 import { useAuth } from "../context/auth";
-import { useState, useEffect } from "react";
-import ProfileFollow from "../components/profile-follow";
-import { updateStatus } from "../requests/user.request";
-import { Button, Container, Flex, Text, Textarea } from "@chakra-ui/react";
+import { Box, Container, Flex, Text } from "@chakra-ui/react";
+import Link from "next/link";
 
-const Feed = () => {
+const BlockHighlights = () => {
+    return (
+        <Flex justifyContent={"space-between"} gap={"1rem"}>
+            <Link href={"/"}>
+                <Box flex={1} borderRadius={"0.3rem"} backgroundColor={"gray.50"} height={"20rem"} cursor={"pointer"}>
+                    <Text
+                        bg={"blue.400"}
+                        color={"gray.50"}
+                        borderRadius={"0.3rem 0.3rem 0 0"}
+                        padding={"1rem"}
+                        fontSize={"2xl"}
+                        fontWeight={"semibold"}
+                    >
+                        Vouchers
+                    </Text>
+                </Box>
+            </Link>
+
+            <Link href={"/"}>
+                <Box flex={1} borderRadius={"0.3rem"} backgroundColor={"gray.50"} height={"20rem"} cursor={"pointer"}>
+                    <Text
+                        bg={"blue.400"}
+                        color={"gray.50"}
+                        borderRadius={"0.3rem 0.3rem 0 0"}
+                        padding={"1rem"}
+                        fontSize={"2xl"}
+                        fontWeight={"semibold"}
+                    >
+                        Vouchers
+                    </Text>
+                </Box>
+            </Link>
+
+            <Link href={"/"}>
+                <Box flex={1} borderRadius={"0.3rem"} backgroundColor={"gray.50"} height={"20rem"} cursor={"pointer"}>
+                    <Text
+                        bg={"blue.400"}
+                        color={"gray.50"}
+                        borderRadius={"0.3rem 0.3rem 0 0"}
+                        padding={"1rem"}
+                        fontSize={"2xl"}
+                        fontWeight={"semibold"}
+                    >
+                        Vouchers
+                    </Text>
+                </Box>
+            </Link>
+        </Flex>
+    );
+};
+
+const Index = () => {
     const { user } = useAuth();
-
-    const [status, setStatus] = useState<string>("");
-
-    useEffect(() => {
-        if (user) {
-            setStatus(user?.use_text_status ?? "");
-        }
-    }, [user]);
 
     return (
         <Container maxW="container.xl" padding={"1rem"}>
-            <Flex justifyContent={"space-between"}>
-                <ProfileFollow />
-
-                <Flex direction={"column"} width={"20rem"} gap={"0.5rem"}>
-                    <Text fontSize="md" color={"gray.600"}>
-                        My status now...
-                    </Text>
-
-                    <Textarea
-                        value={status}
-                        size="sm"
-                        onChange={(e) => setStatus(e.target.value)}
-                        resize={"none"}
-                        variant={"outline"}
-                        borderRadius={"0.2rem"}
-                    ></Textarea>
-
-                    <Button
-                        type="button"
-                        onClick={() => updateStatus({ status })}
-                        variant="solid"
-                        backgroundColor={"gray.600"}
-                        _hover={{ backgroundColor: "gray.500" }}
-                        color={"whiteAlpha.900"}
-                        width={"7rem"}
-                        alignSelf={"flex-end"}
-                    >
-                        Submit
-                    </Button>
-                </Flex>
-            </Flex>
+            <BlockHighlights />
         </Container>
     );
 };
 
-export default Feed;
+export default Index;

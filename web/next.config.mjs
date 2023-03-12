@@ -3,17 +3,8 @@ const nextConfig = {
     reactStrictMode: false,
     swcMinify: false,
     images: {
-        domains: ["loremflickr.com"]
+        domains: ["loremflickr.com", "via.placeholder.com"]
     },
-    async redirects() {
-        return [
-            {
-                source: "/",
-                destination: "/",
-                permanent: true
-            }
-        ];
-    }
 };
 
 export default nextConfig;

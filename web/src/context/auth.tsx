@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { ContextLogin, User } from "../types";
 import { RoutesProps } from "react-router";
-import { auth } from "../requests/user.request";
+import { auth } from "../requests/auth.request";
 
 const AuthContext = createContext<ContextLogin>({} as ContextLogin);
 
@@ -31,10 +31,7 @@ export const AuthProvider = ({ children }: RoutesProps) => {
             if (!response.data.error) {
                 setUser(response.data.user);
 
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify(response.data.user)
-                );
+                localStorage.setItem("user", JSON.stringify(response.data.user));
             }
 
             return response.data;

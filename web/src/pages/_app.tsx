@@ -7,8 +7,9 @@ import Head from "next/head";
 import Header from "../components/header";
 import { AuthProvider } from "../context/auth";
 import ProtectedRoute from "../router";
-import { ChakraProvider, Spinner } from "@chakra-ui/react";
+import { ChakraProvider, Spinner, CSSReset } from "@chakra-ui/react";
 import { themeDefault } from "../styles/theme";
+import Footer from "../components/footer";
 
 config.autoAddCss = false;
 
@@ -25,12 +26,10 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
                 <meta charSet="UTF-8" />
                 <meta name="keywords" content="titla, meta, nextjs" />
                 <meta name="author" content="Syamlal CM" />
-                <meta
-                    name="viewport"
-                    content="width=device-width, initial-scale=1.0"
-                />
+                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <title>Social Network</title>
             </Head>
+            <CSSReset />
             <ChakraProvider theme={themeDefault}>
                 {!loading ? (
                     <ThemeProvider theme={{}}>
@@ -39,6 +38,7 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
                                 <div className="body_container">
                                     <Header />
                                     <Component {...pageProps} />
+                                    <Footer />
                                 </div>
                             </ProtectedRoute>
                         </AuthProvider>

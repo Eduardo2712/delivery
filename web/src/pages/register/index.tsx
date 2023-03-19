@@ -145,7 +145,7 @@ const Register = () => {
     };
 
     const onSubmit = async (values: Form | any) => {
-        if (step === 0) {
+        if (step !== 2) {
             return setStep((bef) => bef + 1);
         }
 

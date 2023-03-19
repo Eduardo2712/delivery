@@ -9,8 +9,11 @@ export class UsersService {
     constructor(private readonly prisma: PrismaService) {}
 
     create(create_user_dto: CreateUserDto) {
+        const salt_rounds = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(create_user_dto.password, salt_rounds);
+
         const user = this.prisma.user.create({
-            data: create_user_dto
+            data: { ...create_user_dto, password: hash }
         });
 
         return {

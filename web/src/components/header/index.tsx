@@ -10,8 +10,12 @@ const Header = () => {
     const [search, setSearch] = useState("");
 
     return (
-        <Box bg={"blue.400"} color={"gray.50"}>
+        <Flex bg={"blue.400"} color={"gray.50"} alignItems={"center"}>
             <Container maxW={"6xl"} backgroundColor={"blue.400"} color={"gray.50"} padding={"2rem"}>
+                <Text textAlign={"center"} color={"gray.50"} fontSize={"2.2rem"} fontWeight={"extrabold"} fontStyle={"oblique"} marginBottom={"2rem"}>
+                    All for your hunger
+                </Text>
+
                 <Flex justifyContent={"space-between"} alignItems={"center"}>
                     <Hide below="md">
                         <Box flex={"1"}></Box>
@@ -25,11 +29,11 @@ const Header = () => {
                                 onChange={(e) => setSearch(e.target.value)}
                                 placeholder="Search..."
                                 variant="solid"
-                                color={"gray.50"}
+                                color={"gray.600"}
                                 maxW={{ base: "30rem", md: "25rem" }}
                             ></Input>
 
-                            <Button type="button" variant="solid" backgroundColor={"green.400"}>
+                            <Button type="button" variant="solid" backgroundColor={"green.400"} _hover={{ backgroundColor: "green.500" }}>
                                 Search
                             </Button>
                         </Flex>
@@ -56,7 +60,7 @@ const Header = () => {
                                     <Text fontSize="md" as={"b"}>{`Hello, ${user.use_name.split(" ")[0]}`}</Text>
                                 </Flex>
                             ) : (
-                                <Flex justifyContent={"flex-end"} gap={"0.3rem"}>
+                                <Flex justifyContent={"flex-end"} gap={"0.3rem"} fontSize={"1.2rem"}>
                                     <LinkChakra color={"gray.50"} fontWeight={"bold"}>
                                         <Link href={"/register"}>Register</Link>
                                     </LinkChakra>
@@ -70,7 +74,7 @@ const Header = () => {
                     </Hide>
                 </Flex>
             </Container>
-        </Box>
+        </Flex>
     );
 };
 

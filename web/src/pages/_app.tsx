@@ -36,9 +36,9 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
                         <AuthProvider>
                             <ProtectedRoute router={router}>
                                 <div className="body_container">
-                                    <Header />
+                                    {!["/login", "/register"].includes(router.asPath) && <Header />}
                                     <Component {...pageProps} />
-                                    <Footer />
+                                    {!["/login"].includes(router.asPath) && <Footer />}
                                 </div>
                             </ProtectedRoute>
                         </AuthProvider>

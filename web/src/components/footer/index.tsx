@@ -1,6 +1,8 @@
-import { Box, chakra, Container, Stack, Text, VisuallyHidden } from "@chakra-ui/react";
+import { Box, chakra, Container, Stack, Text, VisuallyHidden, Link as LinkChakra } from "@chakra-ui/react";
 import { faYoutube, faInstagram, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { format } from "date-fns";
+import Link from "next/link";
 import { ReactNode } from "react";
 
 const SocialButton = ({ children, label, href }: { children: ReactNode; label: string; href: string }) => {
@@ -36,7 +38,12 @@ const Footer = () => {
                 justify={{ base: "center", md: "space-between" }}
                 align={{ base: "center", md: "center" }}
             >
-                <Text>© 2023 Delivery. All rights reserved</Text>
+                <LinkChakra color={"gray.50"} fontWeight={"bold"}>
+                    <Link href={"/"}>
+                        <Text>{`© ${format(new Date(), "yyyy")} Delivery. All rights reserved`}</Text>
+                    </Link>
+                </LinkChakra>
+
                 <Stack direction={"row"} spacing={6}>
                     <SocialButton label={"Twitter"} href={"#"}>
                         <FontAwesomeIcon icon={faTwitter} />

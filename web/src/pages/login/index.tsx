@@ -76,7 +76,7 @@ const Login: NextPage = () => {
                             <Stack align={"center"}>
                                 <Heading fontSize={"4xl"}>Login</Heading>
                             </Stack>
-                            <Box rounded={"lg"} boxShadow={"lg"} p={12}>
+                            <Box rounded={"xl"} boxShadow={"xl"} p={12}>
                                 <Stack spacing={4}>
                                     <FormControl id="email">
                                         <FormLabel>Email address</FormLabel>
@@ -118,17 +118,35 @@ const Login: NextPage = () => {
                                             </Link>
                                         </Stack>
 
-                                        <Button
-                                            type="submit"
-                                            bg={"blue.400"}
-                                            color={"white"}
-                                            _hover={{
-                                                bg: "blue.500"
-                                            }}
-                                            isLoading={loading}
-                                        >
-                                            Sign in
-                                        </Button>
+                                        <Flex gap={"0.5rem"}>
+                                            <Button
+                                                flex={"1"}
+                                                bg={"red.400"}
+                                                color={"white"}
+                                                isLoading={loading}
+                                                _hover={{
+                                                    bg: "red.500"
+                                                }}
+                                                onClick={() => {
+                                                    router.push("/login");
+                                                }}
+                                            >
+                                                {"Return"}
+                                            </Button>
+
+                                            <Button
+                                                flex={"1"}
+                                                type="submit"
+                                                bg={"blue.400"}
+                                                color={"white"}
+                                                _hover={{
+                                                    bg: "blue.500"
+                                                }}
+                                                isLoading={loading}
+                                            >
+                                                Sign in
+                                            </Button>
+                                        </Flex>
                                     </Stack>
                                 </Stack>
                             </Box>

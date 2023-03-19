@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { maskCEP, maskPhone } from "../../utils/mask";
+import { maskCEP, maskCPF, maskPhone } from "../../utils/mask";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import {
@@ -23,21 +23,28 @@ import { createUser } from "../../requests/user.request";
 import { getCEP } from "../../requests/cep.request";
 import { firstCapital, typeUser } from "../../utils/function";
 
-const CardUser = () => {
+type Props = {
+    setType: (i: number) => void;
+    setStep: (i: number) => void;
+};
+
+const CardUser = (props: Props) => {
     return (
         <Flex gap={"1rem"} flexWrap={"wrap"}>
-            {typeUser.map((type, key) => {
+            {typeUser.map((type) => {
                 return (
-                    <Card key={key} flex={"1"} minWidth={"18rem"}>
+                    <Card key={type.id} flex={"1"} minWidth={"18rem"}>
                         <CardHeader>
-                            <Heading size="md">{firstCapital(type.type)}</Heading>
+                            <Heading size="md" color={"gray.700"}>
+                                {firstCapital(type.type)}
+                            </Heading>
                         </CardHeader>
 
                         <CardBody>
-                            <Text>Text.</Text>
+                            <Text color={"gray.700"}>{type.text}</Text>
                         </CardBody>
 
-                        <CardFooter>
+                        <CardFooter display={"flex"} justifyContent={"flex-end"}>
                             <Button
                                 color={"gray.50"}
                                 backgroundColor={"green.400"}
@@ -48,6 +55,11 @@ const CardUser = () => {
                                 gap={"0.5rem"}
                                 fontSize={"1.1rem"}
                                 fontWeight={"bold"}
+                                width={"8rem"}
+                                onClick={() => {
+                                    props.setType(type.id);
+                                    props.setStep(1);
+                                }}
                             >
                                 Select
                             </Button>
@@ -65,7 +77,7 @@ const Register = () => {
         password: string;
         password_confirmation: string;
         use_name: string;
-        use_username: string;
+        use_cpf: string;
         use_phone: string;
         use_date_birth: string;
         add_cep: string;
@@ -77,9 +89,9 @@ const Register = () => {
         add_state: string;
     };
 
-    const [step, setStep] = useState(0);
-    const [loading, setLoading] = useState(false);
-    const [type, setType] = useState("");
+    const [step, setStep] = useState<number>(0);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [type, setType] = useState<number | null>(null);
 
     const titleText = ["Select user type", "Personal information", "Address information"];
 
@@ -91,7 +103,7 @@ const Register = () => {
         password: "",
         password_confirmation: "",
         use_name: "",
-        use_username: "",
+        use_cpf: "",
         use_phone: "",
         use_date_birth: "",
         add_cep: "",
@@ -113,7 +125,7 @@ const Register = () => {
                     .oneOf([Yup.ref("password"), null], "Passwords must be the same!")
                     .required("Fill in this field!"),
                 use_name: Yup.string().required("Fill in this field!"),
-                use_username: Yup.string().required("Fill in this field!"),
+                use_cpf: Yup.string().length(14).required("Fill in this field!"),
                 use_phone: Yup.string().required("Fill in this field!"),
                 use_date_birth: Yup.date().required("Fill in this field!")
             });
@@ -232,7 +244,7 @@ const Register = () => {
                                     {titleText[step]}
                                 </Heading>
 
-                                {step === 0 && CardUser()}
+                                {step === 0 && <CardUser setType={setType} setStep={setStep} />}
 
                                 {step === 1 && (
                                     <>
@@ -258,22 +270,22 @@ const Register = () => {
                                             </FormControl>
 
                                             <FormControl isRequired>
-                                                <FormLabel color={"gray.700"}>Username</FormLabel>
+                                                <FormLabel color={"gray.700"}>CPF</FormLabel>
 
                                                 <Input
-                                                    placeholder="Username"
+                                                    placeholder="Name"
                                                     _placeholder={{
                                                         color: "gray.500"
                                                     }}
                                                     type="text"
-                                                    name="use_username"
-                                                    value={values.use_username}
-                                                    onChange={handleChange}
+                                                    name="use_cpf"
+                                                    value={values.use_cpf}
+                                                    onChange={(e) => handleChange(maskCPF(e))}
                                                     onBlur={handleBlur}
                                                 />
 
                                                 <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.use_username && touched.use_username && errors.use_username}
+                                                    {errors.use_cpf && touched.use_cpf && errors.use_cpf}
                                                 </Text>
                                             </FormControl>
                                         </Box>
@@ -548,11 +560,9 @@ const Register = () => {
                                             _hover={{
                                                 bg: "red.500"
                                             }}
-                                            onClick={() => {
-                                                step === 1 ? router.push("/login") : setStep((bef) => bef - 1);
-                                            }}
+                                            onClick={() => setStep((bef) => bef - 1)}
                                         >
-                                            {step === 1 ? "Cancel" : "Return"}
+                                            Return
                                         </Button>
 
                                         <Button

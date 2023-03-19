@@ -1,11 +1,13 @@
 export const typeUser = [
     {
         id: 1,
-        type: "store"
+        type: "store",
+        text: "Register your store"
     },
     {
         id: 2,
-        type: "client"
+        type: "client",
+        text: "Register as a client"
     }
 ];
 

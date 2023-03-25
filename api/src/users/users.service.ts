@@ -3,17 +3,36 @@ import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import * as bcrypt from "bcrypt";
+import { HttpException } from "@nestjs/common/exceptions";
+import { HttpStatus } from "@nestjs/common/enums";
 
 @Injectable()
 export class UsersService {
     constructor(private readonly prisma: PrismaService) {}
 
-    create(create_user_dto: CreateUserDto) {
+    async create(create_user_dto: CreateUserDto) {
+        const email_unique = await this.prisma.user.findFirst({
+            where: {
+                email: create_user_dto.email
+            }
+        });
+
+        if (email_unique) {
+            throw new HttpException("This email address is already in use", HttpStatus.OK);
+        }
+
         const salt_rounds = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(create_user_dto.password, salt_rounds);
 
         const user = this.prisma.user.create({
-            data: { ...create_user_dto, password: hash }
+            data: {
+                password: hash,
+                email: create_user_dto.email,
+                use_cpf: create_user_dto.use_cpf,
+                use_date_birth: new Date(create_user_dto.use_date_birth),
+                use_name: create_user_dto.use_name,
+                use_phone: create_user_dto.use_phone
+            }
         });
 
         return {
@@ -22,8 +41,8 @@ export class UsersService {
         };
     }
 
-    findByEmail(email: string) {
-        return this.prisma.user.findFirst({
+    async findByEmail(email: string) {
+        return await this.prisma.user.findFirst({
             where: { email },
             include: {
                 photo: true
@@ -31,19 +50,19 @@ export class UsersService {
         });
     }
 
-    findAll() {
+    async findAll() {
         return `This action returns all users`;
     }
 
-    findOne(id: number) {
+    async findOne(id: number) {
         return `This action returns a #${id} user`;
     }
 
-    update(id: number, updateUserDto: UpdateUserDto) {
+    async update(id: number, updateUserDto: UpdateUserDto) {
         return `This action updates a #${id} user`;
     }
 
-    remove(id: number) {
+    async remove(id: number) {
         return `This action removes a #${id} user`;
     }
 }

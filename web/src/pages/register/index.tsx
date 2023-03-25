@@ -158,7 +158,8 @@ const Register = () => {
         setLoading(true);
 
         try {
-            const response = await createUser(form_data);
+            console.log(values);
+            const response = await createUser(values);
         } catch (error: any) {
             if (typeof error === "string") {
                 toast({

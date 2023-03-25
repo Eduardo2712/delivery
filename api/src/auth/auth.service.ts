@@ -10,14 +10,9 @@ import { Prisma } from "@prisma/client";
 
 @Injectable()
 export class AuthService {
-    constructor(
-        private readonly jwtService: JwtService,
-        private readonly usersService: UsersService
-    ) {}
+    constructor(private readonly jwtService: JwtService, private readonly usersService: UsersService) {}
 
-    async login(
-        user: Omit<User, "password">
-    ): Promise<UserToken & { user: Omit<User, "password"> }> {
+    async login(user: Omit<User, "password">): Promise<UserToken & { user: Omit<User, "password"> }> {
         const payload: UserPayload = {
             sub: user.id,
             email: user.email,
@@ -30,17 +25,11 @@ export class AuthService {
         };
     }
 
-    async validateUser(
-        email: string,
-        password: string
-    ): Promise<Omit<Prisma.UserCreateInput, "addresses" | "photo">> {
+    async validateUser(email: string, password: string): Promise<Omit<Prisma.UserCreateInput, "addresses" | "photo">> {
         const user = await this.usersService.findByEmail(email);
 
         if (user) {
-            const is_password_valid = await bcrypt.compare(
-                password,
-                user.password
-            );
+            const is_password_valid = await bcrypt.compare(password, user.password);
 
             if (is_password_valid) {
                 return {
@@ -50,8 +39,6 @@ export class AuthService {
             }
         }
 
-        throw new UnauthorizedError(
-            "Email address or password provided is incorrect."
-        );
+        throw new UnauthorizedError("Email address or password provided is incorrect.");
     }
 }

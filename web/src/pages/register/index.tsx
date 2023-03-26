@@ -158,8 +158,18 @@ const Register = () => {
         setLoading(true);
 
         try {
-            console.log(values);
-            const response = await createUser(values);
+            await createUser(values);
+
+            toast({
+                title: "Success.",
+                description: "Successfully registered user",
+                status: "success",
+                duration: 5000,
+                isClosable: true,
+                position: "top-right"
+            });
+
+            router.push("/");
         } catch (error: any) {
             if (typeof error === "string") {
                 toast({
@@ -167,15 +177,17 @@ const Register = () => {
                     description: error ?? "An error has occurred",
                     status: "error",
                     duration: 5000,
-                    isClosable: true
+                    isClosable: true,
+                    position: "top-right"
                 });
             } else {
                 toast({
                     title: "Error.",
-                    description: error?.response?.data?.message[0] ?? "An error has occurred",
+                    description: error?.response?.data?.message ?? "An error has occurred",
                     status: "error",
                     duration: 5000,
-                    isClosable: true
+                    isClosable: true,
+                    position: "top-right"
                 });
             }
         } finally {

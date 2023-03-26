@@ -18,7 +18,17 @@ export class UsersService {
         });
 
         if (email_unique) {
-            throw new HttpException("This email address is already in use", HttpStatus.OK);
+            throw new HttpException("This email address is already in use", HttpStatus.BAD_REQUEST);
+        }
+
+        const cpf_unique = await this.prisma.user.findFirst({
+            where: {
+                use_cpf: create_user_dto.use_cpf
+            }
+        });
+
+        if (cpf_unique) {
+            throw new HttpException("This cpf is already in use", HttpStatus.BAD_REQUEST);
         }
 
         const salt_rounds = bcrypt.genSaltSync(10);

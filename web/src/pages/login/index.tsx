@@ -6,7 +6,8 @@ import { User } from "../../types";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Link from "next/link";
-import { Flex, Box, FormControl, FormLabel, Input, Stack, Link as LinkChakra, Button, Heading, Text, useToast } from "@chakra-ui/react";
+import { Flex, Box, Stack, Link as LinkChakra, Button, Heading, useToast } from "@chakra-ui/react";
+import StyleInput from "../../components/style-input";
 
 const Login: NextPage = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -78,31 +79,27 @@ const Login: NextPage = () => {
                             </Stack>
                             <Box rounded={"xl"} boxShadow={"xl"} p={12}>
                                 <Stack spacing={4}>
-                                    <FormControl id="email">
-                                        <FormLabel>Email address</FormLabel>
+                                    <StyleInput
+                                        errors={errors.email}
+                                        touched={touched.email}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        name={"email"}
+                                        title={"Email address"}
+                                        type={"email"}
+                                        value={values.email}
+                                    />
 
-                                        <Input name="email" onChange={handleChange} onBlur={handleBlur} value={values.email} />
-
-                                        <Text fontSize="md" color={"red.500"} fontWeight={"semibold"} mt={2}>
-                                            {errors.email && touched.email && errors.email}
-                                        </Text>
-                                    </FormControl>
-
-                                    <FormControl id="password">
-                                        <FormLabel>Password</FormLabel>
-
-                                        <Input
-                                            type={"password"}
-                                            name="password"
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            value={values.password}
-                                        />
-
-                                        <Text fontSize="md" color={"red.500"} fontWeight={"semibold"} mt={2}>
-                                            {errors.password && touched.password && errors.password}
-                                        </Text>
-                                    </FormControl>
+                                    <StyleInput
+                                        errors={errors.password}
+                                        touched={touched.password}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        name={"password"}
+                                        title={"Password"}
+                                        type={"password"}
+                                        value={values.password}
+                                    />
 
                                     <Stack spacing={6}>
                                         <Stack
@@ -128,10 +125,10 @@ const Login: NextPage = () => {
                                                     bg: "red.500"
                                                 }}
                                                 onClick={() => {
-                                                    router.push("/login");
+                                                    router.push("/");
                                                 }}
                                             >
-                                                {"Return"}
+                                                Return
                                             </Button>
 
                                             <Button

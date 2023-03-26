@@ -5,7 +5,7 @@ const Index = () => {
     return (
         <Container maxW="container.xl" padding={"1.2rem"} display={"flex"} justifyContent={"center"}>
             <Flex justifyContent={"center"} gap={"1rem"} width={"container.md"} minHeight={"calc(100vh - 291px)"}>
-                <Link href={"/search?type=restaurant"}>
+                <Link href={"/"}>
                     <Flex
                         w={"64"}
                         borderRadius={"0.3rem"}

@@ -44,7 +44,8 @@ const Login: NextPage = () => {
                     description: error ?? "An error has occurred",
                     status: "error",
                     duration: 5000,
-                    isClosable: true
+                    isClosable: true,
+                    position: "top-right"
                 });
             } else {
                 toast({
@@ -52,7 +53,8 @@ const Login: NextPage = () => {
                     description: error?.response?.data?.message ?? "An error has occurred",
                     status: "error",
                     duration: 5000,
-                    isClosable: true
+                    isClosable: true,
+                    position: "top-right"
                 });
             }
         } finally {
@@ -71,7 +73,7 @@ const Login: NextPage = () => {
             }}
         >
             {({ handleChange, handleBlur, values, errors, touched }) => (
-                <Form method="post">
+                <Form method="post" noValidate>
                     <Flex minH={"calc(100vh - 168px)"} align={"center"} justify={"center"}>
                         <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
                             <Stack align={"center"}>
@@ -88,6 +90,7 @@ const Login: NextPage = () => {
                                         title={"Email address"}
                                         type={"email"}
                                         value={values.email}
+                                        isRequired={true}
                                     />
 
                                     <StyleInput
@@ -99,6 +102,7 @@ const Login: NextPage = () => {
                                         title={"Password"}
                                         type={"password"}
                                         value={values.password}
+                                        isRequired={true}
                                     />
 
                                     <Stack spacing={6}>

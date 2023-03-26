@@ -9,7 +9,6 @@ export class User implements Prisma.UserUncheckedCreateInput {
     use_id_type_user: number;
     use_name: string;
     use_phone: string;
-    use_username: string;
     password: string;
     use_cpf: string;
     addresses?: Prisma.UserAddressUncheckedCreateNestedManyWithoutUserInput;

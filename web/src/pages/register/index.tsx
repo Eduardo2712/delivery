@@ -1,4 +1,4 @@
-import { Formik } from "formik";
+import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import { maskCEP, maskCPF, maskPhone } from "../../utils/mask";
 import { useState } from "react";
@@ -22,6 +22,7 @@ import {
 import { createUser } from "../../requests/user.request";
 import { getCEP } from "../../requests/cep.request";
 import { firstCapital, typeUser } from "../../utils/function";
+import StyleInput from "../../components/style-input";
 
 type Props = {
     setType: (i: number) => void;
@@ -204,7 +205,8 @@ const Register = () => {
                 description: "CEP must be 8 characters long",
                 status: "warning",
                 duration: 5000,
-                isClosable: true
+                isClosable: true,
+                position: "top-right"
             });
         }
 
@@ -217,7 +219,8 @@ const Register = () => {
                     description: response.data.erro ?? "An error has occurred",
                     status: "error",
                     duration: 5000,
-                    isClosable: true
+                    isClosable: true,
+                    position: "top-right"
                 });
             }
 
@@ -232,7 +235,8 @@ const Register = () => {
                     description: error ?? "An error has occurred",
                     status: "error",
                     duration: 5000,
-                    isClosable: true
+                    isClosable: true,
+                    position: "top-right"
                 });
             } else {
                 toast({
@@ -240,7 +244,8 @@ const Register = () => {
                     description: error?.response?.data?.message[0] ?? "An error has occurred",
                     status: "error",
                     duration: 5000,
-                    isClosable: true
+                    isClosable: true,
+                    position: "top-right"
                 });
             }
         }
@@ -250,7 +255,7 @@ const Register = () => {
         <>
             <Formik initialValues={initialValues} validationSchema={schema} validateOnMount onSubmit={onSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
-                    <form onSubmit={handleSubmit}>
+                    <Form method="post" onSubmit={handleSubmit} noValidate>
                         <Flex align={"center"} justify={"center"} minHeight={"calc(100vh - 64px)"}>
                             <Stack spacing={4} w={"full"} maxW={"container.md"} rounded={"xl"} boxShadow={"lg"} p={6} my={12}>
                                 <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }} color={"gray.700"}>
@@ -262,151 +267,95 @@ const Register = () => {
                                 {step === 1 && (
                                     <>
                                         <Box gap={3} display={{ sm: "flex" }}>
-                                            <FormControl isRequired>
-                                                <FormLabel color={"gray.700"}>Name</FormLabel>
+                                            <StyleInput
+                                                errors={errors.use_name}
+                                                touched={touched.use_name}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                                name={"use_name"}
+                                                title={"Name"}
+                                                type={"text"}
+                                                value={values.use_name}
+                                                isRequired={true}
+                                            />
 
-                                                <Input
-                                                    placeholder="Name"
-                                                    _placeholder={{
-                                                        color: "gray.500"
-                                                    }}
-                                                    type="text"
-                                                    name="use_name"
-                                                    value={values.use_name}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                />
-
-                                                <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.use_name && touched.use_name && errors.use_name}
-                                                </Text>
-                                            </FormControl>
-
-                                            <FormControl isRequired>
-                                                <FormLabel color={"gray.700"}>CPF</FormLabel>
-
-                                                <Input
-                                                    placeholder="Name"
-                                                    _placeholder={{
-                                                        color: "gray.500"
-                                                    }}
-                                                    type="text"
-                                                    name="use_cpf"
-                                                    value={values.use_cpf}
-                                                    onChange={(e) => handleChange(maskCPF(e))}
-                                                    onBlur={handleBlur}
-                                                />
-
-                                                <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.use_cpf && touched.use_cpf && errors.use_cpf}
-                                                </Text>
-                                            </FormControl>
+                                            <StyleInput
+                                                errors={errors.use_cpf}
+                                                touched={touched.use_cpf}
+                                                handleBlur={handleBlur}
+                                                handleChange={(e) => handleChange(maskCPF(e))}
+                                                name={"use_cpf"}
+                                                title={"CPF"}
+                                                type={"text"}
+                                                value={values.use_cpf}
+                                                isRequired={true}
+                                            />
                                         </Box>
 
                                         <Box gap={3} display={{ sm: "flex" }}>
-                                            <FormControl isRequired>
-                                                <FormLabel color={"gray.700"}>Phone number</FormLabel>
+                                            <StyleInput
+                                                errors={errors.use_phone}
+                                                touched={touched.use_phone}
+                                                handleBlur={handleBlur}
+                                                handleChange={(e) => handleChange(maskPhone(e))}
+                                                name={"use_phone"}
+                                                title={"Phone number"}
+                                                type={"text"}
+                                                value={values.use_phone}
+                                                isRequired={true}
+                                            />
 
-                                                <Input
-                                                    placeholder="Phone number"
-                                                    _placeholder={{
-                                                        color: "gray.500"
-                                                    }}
-                                                    type="text"
-                                                    name="use_phone"
-                                                    value={values.use_phone}
-                                                    onChange={(e) => handleChange(maskPhone(e))}
-                                                    onBlur={(e) => handleBlur(maskPhone(e))}
-                                                />
-
-                                                <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.use_phone && touched.use_phone && errors.use_phone}
-                                                </Text>
-                                            </FormControl>
-
-                                            <FormControl isRequired>
-                                                <FormLabel color={"gray.700"}>E-mail</FormLabel>
-
-                                                <Input
-                                                    placeholder="E-mail"
-                                                    _placeholder={{
-                                                        color: "gray.500"
-                                                    }}
-                                                    type="text"
-                                                    name="email"
-                                                    value={values.email}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                />
-
-                                                <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.email && touched.email && errors.email}
-                                                </Text>
-                                            </FormControl>
+                                            <StyleInput
+                                                errors={errors.email}
+                                                touched={touched.email}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                                name={"email"}
+                                                title={"E-mail"}
+                                                type={"email"}
+                                                value={values.email}
+                                                isRequired={true}
+                                            />
                                         </Box>
 
                                         <Box gap={3} display={{ sm: "flex" }}>
-                                            <FormControl isRequired>
-                                                <FormLabel color={"gray.700"}>Password</FormLabel>
+                                            <StyleInput
+                                                errors={errors.password}
+                                                touched={touched.password}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                                name={"password"}
+                                                title={"Password"}
+                                                type={"password"}
+                                                value={values.password}
+                                                isRequired={true}
+                                            />
 
-                                                <Input
-                                                    placeholder="Password"
-                                                    _placeholder={{
-                                                        color: "gray.500"
-                                                    }}
-                                                    type="password"
-                                                    name="password"
-                                                    value={values.password}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                />
-
-                                                <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.password && touched.password && errors.password}
-                                                </Text>
-                                            </FormControl>
-
-                                            <FormControl isRequired>
-                                                <FormLabel color={"gray.700"}>Password confirmation</FormLabel>
-
-                                                <Input
-                                                    placeholder="Password confirmation"
-                                                    _placeholder={{
-                                                        color: "gray.500"
-                                                    }}
-                                                    type="password"
-                                                    name="password_confirmation"
-                                                    value={values.password_confirmation}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                />
-
-                                                <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.password_confirmation && touched.password_confirmation && errors.password_confirmation}
-                                                </Text>
-                                            </FormControl>
+                                            <StyleInput
+                                                errors={errors.password_confirmation}
+                                                touched={touched.password_confirmation}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                                name={"password_confirmation"}
+                                                title={"Password confirmation"}
+                                                type={"password"}
+                                                value={values.password_confirmation}
+                                                isRequired={true}
+                                            />
                                         </Box>
 
                                         <Box gap={3} display={{ sm: "flex" }}>
-                                            <FormControl isRequired>
-                                                <FormLabel color={"gray.700"}>Date of birth</FormLabel>
-
-                                                <Input
-                                                    placeholder="Date of birth"
-                                                    _placeholder={{
-                                                        color: "gray.500"
-                                                    }}
-                                                    type="date"
-                                                    name="use_date_birth"
-                                                    value={values.use_date_birth}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                />
-
-                                                <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.use_date_birth && touched.use_date_birth && errors.use_date_birth}
-                                                </Text>
-                                            </FormControl>
+                                            <StyleInput
+                                                errors={errors.use_date_birth}
+                                                touched={touched.use_date_birth}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                                name={"use_date_birth"}
+                                                title={"Date of birth"}
+                                                type={"date"}
+                                                value={values.use_date_birth}
+                                                isRequired={true}
+                                            />
                                         </Box>
                                     </>
                                 )}
@@ -594,7 +543,7 @@ const Register = () => {
                                 )}
                             </Stack>
                         </Flex>
-                    </form>
+                    </Form>
                 )}
             </Formik>
         </>

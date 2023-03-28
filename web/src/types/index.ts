@@ -8,15 +8,12 @@ export type ContextLogin = {
 
 export type User = {
     id: number;
-    use_id_type_user: number;
     use_name: string;
     email: string;
     use_phone: string;
     use_date_birth: Date;
     password: string;
-    use_date_status: Date | null;
     use_delete: boolean;
-    use_text_status: string | null;
     use_id_photo: number | null;
     photo: File;
     posts: Post[];

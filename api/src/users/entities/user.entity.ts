@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 
-export class User implements Prisma.UserUncheckedCreateInput {
+export class User implements Prisma.UserCreateManyInput, Prisma.UserAddressCreateManyUserInput {
     id?: number;
     email: string;
     use_date_birth: string | Date;
@@ -11,5 +11,11 @@ export class User implements Prisma.UserUncheckedCreateInput {
     use_phone: string;
     password: string;
     use_cpf: string;
-    addresses?: Prisma.UserAddressUncheckedCreateNestedManyWithoutUserInput;
+    usa_cep: string;
+    usa_city: string;
+    usa_complement?: string;
+    usa_district: string;
+    usa_number: string;
+    usa_state: string;
+    usa_street: string;
 }

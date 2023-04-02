@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client";
-import { IsEmail, IsString, MaxLength, MinLength, IsDateString, IsOptional } from "class-validator";
+import { IsEmail, IsString, MaxLength, MinLength, IsDateString, ValidateNested, IsObject } from "class-validator";
 import { User } from "../entities/user.entity";
+import { Type } from "class-transformer";
 
 export class CreateUserDto extends User {
     @IsEmail()
@@ -34,6 +34,11 @@ export class CreateUserDto extends User {
     @IsDateString()
     use_date_birth: Date;
 
-    @IsOptional()
-    addresses?: Prisma.UserAddressUncheckedCreateNestedManyWithoutUserInput;
+    usa_cep: string;
+    usa_street: string;
+    usa_number: string;
+    usa_district: string;
+    usa_complement?: string | null;
+    usa_city: string;
+    usa_state: string;
 }

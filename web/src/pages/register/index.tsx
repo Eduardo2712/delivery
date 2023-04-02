@@ -81,13 +81,13 @@ const Register = () => {
         use_cpf: string;
         use_phone: string;
         use_date_birth: string;
-        add_cep: string;
-        add_street: string;
-        add_number: string;
-        add_district: string;
-        add_complement: string;
-        add_city: string;
-        add_state: string;
+        usa_cep: string;
+        usa_street: string;
+        usa_number: string;
+        usa_district: string;
+        usa_complement: string;
+        usa_city: string;
+        usa_state: string;
     };
 
     const [step, setStep] = useState<number>(0);
@@ -107,13 +107,13 @@ const Register = () => {
         use_cpf: "",
         use_phone: "",
         use_date_birth: "",
-        add_cep: "",
-        add_street: "",
-        add_number: "",
-        add_district: "",
-        add_complement: "",
-        add_city: "",
-        add_state: ""
+        usa_cep: "",
+        usa_street: "",
+        usa_number: "",
+        usa_district: "",
+        usa_complement: "",
+        usa_city: "",
+        usa_state: ""
     };
 
     const schema = () => {
@@ -132,13 +132,13 @@ const Register = () => {
             });
         } else if (step === 2) {
             return Yup.object().shape({
-                add_cep: Yup.string().required("Fill in this field!"),
-                add_street: Yup.string().required("Fill in this field!"),
-                add_number: Yup.string().required("Fill in this field!"),
-                add_district: Yup.string().required("Fill in this field!"),
-                add_complement: Yup.string(),
-                add_city: Yup.string().required("Fill in this field!"),
-                add_state: Yup.string().required("Fill in this field!")
+                usa_cep: Yup.string().required("Fill in this field!"),
+                usa_street: Yup.string().required("Fill in this field!"),
+                usa_number: Yup.string().required("Fill in this field!"),
+                usa_district: Yup.string().required("Fill in this field!"),
+                usa_complement: Yup.string(),
+                usa_city: Yup.string().required("Fill in this field!"),
+                usa_state: Yup.string().required("Fill in this field!")
             });
         } else {
             return Yup.object().shape({});
@@ -148,12 +148,6 @@ const Register = () => {
     const onSubmit = async (values: Form | any) => {
         if (step !== 2) {
             return setStep((bef) => bef + 1);
-        }
-
-        const form_data = new FormData();
-
-        for (const key in values) {
-            form_data.append(key, values[key]);
         }
 
         setLoading(true);
@@ -224,10 +218,10 @@ const Register = () => {
                 });
             }
 
-            setFieldValue("add_street", response.data.logradouro ?? "");
-            setFieldValue("add_district", response.data.bairro ?? "");
-            setFieldValue("add_city", response.data.localidade ?? "");
-            setFieldValue("add_state", response.data.uf ?? "");
+            setFieldValue("usa_street", response.data.logradouro ?? "");
+            setFieldValue("usa_district", response.data.bairro ?? "");
+            setFieldValue("usa_city", response.data.localidade ?? "");
+            setFieldValue("usa_state", response.data.uf ?? "");
         } catch (error: any) {
             if (typeof error === "string") {
                 toast({
@@ -372,14 +366,14 @@ const Register = () => {
                                                         color: "gray.500"
                                                     }}
                                                     type="text"
-                                                    name="add_cep"
-                                                    value={values.add_cep}
+                                                    name="usa_cep"
+                                                    value={values.usa_cep}
                                                     onChange={(e) => handleChange(maskCEP(e))}
                                                     onBlur={(e) => searchCEP(maskCEP(e).target.value, setFieldValue)}
                                                 />
 
                                                 <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.add_cep && touched.add_cep && errors.add_cep}
+                                                    {errors.usa_cep && touched.usa_cep && errors.usa_cep}
                                                 </Text>
                                             </FormControl>
 
@@ -392,14 +386,14 @@ const Register = () => {
                                                         color: "gray.500"
                                                     }}
                                                     type="text"
-                                                    name="add_street"
-                                                    value={values.add_street}
+                                                    name="usa_street"
+                                                    value={values.usa_street}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                 />
 
                                                 <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.add_street && touched.add_street && errors.add_street}
+                                                    {errors.usa_street && touched.usa_street && errors.usa_street}
                                                 </Text>
                                             </FormControl>
                                         </Box>
@@ -414,14 +408,14 @@ const Register = () => {
                                                         color: "gray.500"
                                                     }}
                                                     type="text"
-                                                    name="add_number"
-                                                    value={values.add_number}
+                                                    name="usa_number"
+                                                    value={values.usa_number}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                 />
 
                                                 <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.add_number && touched.add_number && errors.add_number}
+                                                    {errors.usa_number && touched.usa_number && errors.usa_number}
                                                 </Text>
                                             </FormControl>
 
@@ -434,14 +428,14 @@ const Register = () => {
                                                         color: "gray.500"
                                                     }}
                                                     type="text"
-                                                    name="add_complement"
-                                                    value={values.add_complement}
+                                                    name="usa_complement"
+                                                    value={values.usa_complement}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                 />
 
                                                 <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.add_complement && touched.add_complement && errors.add_complement}
+                                                    {errors.usa_complement && touched.usa_complement && errors.usa_complement}
                                                 </Text>
                                             </FormControl>
                                         </Box>
@@ -456,14 +450,14 @@ const Register = () => {
                                                         color: "gray.500"
                                                     }}
                                                     type="text"
-                                                    name="add_district"
-                                                    value={values.add_district}
+                                                    name="usa_district"
+                                                    value={values.usa_district}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                 />
 
                                                 <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.add_district && touched.add_district && errors.add_district}
+                                                    {errors.usa_district && touched.usa_district && errors.usa_district}
                                                 </Text>
                                             </FormControl>
 
@@ -476,14 +470,14 @@ const Register = () => {
                                                         color: "gray.500"
                                                     }}
                                                     type="text"
-                                                    name="add_city"
-                                                    value={values.add_city}
+                                                    name="usa_city"
+                                                    value={values.usa_city}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                 />
 
                                                 <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.add_city && touched.add_city && errors.add_city}
+                                                    {errors.usa_city && touched.usa_city && errors.usa_city}
                                                 </Text>
                                             </FormControl>
                                         </Box>
@@ -498,14 +492,14 @@ const Register = () => {
                                                         color: "gray.500"
                                                     }}
                                                     type="text"
-                                                    name="add_state"
-                                                    value={values.add_state}
+                                                    name="usa_state"
+                                                    value={values.usa_state}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                 />
 
                                                 <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.add_state && touched.add_state && errors.add_state}
+                                                    {errors.usa_state && touched.usa_state && errors.usa_state}
                                                 </Text>
                                             </FormControl>
                                         </Box>

@@ -41,7 +41,18 @@ export class UsersService {
                 use_cpf: create_user_dto.use_cpf,
                 use_date_birth: new Date(create_user_dto.use_date_birth),
                 use_name: create_user_dto.use_name,
-                use_phone: create_user_dto.use_phone
+                use_phone: create_user_dto.use_phone,
+                addresses: {
+                    create: {
+                        usa_cep: create_user_dto.usa_cep,
+                        usa_city: create_user_dto.usa_city,
+                        usa_district: create_user_dto.usa_district,
+                        usa_number: create_user_dto.usa_number,
+                        usa_state: create_user_dto.usa_state,
+                        usa_street: create_user_dto.usa_street,
+                        usa_complement: create_user_dto.usa_complement
+                    }
+                }
             }
         });
 

@@ -61,13 +61,17 @@ const Header = () => {
                                 </Flex>
                             ) : (
                                 <Flex justifyContent={"flex-end"} gap={"0.3rem"} fontSize={"1.2rem"}>
-                                    <LinkChakra color={"gray.50"} fontWeight={"bold"}>
-                                        <Link href={"/register"}>Register</Link>
-                                    </LinkChakra>
+                                    <Link href={"/auth/register"}>
+                                        <Text color={"gray.50"} fontWeight={"bold"}>
+                                            Register
+                                        </Text>
+                                    </Link>
                                     /
-                                    <LinkChakra color={"gray.50"} fontWeight={"bold"}>
-                                        <Link href={"/login"}>Login</Link>
-                                    </LinkChakra>
+                                    <Link href={"/auth/login"}>
+                                        <Text color={"gray.50"} fontWeight={"bold"}>
+                                            Login
+                                        </Text>
+                                    </Link>
                                 </Flex>
                             )}
                         </Box>

@@ -1,4 +1,4 @@
-import { Box, chakra, Container, Stack, Text, VisuallyHidden, Link as LinkChakra } from "@chakra-ui/react";
+import { Box, chakra, Container, Stack, Text, VisuallyHidden } from "@chakra-ui/react";
 import { faYoutube, faInstagram, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { format } from "date-fns";
@@ -38,11 +38,9 @@ const Footer = () => {
                 justify={{ base: "center", md: "space-between" }}
                 align={{ base: "center", md: "center" }}
             >
-                <LinkChakra color={"gray.50"} fontWeight={"bold"}>
-                    <Link href={"/"}>
-                        <Text>{`© ${format(new Date(), "yyyy")} Delivery. All rights reserved`}</Text>
-                    </Link>
-                </LinkChakra>
+                <Link href={"/"}>
+                    <Text color={"gray.50"} fontWeight={"bold"}>{`© ${format(new Date(), "yyyy")} Delivery. All rights reserved`}</Text>
+                </Link>
 
                 <Stack direction={"row"} spacing={6}>
                     <SocialButton label={"Twitter"} href={"#"}>

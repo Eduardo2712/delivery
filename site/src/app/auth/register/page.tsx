@@ -1,8 +1,10 @@
+"use client";
+
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import { maskCEP, maskCPF, maskPhone } from "../../utils/mask";
+import { maskCEP, maskCPF, maskPhone } from "../../../utils/mask";
 import { useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import {
     Button,
     Flex,
@@ -19,10 +21,11 @@ import {
     CardBody,
     CardFooter
 } from "@chakra-ui/react";
-import { createUser } from "../../requests/user.request";
-import { getCEP } from "../../requests/cep.request";
-import { firstCapital, typeUser } from "../../utils/function";
-import StyleInput from "../../components/style-input";
+import { createUser } from "../../../requests/user.request";
+import { getCEP } from "../../../requests/cep.request";
+import { firstCapital, typeUser } from "../../../utils/function";
+import StyleInput from "../../../components/style-input";
+import { NextPage } from "next";
 
 type Props = {
     setType: (i: number) => void;
@@ -72,7 +75,7 @@ const CardUser = (props: Props) => {
     );
 };
 
-const Register = () => {
+const Register: NextPage = () => {
     type Form = {
         email: string;
         password: string;
@@ -123,7 +126,7 @@ const Register = () => {
                 password: Yup.string().min(8, "Password must be at least 8 characters long!").required("Fill in this field!"),
                 password_confirmation: Yup.string()
                     .min(8, "Password must be at least 8 characters long!")
-                    .oneOf([Yup.ref("password"), null], "Passwords must be the same!")
+                    .oneOf([Yup.ref("password"), undefined], "Passwords must be the same!")
                     .required("Fill in this field!"),
                 use_name: Yup.string().required("Fill in this field!"),
                 use_cpf: Yup.string().length(14).required("Fill in this field!"),

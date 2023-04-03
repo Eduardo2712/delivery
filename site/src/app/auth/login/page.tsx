@@ -1,13 +1,15 @@
+"use client";
+
 import { Formik, Form } from "formik";
 import { NextPage } from "next";
 import * as Yup from "yup";
-import { auth } from "../../requests/auth.request";
-import { User } from "../../types";
-import { useRouter } from "next/router";
+import { auth } from "../../../requests/auth.request";
+import { User } from "../../../types";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-import { Flex, Box, Stack, Link as LinkChakra, Button, Heading, useToast } from "@chakra-ui/react";
-import StyleInput from "../../components/style-input";
+import { Flex, Box, Stack, Button, Heading, useToast, Text } from "@chakra-ui/react";
+import StyleInput from "../../../components/style-input";
 
 const Login: NextPage = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -24,20 +26,22 @@ const Login: NextPage = () => {
         try {
             setLoading(true);
 
-            const response = await auth(values);
+            const response = await (await auth(values)).json();
+            // console.log(response);
 
-            if (response.data.user && response.data.access_token) {
+            if (response.user && response.access_token) {
                 localStorage.setItem(
                     "user",
                     JSON.stringify({
-                        ...response.data.user,
-                        token: response.data.access_token
+                        ...response.user,
+                        token: response.access_token
                     })
                 );
 
                 router.push("/feed");
             }
         } catch (error: any) {
+            console.log(error);
             if (typeof error === "string") {
                 toast({
                     title: "Error.",
@@ -50,7 +54,7 @@ const Login: NextPage = () => {
             } else {
                 toast({
                     title: "Error.",
-                    description: error?.response?.data?.message ?? "An error has occurred",
+                    description: error?.message ?? "An error has occurred",
                     status: "error",
                     duration: 5000,
                     isClosable: true,
@@ -114,8 +118,8 @@ const Login: NextPage = () => {
                                             align={"start"}
                                             justify={"space-between"}
                                         >
-                                            <Link href="/register">
-                                                <LinkChakra color={"blue.400"}>{"I don't have an account"}</LinkChakra>
+                                            <Link href="/auth/register">
+                                                <Text color={"blue.400"}>{"I don't have an account"}</Text>
                                             </Link>
                                         </Stack>
 

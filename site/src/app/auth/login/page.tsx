@@ -41,7 +41,6 @@ const Login: NextPage = () => {
                 router.push("/feed");
             }
         } catch (error: any) {
-            console.log(error);
             if (typeof error === "string") {
                 toast({
                     title: "Error.",

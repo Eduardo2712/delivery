@@ -2,7 +2,6 @@
 
 import { Formik, Form } from "formik";
 import { NextPage } from "next";
-import * as Yup from "yup";
 import { auth } from "../../../requests/auth.request";
 import { User } from "../../../types";
 import { useRouter } from "next/navigation";
@@ -10,6 +9,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Flex, Box, Stack, Button, Heading, useToast, Text } from "@chakra-ui/react";
 import StyleInput from "../../../components/style-input";
+import { schema } from "./util";
 
 const Login: NextPage = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -17,49 +17,53 @@ const Login: NextPage = () => {
     const router = useRouter();
     const toast = useToast();
 
-    const schema = Yup.object().shape({
-        email: Yup.string().email("Fill in a valid e-mail!").required("Fill in this field!"),
-        password: Yup.string().min(6, "Must contain at least 6 characters!").required("Fill in this field!")
-    });
-
     const onSubmit = async (values: Pick<User, "email" | "password">) => {
+        setLoading(true);
+
         try {
-            setLoading(true);
+            const response = await auth(values);
+            const response_json = await response.json();
 
-            const response = await (await auth(values)).json();
-            // console.log(response);
+            if (response.status !== 200) {
+                return toast({
+                    title: "Error",
+                    description: response_json.message.join(", ") ?? "An error has occurred",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "top-right"
+                });
+            }
 
-            if (response.user && response.access_token) {
+            if (response_json.user && response_json.access_token) {
                 localStorage.setItem(
                     "user",
                     JSON.stringify({
-                        ...response.user,
-                        token: response.access_token
+                        ...response_json.user,
+                        token: response_json.access_token
                     })
                 );
 
-                router.push("/feed");
+                toast({
+                    title: "Success",
+                    description: "Login success",
+                    status: "success",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "top-right"
+                });
+
+                router.push("/");
             }
         } catch (error: any) {
-            if (typeof error === "string") {
-                toast({
-                    title: "Error.",
-                    description: error ?? "An error has occurred",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top-right"
-                });
-            } else {
-                toast({
-                    title: "Error.",
-                    description: error?.message ?? "An error has occurred",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top-right"
-                });
-            }
+            toast({
+                title: "Error",
+                description: error ?? "An error has occurred",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "top-right"
+            });
         } finally {
             setLoading(false);
         }
@@ -78,7 +82,7 @@ const Login: NextPage = () => {
             {({ handleChange, handleBlur, values, errors, touched }) => (
                 <Form method="post" noValidate>
                     <Flex minH={"calc(100vh - 168px)"} align={"center"} justify={"center"}>
-                        <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+                        <Stack spacing={8} mx={"auto"} w={"lg"} py={12} px={6}>
                             <Stack align={"center"}>
                                 <Heading fontSize={"4xl"}>Login</Heading>
                             </Stack>

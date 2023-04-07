@@ -1,7 +1,6 @@
 "use client";
 
 import { Form, Formik } from "formik";
-import * as Yup from "yup";
 import { maskCEP, maskCPF, maskPhone } from "../../../utils/mask";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -26,6 +25,7 @@ import { getCEP } from "../../../requests/cep.request";
 import { firstCapital, typeUser } from "../../../utils/function";
 import StyleInput from "../../../components/style-input";
 import { NextPage } from "next";
+import { TypeForm, schema } from "./util";
 
 type Props = {
     setType: (i: number) => void;
@@ -76,23 +76,6 @@ const CardUser = (props: Props) => {
 };
 
 const Register: NextPage = () => {
-    type Form = {
-        email: string;
-        password: string;
-        password_confirmation: string;
-        use_name: string;
-        use_cpf: string;
-        use_phone: string;
-        use_date_birth: string;
-        usa_cep: string;
-        usa_street: string;
-        usa_number: string;
-        usa_district: string;
-        usa_complement: string;
-        usa_city: string;
-        usa_state: string;
-    };
-
     const [step, setStep] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [type, setType] = useState<number | null>(null);
@@ -102,7 +85,7 @@ const Register: NextPage = () => {
     const router = useRouter();
     const toast = useToast();
 
-    const initialValues: Form = {
+    const initialValues: TypeForm = {
         email: "",
         password: "",
         password_confirmation: "",
@@ -119,36 +102,7 @@ const Register: NextPage = () => {
         usa_state: ""
     };
 
-    const schema = () => {
-        if (step === 1) {
-            return Yup.object().shape({
-                email: Yup.string().email("Fill in with a valid e-mail!").required("Fill in this field!"),
-                password: Yup.string().min(8, "Password must be at least 8 characters long!").required("Fill in this field!"),
-                password_confirmation: Yup.string()
-                    .min(8, "Password must be at least 8 characters long!")
-                    .oneOf([Yup.ref("password"), undefined], "Passwords must be the same!")
-                    .required("Fill in this field!"),
-                use_name: Yup.string().required("Fill in this field!"),
-                use_cpf: Yup.string().length(14).required("Fill in this field!"),
-                use_phone: Yup.string().required("Fill in this field!"),
-                use_date_birth: Yup.date().required("Fill in this field!")
-            });
-        } else if (step === 2) {
-            return Yup.object().shape({
-                usa_cep: Yup.string().required("Fill in this field!"),
-                usa_street: Yup.string().required("Fill in this field!"),
-                usa_number: Yup.string().required("Fill in this field!"),
-                usa_district: Yup.string().required("Fill in this field!"),
-                usa_complement: Yup.string(),
-                usa_city: Yup.string().required("Fill in this field!"),
-                usa_state: Yup.string().required("Fill in this field!")
-            });
-        } else {
-            return Yup.object().shape({});
-        }
-    };
-
-    const onSubmit = async (values: Form | any) => {
+    const onSubmit = async (values: TypeForm | any) => {
         if (step !== 2) {
             return setStep((bef) => bef + 1);
         }
@@ -169,25 +123,14 @@ const Register: NextPage = () => {
 
             router.push("/");
         } catch (error: any) {
-            if (typeof error === "string") {
-                toast({
-                    title: "Error.",
-                    description: error ?? "An error has occurred",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top-right"
-                });
-            } else {
-                toast({
-                    title: "Error.",
-                    description: error?.response?.data?.message ?? "An error has occurred",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top-right"
-                });
-            }
+            toast({
+                title: "Error",
+                description: error ?? "An error has occurred",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "top-right"
+            });
         } finally {
             setLoading(false);
         }
@@ -208,12 +151,12 @@ const Register: NextPage = () => {
         }
 
         try {
-            const response = await getCEP(format_cep);
+            const response = await (await getCEP(format_cep)).json();
 
-            if (response.data.erro) {
+            if (response.erro) {
                 return toast({
-                    title: "Error.",
-                    description: response.data.erro ?? "An error has occurred",
+                    title: "Error",
+                    description: "CEP not found",
                     status: "error",
                     duration: 5000,
                     isClosable: true,
@@ -221,30 +164,19 @@ const Register: NextPage = () => {
                 });
             }
 
-            setFieldValue("usa_street", response.data.logradouro ?? "");
-            setFieldValue("usa_district", response.data.bairro ?? "");
-            setFieldValue("usa_city", response.data.localidade ?? "");
-            setFieldValue("usa_state", response.data.uf ?? "");
+            setFieldValue("usa_street", response.logradouro ?? "");
+            setFieldValue("usa_district", response.bairro ?? "");
+            setFieldValue("usa_city", response.localidade ?? "");
+            setFieldValue("usa_state", response.uf ?? "");
         } catch (error: any) {
-            if (typeof error === "string") {
-                toast({
-                    title: "Error.",
-                    description: error ?? "An error has occurred",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top-right"
-                });
-            } else {
-                toast({
-                    title: "Error.",
-                    description: error?.response?.data?.message[0] ?? "An error has occurred",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top-right"
-                });
-            }
+            toast({
+                title: "Error",
+                description: error ?? "An error has occurred",
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: "top-right"
+            });
         }
     };
 

@@ -2,7 +2,7 @@ import { faBell, faGear, faRightFromBracket } from "@fortawesome/free-solid-svg-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useAuth } from "../../context/auth";
-import { Box, Button, Container, Flex, Hide, Input, Text, Link as LinkChakra } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Hide, Input, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 const Header = () => {
@@ -55,9 +55,9 @@ const Header = () => {
                                             icon={faRightFromBracket}
                                             onClick={logout}
                                         />
-                                    </Flex>
 
-                                    <Text fontSize="md" as={"b"}>{`Hello, ${user.use_name.split(" ")[0]}`}</Text>
+                                        <Text fontSize="md" as={"b"}>{`Hello, ${user.use_name.split(" ")[0]}`}</Text>
+                                    </Flex>
                                 </Flex>
                             ) : (
                                 <Flex justifyContent={"flex-end"} gap={"0.3rem"} fontSize={"1.2rem"}>

@@ -10,9 +10,12 @@ import Link from "next/link";
 import { Flex, Box, Stack, Button, Heading, useToast, Text } from "@chakra-ui/react";
 import StyleInput from "../../../components/style-input";
 import { schema } from "./util";
+import { useAuth } from "@/context/auth";
 
 const Login: NextPage = () => {
     const [loading, setLoading] = useState<boolean>(false);
+
+    const { login } = useAuth();
 
     const router = useRouter();
     const toast = useToast();
@@ -21,40 +24,7 @@ const Login: NextPage = () => {
         setLoading(true);
 
         try {
-            const response = await auth(values);
-            const response_json = await response.json();
-
-            if (response.status !== 200) {
-                return toast({
-                    title: "Error",
-                    description: response_json.message.join(", ") ?? "An error has occurred",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top-right"
-                });
-            }
-
-            if (response_json.user && response_json.access_token) {
-                localStorage.setItem(
-                    "user",
-                    JSON.stringify({
-                        ...response_json.user,
-                        token: response_json.access_token
-                    })
-                );
-
-                toast({
-                    title: "Success",
-                    description: "Login success",
-                    status: "success",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top-right"
-                });
-
-                router.push("/");
-            }
+            await login(values.email, values.password);
         } catch (error: any) {
             toast({
                 title: "Error",

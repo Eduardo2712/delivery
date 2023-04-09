@@ -11,6 +11,7 @@ import StyleInput from "../../../components/style-input";
 import { NextPage } from "next";
 import { TypeFormRegister, schema } from "./util";
 import CardUser from "@/components/card-user";
+import { createAdmin } from "@/requests/admin.request";
 
 const Register: NextPage = () => {
     const [step, setStep] = useState<number>(0);
@@ -47,7 +48,26 @@ const Register: NextPage = () => {
         setLoading(true);
 
         try {
-            await createUser({ ...values, type });
+            let response;
+
+            if (type === 1) {
+                response = await createAdmin({ ...values, type });
+            } else {
+                response = await createUser({ ...values, type });
+            }
+
+            const response_json = await response.json();
+
+            if (response.status !== 200) {
+                return toast({
+                    title: "Error",
+                    description: response_json.message.join(", ") ?? "An error has occurred",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "top-right"
+                });
+            }
 
             toast({
                 title: "Success.",

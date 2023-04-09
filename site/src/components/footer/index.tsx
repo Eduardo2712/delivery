@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, chakra, Container, Stack, Text, VisuallyHidden } from "@chakra-ui/react";
 import { faYoutube, faInstagram, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

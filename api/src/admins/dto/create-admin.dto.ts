@@ -1,7 +1,7 @@
 import { IsEmail, IsString, MaxLength, Length, IsDateString, Equals } from "class-validator";
-import { User } from "../entities/user.entity";
+import { Admin } from "../entities/admin.entity";
 
-export class CreateUserDto extends User {
+export class CreateAdminDto extends Admin {
     @IsEmail()
     @IsString()
     email: string;
@@ -16,47 +16,47 @@ export class CreateUserDto extends User {
 
     @IsString()
     @MaxLength(255)
-    use_name: string;
+    adm_name: string;
 
     @IsString()
     @MaxLength(255)
-    use_phone: string;
+    adm_phone: string;
 
     @IsString()
     @MaxLength(255)
-    use_cpf: string;
+    adm_cnpj: string;
 
     @IsDateString()
-    use_date_birth: Date;
+    adm_date_birth: Date;
 
-    @Equals(2)
+    @Equals(1)
     type: number;
 
     @IsString()
     @Length(9)
-    usa_cep: string;
+    ada_cep: string;
 
     @IsString()
     @MaxLength(255)
-    usa_street: string;
+    ada_street: string;
 
     @IsString()
     @MaxLength(255)
-    usa_number: string;
+    ada_number: string;
 
     @IsString()
     @MaxLength(255)
-    usa_district: string;
+    ada_district: string;
 
     @IsString()
     @MaxLength(255)
-    usa_complement?: string | null;
+    ada_complement?: string | null;
 
     @IsString()
     @MaxLength(255)
-    usa_city: string;
+    ada_city: string;
 
     @IsString()
     @MaxLength(255)
-    usa_state: string;
+    ada_state: string;
 }

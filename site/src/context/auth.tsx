@@ -14,10 +14,10 @@ export const AuthProvider = ({ children }: any) => {
     const router = useRouter();
 
     useEffect(() => {
-        const userRecovery = localStorage.getItem("user");
+        const user_recovery = localStorage.getItem("user");
 
-        if (userRecovery) {
-            setUser(JSON.parse(userRecovery));
+        if (user_recovery) {
+            setUser(JSON.parse(user_recovery));
         }
 
         setLoading(false);

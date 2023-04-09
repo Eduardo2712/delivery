@@ -1,45 +1,57 @@
 import * as Yup from "yup";
 
-export type TypeForm = {
+export type TypeFormRegister = {
     email: string;
     password: string;
     password_confirmation: string;
-    use_name: string;
-    use_cpf: string;
-    use_phone: string;
-    use_date_birth: string;
-    usa_cep: string;
-    usa_street: string;
-    usa_number: string;
-    usa_district: string;
-    usa_complement: string;
-    usa_city: string;
-    usa_state: string;
+    name: string;
+    cpf_cnpj: string;
+    phone: string;
+    date_birth: string;
+    cep: string;
+    street: string;
+    number: string;
+    district: string;
+    complement: string;
+    city: string;
+    state: string;
 };
 
-export const schema = (step: number) => {
+export const schema = (step: number, type: number | null) => {
     if (step === 1) {
-        return Yup.object().shape({
-            email: Yup.string().email("Fill in with a valid e-mail!").required("Fill in this field!"),
-            password: Yup.string().min(8, "Password must be at least 8 characters long!").required("Fill in this field!"),
-            password_confirmation: Yup.string()
-                .min(8, "Password must be at least 8 characters long!")
-                .oneOf([Yup.ref("password"), undefined], "Passwords must be the same!")
-                .required("Fill in this field!"),
-            use_name: Yup.string().required("Fill in this field!"),
-            use_cpf: Yup.string().length(14).required("Fill in this field!"),
-            use_phone: Yup.string().required("Fill in this field!"),
-            use_date_birth: Yup.date().required("Fill in this field!")
-        });
+        return type === 2
+            ? Yup.object().shape({
+                  email: Yup.string().email("Fill in with a valid e-mail!").required("Fill in this field!"),
+                  password: Yup.string().min(8, "Password must be at least 8 characters long!").required("Fill in this field!"),
+                  password_confirmation: Yup.string()
+                      .min(8, "Password must be at least 8 characters long!")
+                      .oneOf([Yup.ref("password"), undefined], "Passwords must be the same!")
+                      .required("Fill in this field!"),
+                  name: Yup.string().required("Fill in this field!"),
+                  cpf_cnpj: Yup.string().length(14).required("Fill in this field!"),
+                  phone: Yup.string().required("Fill in this field!"),
+                  date_birth: Yup.date().required("Fill in this field!")
+              })
+            : Yup.object().shape({
+                  email: Yup.string().email("Fill in with a valid e-mail!").required("Fill in this field!"),
+                  password: Yup.string().min(8, "Password must be at least 8 characters long!").required("Fill in this field!"),
+                  password_confirmation: Yup.string()
+                      .min(8, "Password must be at least 8 characters long!")
+                      .oneOf([Yup.ref("password"), undefined], "Passwords must be the same!")
+                      .required("Fill in this field!"),
+                  name: Yup.string().required("Fill in this field!"),
+                  cpf_cnpj: Yup.string().length(18).required("Fill in this field!"),
+                  phone: Yup.string().required("Fill in this field!")
+              });
     } else if (step === 2) {
         return Yup.object().shape({
-            usa_cep: Yup.string().required("Fill in this field!"),
-            usa_street: Yup.string().required("Fill in this field!"),
-            usa_number: Yup.string().required("Fill in this field!"),
-            usa_district: Yup.string().required("Fill in this field!"),
-            usa_complement: Yup.string(),
-            usa_city: Yup.string().required("Fill in this field!"),
-            usa_state: Yup.string().required("Fill in this field!")
+            cep: Yup.string().required("Fill in this field!"),
+            street: Yup.string().required("Fill in this field!"),
+            number: Yup.string().required("Fill in this field!"),
+            district: Yup.string().required("Fill in this field!"),
+            complement: Yup.string(),
+            city: Yup.string().required("Fill in this field!"),
+            state: Yup.string().required("Fill in this field!")
         });
     } else {
         return Yup.object().shape({});

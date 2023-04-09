@@ -1,6 +1,6 @@
-import { User } from "../types";
+import { TypeFormRegister } from "@/app/auth/register/util";
 
-export const createUser = ({ ...props }: Omit<User, "use_delete">) => {
+export const createUser = ({ ...props }: TypeFormRegister & { type: number | null }) => {
     return fetch(`${process.env.NEXT_PUBLIC_URL_API}/users`, {
         method: "POST",
         body: JSON.stringify(props),

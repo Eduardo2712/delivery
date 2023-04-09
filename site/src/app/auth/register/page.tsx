@@ -1,108 +1,45 @@
 "use client";
 
 import { Form, Formik } from "formik";
-import { maskCEP, maskCPF, maskPhone } from "../../../utils/mask";
+import { maskCEP, maskCNPJ, maskCPF, maskPhone } from "../../../utils/mask";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-    Button,
-    Flex,
-    FormControl,
-    FormLabel,
-    Heading,
-    Input,
-    Stack,
-    Text,
-    Box,
-    useToast,
-    Card,
-    CardHeader,
-    CardBody,
-    CardFooter
-} from "@chakra-ui/react";
+import { Button, Flex, FormControl, FormLabel, Heading, Input, Stack, Text, Box, useToast } from "@chakra-ui/react";
 import { createUser } from "../../../requests/user.request";
 import { getCEP } from "../../../requests/cep.request";
-import { firstCapital, typeUser } from "../../../utils/function";
 import StyleInput from "../../../components/style-input";
 import { NextPage } from "next";
-import { TypeForm, schema } from "./util";
-
-type Props = {
-    setType: (i: number) => void;
-    setStep: (i: number) => void;
-};
-
-const CardUser = (props: Props) => {
-    return (
-        <Flex gap={"1rem"} flexWrap={"wrap"}>
-            {typeUser.map((type) => {
-                return (
-                    <Card key={type.id} flex={"1"} minWidth={"18rem"}>
-                        <CardHeader>
-                            <Heading size="md" color={"gray.700"}>
-                                {firstCapital(type.type)}
-                            </Heading>
-                        </CardHeader>
-
-                        <CardBody>
-                            <Text color={"gray.700"}>{type.text}</Text>
-                        </CardBody>
-
-                        <CardFooter display={"flex"} justifyContent={"flex-end"}>
-                            <Button
-                                color={"gray.50"}
-                                backgroundColor={"green.400"}
-                                _hover={{ backgroundColor: "green.500" }}
-                                display={"flex"}
-                                justifyContent={"center"}
-                                alignItems={"center"}
-                                gap={"0.5rem"}
-                                fontSize={"1.1rem"}
-                                fontWeight={"bold"}
-                                width={"8rem"}
-                                onClick={() => {
-                                    props.setType(type.id);
-                                    props.setStep(1);
-                                }}
-                            >
-                                Select
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                );
-            })}
-        </Flex>
-    );
-};
+import { TypeFormRegister, schema } from "./util";
+import CardUser from "@/components/card-user";
 
 const Register: NextPage = () => {
     const [step, setStep] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
     const [type, setType] = useState<number | null>(null);
 
-    const titleText = ["Select user type", "Personal information", "Address information"];
+    const titleText = ["Select user type", `${type === 1 ? "Store" : "Personal"} information`, "Address information"];
 
     const router = useRouter();
     const toast = useToast();
 
-    const initialValues: TypeForm = {
+    const initialValues: TypeFormRegister = {
         email: "",
         password: "",
         password_confirmation: "",
-        use_name: "",
-        use_cpf: "",
-        use_phone: "",
-        use_date_birth: "",
-        usa_cep: "",
-        usa_street: "",
-        usa_number: "",
-        usa_district: "",
-        usa_complement: "",
-        usa_city: "",
-        usa_state: ""
+        name: "",
+        cpf_cnpj: "",
+        phone: "",
+        date_birth: "",
+        cep: "",
+        street: "",
+        number: "",
+        district: "",
+        complement: "",
+        city: "",
+        state: ""
     };
 
-    const onSubmit = async (values: TypeForm | any) => {
+    const onSubmit = async (values: TypeFormRegister) => {
         if (step !== 2) {
             return setStep((bef) => bef + 1);
         }
@@ -110,7 +47,7 @@ const Register: NextPage = () => {
         setLoading(true);
 
         try {
-            await createUser(values);
+            await createUser({ ...values, type });
 
             toast({
                 title: "Success.",
@@ -164,10 +101,10 @@ const Register: NextPage = () => {
                 });
             }
 
-            setFieldValue("usa_street", response.logradouro ?? "");
-            setFieldValue("usa_district", response.bairro ?? "");
-            setFieldValue("usa_city", response.localidade ?? "");
-            setFieldValue("usa_state", response.uf ?? "");
+            setFieldValue("street", response.logradouro ?? "");
+            setFieldValue("district", response.bairro ?? "");
+            setFieldValue("city", response.localidade ?? "");
+            setFieldValue("state", response.uf ?? "");
         } catch (error: any) {
             toast({
                 title: "Error",
@@ -182,7 +119,7 @@ const Register: NextPage = () => {
 
     return (
         <>
-            <Formik initialValues={initialValues} validationSchema={schema} validateOnMount onSubmit={onSubmit}>
+            <Formik initialValues={initialValues} validationSchema={schema(step, type)} validateOnMount onSubmit={onSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
                     <Form method="post" onSubmit={handleSubmit} noValidate>
                         <Flex align={"center"} justify={"center"} minHeight={"calc(100vh - 64px)"}>
@@ -197,40 +134,41 @@ const Register: NextPage = () => {
                                     <>
                                         <Box gap={3} display={{ sm: "flex" }}>
                                             <StyleInput
-                                                errors={errors.use_name}
-                                                touched={touched.use_name}
+                                                errors={errors.name}
+                                                touched={touched.name}
                                                 handleBlur={handleBlur}
                                                 handleChange={handleChange}
-                                                name={"use_name"}
+                                                name={"name"}
                                                 title={"Name"}
                                                 type={"text"}
-                                                value={values.use_name}
+                                                value={values.name}
                                                 isRequired={true}
                                             />
 
                                             <StyleInput
-                                                errors={errors.use_cpf}
-                                                touched={touched.use_cpf}
+                                                errors={errors.cpf_cnpj}
+                                                touched={touched.cpf_cnpj}
                                                 handleBlur={handleBlur}
-                                                handleChange={(e) => handleChange(maskCPF(e))}
-                                                name={"use_cpf"}
-                                                title={"CPF"}
+                                                handleChange={(e) => handleChange(type === 1 ? maskCNPJ(e) : maskCPF(e))}
+                                                name={"cpf_cnpj"}
+                                                title={type === 1 ? "CNPJ" : "CPF"}
                                                 type={"text"}
-                                                value={values.use_cpf}
+                                                value={values.cpf_cnpj}
                                                 isRequired={true}
+                                                max_length={type === 1 ? 18 : 14}
                                             />
                                         </Box>
 
                                         <Box gap={3} display={{ sm: "flex" }}>
                                             <StyleInput
-                                                errors={errors.use_phone}
-                                                touched={touched.use_phone}
+                                                errors={errors.phone}
+                                                touched={touched.phone}
                                                 handleBlur={handleBlur}
                                                 handleChange={(e) => handleChange(maskPhone(e))}
-                                                name={"use_phone"}
+                                                name={"phone"}
                                                 title={"Phone number"}
                                                 type={"text"}
-                                                value={values.use_phone}
+                                                value={values.phone}
                                                 isRequired={true}
                                             />
 
@@ -273,19 +211,21 @@ const Register: NextPage = () => {
                                             />
                                         </Box>
 
-                                        <Box gap={3} display={{ sm: "flex" }}>
-                                            <StyleInput
-                                                errors={errors.use_date_birth}
-                                                touched={touched.use_date_birth}
-                                                handleBlur={handleBlur}
-                                                handleChange={handleChange}
-                                                name={"use_date_birth"}
-                                                title={"Date of birth"}
-                                                type={"date"}
-                                                value={values.use_date_birth}
-                                                isRequired={true}
-                                            />
-                                        </Box>
+                                        {type === 2 && (
+                                            <Box gap={3} display={{ sm: "flex" }}>
+                                                <StyleInput
+                                                    errors={errors.date_birth}
+                                                    touched={touched.date_birth}
+                                                    handleBlur={handleBlur}
+                                                    handleChange={handleChange}
+                                                    name={"date_birth"}
+                                                    title={"Date of birth"}
+                                                    type={"date"}
+                                                    value={values.date_birth}
+                                                    isRequired={true}
+                                                />
+                                            </Box>
+                                        )}
                                     </>
                                 )}
 
@@ -301,14 +241,14 @@ const Register: NextPage = () => {
                                                         color: "gray.500"
                                                     }}
                                                     type="text"
-                                                    name="usa_cep"
-                                                    value={values.usa_cep}
+                                                    name="cep"
+                                                    value={values.cep}
                                                     onChange={(e) => handleChange(maskCEP(e))}
                                                     onBlur={(e) => searchCEP(maskCEP(e).target.value, setFieldValue)}
                                                 />
 
                                                 <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.usa_cep && touched.usa_cep && errors.usa_cep}
+                                                    {errors.cep && touched.cep && errors.cep}
                                                 </Text>
                                             </FormControl>
 
@@ -321,14 +261,14 @@ const Register: NextPage = () => {
                                                         color: "gray.500"
                                                     }}
                                                     type="text"
-                                                    name="usa_street"
-                                                    value={values.usa_street}
+                                                    name="street"
+                                                    value={values.street}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                 />
 
                                                 <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.usa_street && touched.usa_street && errors.usa_street}
+                                                    {errors.street && touched.street && errors.street}
                                                 </Text>
                                             </FormControl>
                                         </Box>
@@ -343,14 +283,14 @@ const Register: NextPage = () => {
                                                         color: "gray.500"
                                                     }}
                                                     type="text"
-                                                    name="usa_number"
-                                                    value={values.usa_number}
+                                                    name="number"
+                                                    value={values.number}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                 />
 
                                                 <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.usa_number && touched.usa_number && errors.usa_number}
+                                                    {errors.number && touched.number && errors.number}
                                                 </Text>
                                             </FormControl>
 
@@ -363,14 +303,14 @@ const Register: NextPage = () => {
                                                         color: "gray.500"
                                                     }}
                                                     type="text"
-                                                    name="usa_complement"
-                                                    value={values.usa_complement}
+                                                    name="complement"
+                                                    value={values.complement}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                 />
 
                                                 <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.usa_complement && touched.usa_complement && errors.usa_complement}
+                                                    {errors.complement && touched.complement && errors.complement}
                                                 </Text>
                                             </FormControl>
                                         </Box>
@@ -385,14 +325,14 @@ const Register: NextPage = () => {
                                                         color: "gray.500"
                                                     }}
                                                     type="text"
-                                                    name="usa_district"
-                                                    value={values.usa_district}
+                                                    name="district"
+                                                    value={values.district}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                 />
 
                                                 <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.usa_district && touched.usa_district && errors.usa_district}
+                                                    {errors.district && touched.district && errors.district}
                                                 </Text>
                                             </FormControl>
 
@@ -405,14 +345,14 @@ const Register: NextPage = () => {
                                                         color: "gray.500"
                                                     }}
                                                     type="text"
-                                                    name="usa_city"
-                                                    value={values.usa_city}
+                                                    name="city"
+                                                    value={values.city}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                 />
 
                                                 <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.usa_city && touched.usa_city && errors.usa_city}
+                                                    {errors.city && touched.city && errors.city}
                                                 </Text>
                                             </FormControl>
                                         </Box>
@@ -427,14 +367,14 @@ const Register: NextPage = () => {
                                                         color: "gray.500"
                                                     }}
                                                     type="text"
-                                                    name="usa_state"
-                                                    value={values.usa_state}
+                                                    name="state"
+                                                    value={values.state}
                                                     onChange={handleChange}
                                                     onBlur={handleBlur}
                                                 />
 
                                                 <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.usa_state && touched.usa_state && errors.usa_state}
+                                                    {errors.state && touched.state && errors.state}
                                                 </Text>
                                             </FormControl>
                                         </Box>

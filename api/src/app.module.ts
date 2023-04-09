@@ -7,6 +7,7 @@ import { JwtAuthGuard } from "./auth/guards/jwt-auth.guard";
 import { PrismaModule } from "./prisma/prisma.module";
 import { UsersModule } from "./users/users.module";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
+import { AdminsModule } from './admins/admins.module';
 
 @Module({
     imports: [
@@ -17,7 +18,8 @@ import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
         PrismaModule,
         UsersModule,
         AuthModule,
-        UsersModule
+        UsersModule,
+        AdminsModule
     ],
     controllers: [AppController],
     providers: [

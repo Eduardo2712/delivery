@@ -38,7 +38,7 @@ export class UsersService {
             data: {
                 password: hash,
                 email: create_user_dto.email,
-                use_cpf: create_user_dto.use_cpf,
+                use_cpf: create_user_dto.cpf_cnpj,
                 use_date_birth: new Date(create_user_dto.use_date_birth),
                 use_name: create_user_dto.use_name,
                 use_phone: create_user_dto.use_phone,

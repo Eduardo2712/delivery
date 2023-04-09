@@ -1,3 +1,5 @@
+"use client";
+
 import { FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
 
 type Props = {
@@ -10,6 +12,7 @@ type Props = {
     touched: boolean | undefined;
     value: string | number | undefined;
     isRequired: boolean;
+    max_length?: number;
 };
 
 const StyleInput = (props: Props) => {
@@ -27,6 +30,7 @@ const StyleInput = (props: Props) => {
                 _placeholder={{
                     color: "gray.500"
                 }}
+                maxLength={props.max_length ?? undefined}
             />
 
             <Text fontSize="md" color={"red.500"} fontWeight={"semibold"} mt={2}>

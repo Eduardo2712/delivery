@@ -10,7 +10,7 @@ import { ReactNode } from "react";
 const SocialButton = ({ children, label, href }: { children: ReactNode; label: string; href: string }) => {
     return (
         <chakra.button
-            bg={"green.400"}
+            bg={"green.500"}
             rounded={"full"}
             w={8}
             h={8}
@@ -30,7 +30,7 @@ const SocialButton = ({ children, label, href }: { children: ReactNode; label: s
 
 const Footer = () => {
     return (
-        <Box bg={"blue.400"} color={"gray.50"}>
+        <Box bg={"gray.900"} color={"gray.50"} borderTopWidth={"0.1rem"} borderTopColor={"blue.100"}>
             <Container
                 as={Stack}
                 maxW={"6xl"}

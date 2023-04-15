@@ -12,33 +12,19 @@ const Page: NextPage = () => {
             <Header />
 
             <Container maxW="container.xl" padding={"1.2rem"} display={"flex"} justifyContent={"center"}>
-                <Flex justifyContent={"center"} gap={"1rem"} width={"container.md"} minHeight={"calc(100vh - 291px)"}>
+                <Flex justifyContent={"center"} gap={"1rem"} width={"container.md"} minHeight={"calc(100vh - 172px)"}>
                     <Link href={"/"}>
                         <Flex
-                            w={"64"}
-                            borderRadius={"0.3rem"}
+                            w={"52"}
+                            rounded={"xl"}
                             flexDirection={"column"}
                             justifyContent={"space-between"}
-                            backgroundColor={"gray.50"}
-                            height={"12rem"}
+                            h={"56"}
                             cursor={"pointer"}
-                        >
-                            <Text
-                                bg={"blue.400"}
-                                color={"gray.50"}
-                                borderRadius={"0.3rem 0.3rem 0 0"}
-                                padding={"0.5rem"}
-                                fontSize={"1.1rem"}
-                                fontWeight={"bold"}
-                                fontStyle={"oblique"}
-                            >
-                                Restaurant
-                            </Text>
-
-                            <Text color={"green.400"} padding={"0.5rem"} fontSize={"1.1rem"} fontWeight={"extrabold"} textAlign={"end"}>
-                                Restaurant
-                            </Text>
-                        </Flex>
+                            bg={"black"}
+                            borderWidth={"0.1rem"}
+                            borderColor={"blue.100"}
+                        ></Flex>
                     </Link>
                 </Flex>
             </Container>

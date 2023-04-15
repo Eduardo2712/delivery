@@ -1,10 +1,10 @@
 "use client";
 
-import { faBell, faGear, faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faGear, faRightFromBracket, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useAuth } from "../../context/auth";
-import { Box, Button, Container, Flex, Hide, Input, Text } from "@chakra-ui/react";
+import { Box, Container, Flex, Hide, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 const Header = () => {
@@ -12,32 +12,40 @@ const Header = () => {
     const [search, setSearch] = useState("");
 
     return (
-        <Flex bg={"blue.400"} color={"gray.50"} alignItems={"center"}>
-            <Container maxW={"6xl"} backgroundColor={"blue.400"} color={"gray.50"} padding={"2rem"}>
-                <Text textAlign={"center"} color={"gray.50"} fontSize={"2.2rem"} fontWeight={"extrabold"} fontStyle={"oblique"} marginBottom={"2rem"}>
-                    All for your hunger
-                </Text>
-
+        <Flex bg={"gray.900"} color={"gray.50"} alignItems={"center"} borderBottomWidth={"0.1rem"} borderBottomColor={"blue.100"}>
+            <Container maxW={"6xl"} color={"gray.50"} padding={"1rem"}>
                 <Flex justifyContent={"space-between"} alignItems={"center"}>
                     <Hide below="md">
-                        <Box flex={"1"}></Box>
+                        <Box flex={"1"}>
+                            <Text textAlign={"center"} color={"gray.50"} fontSize={"1.3rem"} fontWeight={"extrabold"} fontStyle={"oblique"}>
+                                All for your hunger
+                            </Text>
+                        </Box>
                     </Hide>
 
                     <Box flex={"2"}>
                         <Flex gap={"0.5rem"} justifyContent={"center"}>
-                            <Input
-                                type={"text"}
-                                value={search}
-                                onChange={(e) => setSearch(e.target.value)}
-                                placeholder="Search..."
-                                variant="solid"
-                                color={"gray.600"}
-                                maxW={{ base: "30rem", md: "25rem" }}
-                            ></Input>
+                            <InputGroup maxW={{ base: "30rem", md: "25rem" }}>
+                                <Input
+                                    type={"text"}
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    placeholder="Search..."
+                                    variant="solid"
+                                    color={"gray.100"}
+                                    fontWeight={"bold"}
+                                    _placeholder={{
+                                        color: "gray.100"
+                                    }}
+                                    bg={"black"}
+                                    borderRadius={"0.7rem"}
+                                    h={"9"}
+                                    borderWidth={"0.1rem"}
+                                    borderColor={"blue.100"}
+                                ></Input>
 
-                            <Button type="button" variant="solid" backgroundColor={"green.400"} _hover={{ backgroundColor: "green.500" }}>
-                                Search
-                            </Button>
+                                <InputRightElement children={<FontAwesomeIcon icon={faSearch} />} />
+                            </InputGroup>
                         </Flex>
                     </Box>
 
@@ -62,7 +70,7 @@ const Header = () => {
                                     </Flex>
                                 </Flex>
                             ) : (
-                                <Flex justifyContent={"flex-end"} gap={"0.3rem"} fontSize={"1.2rem"}>
+                                <Flex justifyContent={"flex-end"} gap={"0.3rem"} fontSize={"1rem"}>
                                     <Link href={"/auth/register"}>
                                         <Text color={"gray.50"} fontWeight={"bold"}>
                                             Register

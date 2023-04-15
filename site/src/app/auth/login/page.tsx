@@ -2,7 +2,6 @@
 
 import { Formik, Form } from "formik";
 import { NextPage } from "next";
-import { auth } from "../../../requests/auth.request";
 import { User } from "../../../types";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -54,9 +53,11 @@ const Login: NextPage = () => {
                     <Flex minH={"calc(100vh - 168px)"} align={"center"} justify={"center"}>
                         <Stack spacing={8} mx={"auto"} w={"lg"} py={12} px={6}>
                             <Stack align={"center"}>
-                                <Heading fontSize={"4xl"}>Login</Heading>
+                                <Heading fontSize={"4xl"} color={"gray.50"}>
+                                    Login
+                                </Heading>
                             </Stack>
-                            <Box rounded={"xl"} boxShadow={"xl"} p={12}>
+                            <Box rounded={"xl"} p={12} bg={"black"}>
                                 <Stack spacing={4}>
                                     <StyleInput
                                         errors={errors.email}
@@ -92,7 +93,7 @@ const Login: NextPage = () => {
                                             justify={"space-between"}
                                         >
                                             <Link href="/auth/register">
-                                                <Text color={"blue.400"}>{"I don't have an account"}</Text>
+                                                <Text color={"gray.50"}>{"I don't have an account"}</Text>
                                             </Link>
                                         </Stack>
 
@@ -115,10 +116,10 @@ const Login: NextPage = () => {
                                             <Button
                                                 flex={"1"}
                                                 type="submit"
-                                                bg={"blue.400"}
+                                                bg={"green.500"}
                                                 color={"white"}
                                                 _hover={{
-                                                    bg: "blue.500"
+                                                    bg: "green.600"
                                                 }}
                                                 isLoading={loading}
                                             >

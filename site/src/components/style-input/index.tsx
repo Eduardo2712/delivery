@@ -18,7 +18,7 @@ type Props = {
 const StyleInput = (props: Props) => {
     return (
         <FormControl id={props.name} isRequired={props.isRequired}>
-            <FormLabel>{props.title}</FormLabel>
+            <FormLabel color={"gray.50"}>{props.title}</FormLabel>
 
             <Input
                 type={props.type}
@@ -27,13 +27,14 @@ const StyleInput = (props: Props) => {
                 onBlur={props.handleBlur}
                 value={props.value}
                 placeholder={props.title}
+                color={"gray.50"}
                 _placeholder={{
-                    color: "gray.500"
+                    color: "gray.400"
                 }}
                 maxLength={props.max_length ?? undefined}
             />
 
-            <Text fontSize="md" color={"red.500"} fontWeight={"semibold"} mt={2}>
+            <Text fontSize="md" color={"red.500"} fontWeight={"normal"} mt={2}>
                 {props.errors && props.touched && props.errors}
             </Text>
         </FormControl>

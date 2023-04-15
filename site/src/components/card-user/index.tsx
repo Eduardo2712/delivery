@@ -13,22 +13,22 @@ const CardUser = (props: Props) => {
         <Flex gap={"1rem"} flexWrap={"wrap"}>
             {typeUser.map((type) => {
                 return (
-                    <Card key={type.id} flex={"1"} minWidth={"18rem"}>
+                    <Card key={type.id} flex={"1"} minWidth={"18rem"} bg={"black"} borderRadius={"1.5rem"}>
                         <CardHeader>
-                            <Heading size="md" color={"gray.700"}>
+                            <Heading size="md" color={"gray.50"}>
                                 {firstCapital(type.type)}
                             </Heading>
                         </CardHeader>
 
                         <CardBody>
-                            <Text color={"gray.700"}>{type.text}</Text>
+                            <Text color={"gray.50"}>{type.text}</Text>
                         </CardBody>
 
                         <CardFooter display={"flex"} justifyContent={"flex-end"}>
                             <Button
                                 color={"gray.50"}
-                                backgroundColor={"green.400"}
-                                _hover={{ backgroundColor: "green.500" }}
+                                backgroundColor={"green.500"}
+                                _hover={{ backgroundColor: "green.600" }}
                                 display={"flex"}
                                 justifyContent={"center"}
                                 alignItems={"center"}

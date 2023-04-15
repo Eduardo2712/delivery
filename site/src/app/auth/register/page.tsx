@@ -143,8 +143,8 @@ const Register: NextPage = () => {
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
                     <Form method="post" onSubmit={handleSubmit} noValidate>
                         <Flex align={"center"} justify={"center"} minHeight={"calc(100vh - 64px)"}>
-                            <Stack spacing={4} w={"full"} maxW={"container.md"} rounded={"xl"} boxShadow={"lg"} p={6} my={12}>
-                                <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }} color={"gray.700"}>
+                            <Stack spacing={4} w={"full"} maxW={"container.md"} rounded={"xl"} p={6} my={12} bg={"black"}>
+                                <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }} color={"gray.50"}>
                                     {titleText[step]}
                                 </Heading>
 
@@ -253,7 +253,7 @@ const Register: NextPage = () => {
                                     <>
                                         <Box gap={3} display={{ sm: "flex" }}>
                                             <FormControl isRequired>
-                                                <FormLabel color={"gray.700"}>CEP</FormLabel>
+                                                <FormLabel color={"blackAlpha.800"}>CEP</FormLabel>
 
                                                 <Input
                                                     placeholder="CEP"
@@ -273,7 +273,7 @@ const Register: NextPage = () => {
                                             </FormControl>
 
                                             <FormControl isRequired>
-                                                <FormLabel color={"gray.700"}>Street</FormLabel>
+                                                <FormLabel color={"blackAlpha.800"}>Street</FormLabel>
 
                                                 <Input
                                                     placeholder="Street"
@@ -295,7 +295,7 @@ const Register: NextPage = () => {
 
                                         <Box gap={3} display={{ sm: "flex" }}>
                                             <FormControl isRequired>
-                                                <FormLabel color={"gray.700"}>Number</FormLabel>
+                                                <FormLabel color={"blackAlpha.800"}>Number</FormLabel>
 
                                                 <Input
                                                     placeholder="Number"
@@ -315,7 +315,7 @@ const Register: NextPage = () => {
                                             </FormControl>
 
                                             <FormControl>
-                                                <FormLabel color={"gray.700"}>Complement</FormLabel>
+                                                <FormLabel color={"blackAlpha.800"}>Complement</FormLabel>
 
                                                 <Input
                                                     placeholder="Complement"
@@ -337,7 +337,7 @@ const Register: NextPage = () => {
 
                                         <Box gap={3} display={{ sm: "flex" }}>
                                             <FormControl isRequired>
-                                                <FormLabel color={"gray.700"}>District</FormLabel>
+                                                <FormLabel color={"blackAlpha.800"}>District</FormLabel>
 
                                                 <Input
                                                     placeholder="District"
@@ -357,7 +357,7 @@ const Register: NextPage = () => {
                                             </FormControl>
 
                                             <FormControl isRequired>
-                                                <FormLabel color={"gray.700"}>City</FormLabel>
+                                                <FormLabel color={"blackAlpha.800"}>City</FormLabel>
 
                                                 <Input
                                                     placeholder="City"
@@ -379,7 +379,7 @@ const Register: NextPage = () => {
 
                                         <Box gap={3} display={{ sm: "flex" }}>
                                             <FormControl isRequired>
-                                                <FormLabel color={"gray.700"}>State</FormLabel>
+                                                <FormLabel color={"blackAlpha.800"}>State</FormLabel>
 
                                                 <Input
                                                     placeholder="State"
@@ -418,7 +418,7 @@ const Register: NextPage = () => {
 
                                         <Button
                                             type="submit"
-                                            bg={"blue.400"}
+                                            bg={"black"}
                                             color={"white"}
                                             w="full"
                                             isLoading={loading}

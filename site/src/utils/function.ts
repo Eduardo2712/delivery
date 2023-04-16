@@ -17,13 +17,19 @@ export const firstCapital = (word: string) => {
     return `${word[0].toUpperCase()}${word.substring(1)}`;
 };
 
-export const alert = (props: { title: string; error: string }) => {
+type ToastType = {
+    title: string;
+    description: string;
+    status: "info" | "warning" | "loading" | "success" | "error";
+};
+
+export const toastAlert = (props: ToastType) => {
     const toast = useToast();
 
     return toast({
         title: props.title,
-        description: props.error,
-        status: "error",
+        description: props.description,
+        status: props.status,
         duration: 5000,
         isClosable: true,
         position: "top-right"

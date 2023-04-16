@@ -1,6 +1,6 @@
 "use client";
 
-import { faBell, faGear, faRightFromBracket, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faBurger, faGear, faRightFromBracket, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useAuth } from "../../context/auth";
@@ -12,14 +12,12 @@ const Header = () => {
     const [search, setSearch] = useState("");
 
     return (
-        <Flex bg={"gray.900"} color={"gray.50"} alignItems={"center"} borderBottomWidth={"0.1rem"} borderBottomColor={"blue.100"}>
+        <Flex bg={"gray.800"} color={"gray.50"} alignItems={"center"} borderBottomWidth={"0.1rem"} borderBottomColor={"blue.100"}>
             <Container maxW={"6xl"} color={"gray.50"} padding={"1rem"}>
                 <Flex justifyContent={"space-between"} alignItems={"center"}>
                     <Hide below="md">
                         <Box flex={"1"}>
-                            <Text textAlign={"center"} color={"gray.50"} fontSize={"1.3rem"} fontWeight={"extrabold"} fontStyle={"oblique"}>
-                                All for your hunger
-                            </Text>
+                            <FontAwesomeIcon icon={faBurger} size={"2x"} />
                         </Box>
                     </Hide>
 
@@ -37,11 +35,9 @@ const Header = () => {
                                     _placeholder={{
                                         color: "gray.100"
                                     }}
-                                    bg={"black"}
+                                    bg={"gray.900"}
                                     borderRadius={"0.7rem"}
                                     h={"9"}
-                                    borderWidth={"0.1rem"}
-                                    borderColor={"blue.100"}
                                 ></Input>
 
                                 <InputRightElement children={<FontAwesomeIcon icon={faSearch} />} />

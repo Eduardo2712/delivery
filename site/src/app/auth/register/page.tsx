@@ -4,7 +4,7 @@ import { Form, Formik } from "formik";
 import { maskCEP, maskCNPJ, maskCPF, maskPhone } from "../../../utils/mask";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Flex, FormControl, FormLabel, Heading, Input, Stack, Text, Box, useToast } from "@chakra-ui/react";
+import { Button, Flex, FormControl, FormLabel, Heading, Input, Stack, Text, Box } from "@chakra-ui/react";
 import { createUser } from "../../../requests/user.request";
 import { getCEP } from "../../../requests/cep.request";
 import StyleInput from "../../../components/style-input";
@@ -12,6 +12,7 @@ import { NextPage } from "next";
 import { TypeFormRegister, schema } from "./util";
 import CardUser from "@/components/card-user";
 import { createAdmin } from "@/requests/admin.request";
+import { toastAlert } from "@/utils/function";
 
 const Register: NextPage = () => {
     const [step, setStep] = useState<number>(0);
@@ -21,7 +22,6 @@ const Register: NextPage = () => {
     const titleText = ["Select user type", `${type === 1 ? "Store" : "Personal"} information`, "Address information"];
 
     const router = useRouter();
-    const toast = useToast();
 
     const initialValues: TypeFormRegister = {
         email: "",
@@ -59,35 +59,14 @@ const Register: NextPage = () => {
             const response_json = await response.json();
 
             if (response.status !== 200) {
-                return toast({
-                    title: "Error",
-                    description: response_json.message.join(", ") ?? "An error has occurred",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top-right"
-                });
+                return toastAlert({ title: "Error", description: response_json.message.join(", "), status: "error" });
             }
 
-            toast({
-                title: "Success.",
-                description: "Successfully registered user",
-                status: "success",
-                duration: 5000,
-                isClosable: true,
-                position: "top-right"
-            });
+            toastAlert({ title: "Success", description: "Successfully registered user", status: "success" });
 
             router.push("/");
         } catch (error: any) {
-            toast({
-                title: "Error",
-                description: error ?? "An error has occurred",
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-                position: "top-right"
-            });
+            toastAlert({ title: "Error", description: error ?? "An error has occurred", status: "error" });
         } finally {
             setLoading(false);
         }
@@ -97,28 +76,14 @@ const Register: NextPage = () => {
         const format_cep = cep.replaceAll("-", "");
 
         if (format_cep.length !== 8) {
-            return toast({
-                title: "Warning.",
-                description: "CEP must be 8 characters long",
-                status: "warning",
-                duration: 5000,
-                isClosable: true,
-                position: "top-right"
-            });
+            return toastAlert({ title: "Warning", description: "CEP must be 8 characters long", status: "warning" });
         }
 
         try {
             const response = await (await getCEP(format_cep)).json();
 
             if (response.erro) {
-                return toast({
-                    title: "Error",
-                    description: "CEP not found",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top-right"
-                });
+                return toastAlert({ title: "Error", description: "CEP not found", status: "error" });
             }
 
             setFieldValue("street", response.logradouro ?? "");
@@ -126,14 +91,7 @@ const Register: NextPage = () => {
             setFieldValue("city", response.localidade ?? "");
             setFieldValue("state", response.uf ?? "");
         } catch (error: any) {
-            toast({
-                title: "Error",
-                description: error ?? "An error has occurred",
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-                position: "top-right"
-            });
+            toastAlert({ title: "Error", description: error ?? "An error has occurred", status: "error" });
         }
     };
 
@@ -143,7 +101,7 @@ const Register: NextPage = () => {
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
                     <Form method="post" onSubmit={handleSubmit} noValidate>
                         <Flex align={"center"} justify={"center"} minHeight={"calc(100vh - 64px)"}>
-                            <Stack spacing={4} w={"full"} maxW={"container.md"} rounded={"xl"} p={6} my={12} bg={"black"}>
+                            <Stack spacing={4} w={"full"} maxW={"container.md"} rounded={"xl"} boxShadow={"xl"} p={6} my={12} bg={"gray.800"}>
                                 <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }} color={"gray.50"}>
                                     {titleText[step]}
                                 </Heading>
@@ -253,7 +211,7 @@ const Register: NextPage = () => {
                                     <>
                                         <Box gap={3} display={{ sm: "flex" }}>
                                             <FormControl isRequired>
-                                                <FormLabel color={"blackAlpha.800"}>CEP</FormLabel>
+                                                <FormLabel color={"blackAlpha.900"}>CEP</FormLabel>
 
                                                 <Input
                                                     placeholder="CEP"
@@ -273,7 +231,7 @@ const Register: NextPage = () => {
                                             </FormControl>
 
                                             <FormControl isRequired>
-                                                <FormLabel color={"blackAlpha.800"}>Street</FormLabel>
+                                                <FormLabel color={"blackAlpha.900"}>Street</FormLabel>
 
                                                 <Input
                                                     placeholder="Street"
@@ -295,7 +253,7 @@ const Register: NextPage = () => {
 
                                         <Box gap={3} display={{ sm: "flex" }}>
                                             <FormControl isRequired>
-                                                <FormLabel color={"blackAlpha.800"}>Number</FormLabel>
+                                                <FormLabel color={"blackAlpha.900"}>Number</FormLabel>
 
                                                 <Input
                                                     placeholder="Number"
@@ -315,7 +273,7 @@ const Register: NextPage = () => {
                                             </FormControl>
 
                                             <FormControl>
-                                                <FormLabel color={"blackAlpha.800"}>Complement</FormLabel>
+                                                <FormLabel color={"blackAlpha.900"}>Complement</FormLabel>
 
                                                 <Input
                                                     placeholder="Complement"
@@ -337,7 +295,7 @@ const Register: NextPage = () => {
 
                                         <Box gap={3} display={{ sm: "flex" }}>
                                             <FormControl isRequired>
-                                                <FormLabel color={"blackAlpha.800"}>District</FormLabel>
+                                                <FormLabel color={"blackAlpha.900"}>District</FormLabel>
 
                                                 <Input
                                                     placeholder="District"
@@ -357,7 +315,7 @@ const Register: NextPage = () => {
                                             </FormControl>
 
                                             <FormControl isRequired>
-                                                <FormLabel color={"blackAlpha.800"}>City</FormLabel>
+                                                <FormLabel color={"blackAlpha.900"}>City</FormLabel>
 
                                                 <Input
                                                     placeholder="City"
@@ -379,7 +337,7 @@ const Register: NextPage = () => {
 
                                         <Box gap={3} display={{ sm: "flex" }}>
                                             <FormControl isRequired>
-                                                <FormLabel color={"blackAlpha.800"}>State</FormLabel>
+                                                <FormLabel color={"blackAlpha.900"}>State</FormLabel>
 
                                                 <Input
                                                     placeholder="State"
@@ -404,12 +362,12 @@ const Register: NextPage = () => {
                                 {step > 0 && (
                                     <Stack spacing={6} direction={["column", "row"]}>
                                         <Button
-                                            bg={"red.400"}
+                                            bg={"red.500"}
                                             color={"white"}
                                             w="full"
                                             isLoading={loading}
                                             _hover={{
-                                                bg: "red.500"
+                                                bg: "red.600"
                                             }}
                                             onClick={() => setStep((bef) => bef - 1)}
                                         >
@@ -418,12 +376,12 @@ const Register: NextPage = () => {
 
                                         <Button
                                             type="submit"
-                                            bg={"black"}
+                                            bg={"green.500"}
                                             color={"white"}
                                             w="full"
                                             isLoading={loading}
                                             _hover={{
-                                                bg: "blue.500"
+                                                bg: "green.600"
                                             }}
                                         >
                                             {step === 1 ? "Next" : "Submit"}

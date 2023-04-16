@@ -43,13 +43,13 @@ export class AdminsService {
                 adm_phone: create_admin_dto.adm_phone,
                 addresses: {
                     create: {
-                        usa_cep: create_admin_dto.usa_cep,
-                        usa_city: create_admin_dto.usa_city,
-                        usa_district: create_admin_dto.usa_district,
-                        usa_number: create_admin_dto.usa_number,
-                        usa_state: create_admin_dto.usa_state,
-                        usa_street: create_admin_dto.usa_street,
-                        usa_complement: create_admin_dto.usa_complement
+                        ada_cep: create_admin_dto.ada_cep,
+                        ada_city: create_admin_dto.ada_city,
+                        ada_district: create_admin_dto.ada_district,
+                        ada_number: create_admin_dto.ada_number,
+                        ada_state: create_admin_dto.ada_state,
+                        ada_street: create_admin_dto.ada_street,
+                        ada_complement: create_admin_dto.ada_complement
                     }
                 }
             }
@@ -61,19 +61,7 @@ export class AdminsService {
         };
     }
 
-    async findAll() {
-        return `This action returns all admins`;
-    }
-
-    async findOne(id: number) {
-        return `This action returns a #${id} admin`;
-    }
-
     async update(id: number, updateAdminDto: UpdateAdminDto) {
         return `This action updates a #${id} admin`;
-    }
-
-    async remove(id: number) {
-        return `This action removes a #${id} admin`;
     }
 }

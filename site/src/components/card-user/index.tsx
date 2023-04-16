@@ -13,7 +13,16 @@ const CardUser = (props: Props) => {
         <Flex gap={"1rem"} flexWrap={"wrap"}>
             {typeUser.map((type) => {
                 return (
-                    <Card key={type.id} flex={"1"} minWidth={"18rem"} bg={"black"} borderRadius={"1.5rem"}>
+                    <Card
+                        key={type.id}
+                        flex={"1"}
+                        minWidth={"18rem"}
+                        boxShadow={"xl"}
+                        bg={"gray.800"}
+                        borderRadius={"xl"}
+                        borderWidth={"0.1rem"}
+                        borderColor={"gray.50"}
+                    >
                         <CardHeader>
                             <Heading size="md" color={"gray.50"}>
                                 {firstCapital(type.type)}

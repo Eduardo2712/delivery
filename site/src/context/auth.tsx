@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { ContextLogin, User } from "../types";
 import { auth } from "../requests/auth.request";
-import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
+import { toastAlert } from "@/utils/function";
 
 const AuthContext = createContext<ContextLogin>({} as ContextLogin);
 
@@ -10,7 +10,6 @@ export const AuthProvider = ({ children }: any) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
 
-    const toast = useToast();
     const router = useRouter();
 
     useEffect(() => {
@@ -32,14 +31,7 @@ export const AuthProvider = ({ children }: any) => {
             const response_json = await response.json();
 
             if (response.status !== 200) {
-                return toast({
-                    title: "Error",
-                    description: response_json.message.join(", ") ?? "An error has occurred",
-                    status: "error",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top-right"
-                });
+                return toastAlert({ title: "Error", description: response_json.message.join(", ") ?? "An error has occurred", status: "error" });
             }
 
             if (response_json.user && response_json.access_token) {
@@ -52,26 +44,12 @@ export const AuthProvider = ({ children }: any) => {
                 );
                 setUser({ ...response_json.user, token: response_json.access_token });
 
-                toast({
-                    title: "Success",
-                    description: "Login success",
-                    status: "success",
-                    duration: 5000,
-                    isClosable: true,
-                    position: "top-right"
-                });
+                toastAlert({ title: "Success", description: "Login success", status: "success" });
 
                 router.push("/");
             }
         } catch (error) {
-            toast({
-                title: "Error",
-                description: "An error has occurred",
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-                position: "top-right"
-            });
+            toastAlert({ title: "Error", description: "An error has occurred", status: "error" });
         }
     };
 

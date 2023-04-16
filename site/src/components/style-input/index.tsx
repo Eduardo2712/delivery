@@ -34,7 +34,7 @@ const StyleInput = (props: Props) => {
                 maxLength={props.max_length ?? undefined}
             />
 
-            <Text fontSize="md" color={"red.500"} fontWeight={"normal"} mt={2}>
+            <Text fontSize={"0.9rem"} color={"red.500"} fontWeight={"normal"} mt={2}>
                 {props.errors && props.touched && props.errors}
             </Text>
         </FormControl>

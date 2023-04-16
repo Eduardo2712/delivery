@@ -30,7 +30,7 @@ const SocialButton = ({ children, label, href }: { children: ReactNode; label: s
 
 const Footer = () => {
     return (
-        <Box bg={"gray.900"} color={"gray.50"} borderTopWidth={"0.1rem"} borderTopColor={"blue.100"}>
+        <Box bg={"gray.800"} color={"gray.50"} borderTopWidth={"0.1rem"} borderTopColor={"blue.100"}>
             <Container
                 as={Stack}
                 maxW={"6xl"}

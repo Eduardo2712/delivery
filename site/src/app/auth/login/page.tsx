@@ -6,10 +6,11 @@ import { User } from "../../../types";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-import { Flex, Box, Stack, Button, Heading, useToast, Text } from "@chakra-ui/react";
+import { Flex, Box, Stack, Button, Heading, Text } from "@chakra-ui/react";
 import StyleInput from "../../../components/style-input";
 import { schema } from "./util";
 import { useAuth } from "@/context/auth";
+import { toastAlert } from "@/utils/function";
 
 const Login: NextPage = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -17,7 +18,6 @@ const Login: NextPage = () => {
     const { login } = useAuth();
 
     const router = useRouter();
-    const toast = useToast();
 
     const onSubmit = async (values: Pick<User, "email" | "password">) => {
         setLoading(true);
@@ -25,14 +25,7 @@ const Login: NextPage = () => {
         try {
             await login(values.email, values.password);
         } catch (error: any) {
-            toast({
-                title: "Error",
-                description: error ?? "An error has occurred",
-                status: "error",
-                duration: 5000,
-                isClosable: true,
-                position: "top-right"
-            });
+            toastAlert({ title: "Error", description: error ?? "An error has occurred", status: "error" });
         } finally {
             setLoading(false);
         }
@@ -57,7 +50,7 @@ const Login: NextPage = () => {
                                     Login
                                 </Heading>
                             </Stack>
-                            <Box rounded={"xl"} p={12} bg={"black"}>
+                            <Box rounded={"xl"} p={12} boxShadow={"xl"} bg={"gray.800"}>
                                 <Stack spacing={4}>
                                     <StyleInput
                                         errors={errors.email}
@@ -100,11 +93,11 @@ const Login: NextPage = () => {
                                         <Flex gap={"0.5rem"}>
                                             <Button
                                                 flex={"1"}
-                                                bg={"red.400"}
+                                                bg={"red.500"}
                                                 color={"white"}
                                                 isLoading={loading}
                                                 _hover={{
-                                                    bg: "red.500"
+                                                    bg: "red.600"
                                                 }}
                                                 onClick={() => {
                                                     router.push("/");

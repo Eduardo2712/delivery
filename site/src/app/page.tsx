@@ -7,6 +7,8 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
+import { categories } from "./util";
 
 const Card = () => {
     return (
@@ -36,6 +38,8 @@ const Category = (props: { name: string; icon: IconDefinition }) => {
 };
 
 const Page: NextPage = () => {
+    const [selected, setSelected] = useState<number>(1);
+
     return (
         <>
             <Header />
@@ -54,6 +58,36 @@ const Page: NextPage = () => {
                     <Text fontSize={"lg"} color={"gray.500"}>
                         Category
                     </Text>
+
+                    <Flex justifyContent={"space-between"} alignItems={"center"}>
+                        {categories.map((category) => {
+                            return (
+                                <Flex
+                                    key={category.id}
+                                    backgroundColor={selected === category.id ? "blue.300" : "gray.50"}
+                                    padding={"1rem 2rem"}
+                                    borderRadius={"2.3rem"}
+                                    boxShadow={"lg"}
+                                    flexDirection={"column"}
+                                    gap={"0.4rem"}
+                                    cursor={"pointer"}
+                                    onClick={() => setSelected(category.id)}
+                                >
+                                    <Box backgroundColor={"gray.50"} padding={"1rem"} rounded={"xl"} boxShadow={"lg"}>
+                                        <FontAwesomeIcon
+                                            icon={category.icon}
+                                            fontSize={"2rem"}
+                                            color={selected === category.id ? "#63b3ed" : "#2d3748"}
+                                        />
+                                    </Box>
+
+                                    <Text textAlign={"center"} color={selected === category.id ? "gray.50" : "gray.700"} fontWeight={"medium"}>
+                                        {category.title}
+                                    </Text>
+                                </Flex>
+                            );
+                        })}
+                    </Flex>
 
                     <Card />
                 </Flex>

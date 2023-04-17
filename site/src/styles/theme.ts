@@ -11,7 +11,7 @@ const customTheme: Partial<ChakraTheme> = {
     styles: {
         global: (props: StyleFunctionProps) => ({
             body: {
-                backgroundColor: mode("gray.900", "gray.900")(props)
+                backgroundColor: mode("gray.50", "gray.900")(props)
             }
         })
     }

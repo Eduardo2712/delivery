@@ -18,7 +18,7 @@ type Props = {
 const StyleInput = (props: Props) => {
     return (
         <FormControl id={props.name} isRequired={props.isRequired}>
-            <FormLabel color={"gray.50"}>{props.title}</FormLabel>
+            <FormLabel color={"gray.500"}>{props.title}</FormLabel>
 
             <Input
                 type={props.type}
@@ -27,7 +27,7 @@ const StyleInput = (props: Props) => {
                 onBlur={props.handleBlur}
                 value={props.value}
                 placeholder={props.title}
-                color={"gray.50"}
+                color={"gray.500"}
                 _placeholder={{
                     color: "gray.400"
                 }}

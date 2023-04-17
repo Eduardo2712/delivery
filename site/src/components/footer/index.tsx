@@ -10,7 +10,7 @@ import { ReactNode } from "react";
 const SocialButton = ({ children, label, href }: { children: ReactNode; label: string; href: string }) => {
     return (
         <chakra.button
-            bg={"green.500"}
+            bg={"blue.300"}
             rounded={"full"}
             w={8}
             h={8}
@@ -30,7 +30,7 @@ const SocialButton = ({ children, label, href }: { children: ReactNode; label: s
 
 const Footer = () => {
     return (
-        <Box bg={"gray.800"} color={"gray.50"} borderTopWidth={"0.1rem"} borderTopColor={"blue.100"}>
+        <Box bg={"gray.50"} borderTopWidth={"0.1rem"} borderTopColor={"gray.200"} margin={"0 2rem 0 2rem"}>
             <Container
                 as={Stack}
                 maxW={"6xl"}
@@ -41,20 +41,20 @@ const Footer = () => {
                 align={{ base: "center", md: "center" }}
             >
                 <Link href={"/"}>
-                    <Text color={"gray.50"} fontWeight={"bold"}>{`© ${format(new Date(), "yyyy")} Delivery. All rights reserved`}</Text>
+                    <Text color={"gray.400"} fontWeight={"bold"}>{`© ${format(new Date(), "yyyy")} Delivery. All rights reserved`}</Text>
                 </Link>
 
                 <Stack direction={"row"} spacing={6}>
                     <SocialButton label={"Twitter"} href={"#"}>
-                        <FontAwesomeIcon icon={faTwitter} />
+                        <FontAwesomeIcon icon={faTwitter} color={"white"} />
                     </SocialButton>
 
                     <SocialButton label={"YouTube"} href={"#"}>
-                        <FontAwesomeIcon icon={faYoutube} />
+                        <FontAwesomeIcon icon={faYoutube} color={"white"} />
                     </SocialButton>
 
                     <SocialButton label={"Instagram"} href={"#"}>
-                        <FontAwesomeIcon icon={faInstagram} />
+                        <FontAwesomeIcon icon={faInstagram} color={"white"} />
                     </SocialButton>
                 </Stack>
             </Container>

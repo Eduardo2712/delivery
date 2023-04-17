@@ -1,10 +1,10 @@
 "use client";
 
-import { faBell, faBurger, faGear, faRightFromBracket, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faGear, faRightFromBracket, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useAuth } from "../../context/auth";
-import { Box, Container, Flex, Hide, Input, InputGroup, InputRightElement, Text } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Hide, Input, InputGroup, InputLeftElement, InputRightElement, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
 const Header = () => {
@@ -12,35 +12,56 @@ const Header = () => {
     const [search, setSearch] = useState("");
 
     return (
-        <Flex bg={"gray.800"} color={"gray.50"} alignItems={"center"} borderBottomWidth={"0.1rem"} borderBottomColor={"blue.100"}>
-            <Container maxW={"6xl"} color={"gray.50"} padding={"1rem"}>
+        <Flex bg={"gray.50"} alignItems={"center"} borderBottomWidth={"0.1rem"} borderBottomColor={"gray.200"} margin={"0 2rem 0 2rem"}>
+            <Container maxW={"6xl"} padding={"2.5rem"}>
                 <Flex justifyContent={"space-between"} alignItems={"center"}>
                     <Hide below="md">
-                        <Box flex={"1"}>
-                            <FontAwesomeIcon icon={faBurger} size={"2x"} />
-                        </Box>
+                        <Flex flex={"1"} gap={"1"}>
+                            <Text textTransform={"uppercase"} color={"gray.900"} fontWeight={"bold"} fontSize={"1.5rem"} fontStyle={"oblique"}>
+                                My
+                            </Text>
+                            <Text color={"blue.300"} fontWeight={"bold"} fontSize={"1.5rem"} fontStyle={"oblique"}>
+                                Food
+                            </Text>
+                        </Flex>
                     </Hide>
 
                     <Box flex={"2"}>
-                        <Flex gap={"0.5rem"} justifyContent={"center"}>
+                        <Flex gap={"0.5rem"} justifyContent={"center"} alignItems={"center"}>
                             <InputGroup maxW={{ base: "30rem", md: "25rem" }}>
+                                <InputRightElement
+                                    marginRight={"0.4rem"}
+                                    width={"5rem"}
+                                    children={
+                                        <Button
+                                            backgroundColor={"blue.300"}
+                                            color={"gray.50"}
+                                            h={"8"}
+                                            rounded={"xl"}
+                                            _hover={{
+                                                backgroundColor: "blue.400"
+                                            }}
+                                        >
+                                            Search
+                                        </Button>
+                                    }
+                                />
+
                                 <Input
                                     type={"text"}
                                     value={search}
                                     onChange={(e) => setSearch(e.target.value)}
                                     placeholder="Search..."
                                     variant="solid"
-                                    color={"gray.100"}
-                                    fontWeight={"bold"}
+                                    color={"gray.400"}
                                     _placeholder={{
-                                        color: "gray.100"
+                                        color: "gray.400"
                                     }}
-                                    bg={"gray.900"}
+                                    bg={"gray.200"}
                                     borderRadius={"0.7rem"}
-                                    h={"9"}
                                 ></Input>
 
-                                <InputRightElement children={<FontAwesomeIcon icon={faSearch} />} />
+                                <InputLeftElement children={<FontAwesomeIcon icon={faSearch} style={{ color: "gray" }} />} />
                             </InputGroup>
                         </Flex>
                     </Box>
@@ -66,17 +87,13 @@ const Header = () => {
                                     </Flex>
                                 </Flex>
                             ) : (
-                                <Flex justifyContent={"flex-end"} gap={"0.3rem"} fontSize={"1rem"}>
+                                <Flex justifyContent={"flex-end"} gap={"0.3rem"} fontSize={"1rem"} color={"gray.400"}>
                                     <Link href={"/auth/register"}>
-                                        <Text color={"gray.50"} fontWeight={"bold"}>
-                                            Register
-                                        </Text>
+                                        <Text fontWeight={"bold"}>Register</Text>
                                     </Link>
                                     /
                                     <Link href={"/auth/login"}>
-                                        <Text color={"gray.50"} fontWeight={"bold"}>
-                                            Login
-                                        </Text>
+                                        <Text fontWeight={"bold"}>Login</Text>
                                     </Link>
                                 </Flex>
                             )}

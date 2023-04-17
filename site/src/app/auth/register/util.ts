@@ -17,32 +17,20 @@ export type TypeFormRegister = {
     state: string;
 };
 
-export const schema = (step: number, type: number | null) => {
+export const schema = (step: number) => {
     if (step === 1) {
-        return type === 2
-            ? Yup.object().shape({
-                  email: Yup.string().email("Fill in with a valid e-mail!").required("Fill in this field!"),
-                  password: Yup.string().min(8, "Password must be at least 8 characters long!").required("Fill in this field!"),
-                  password_confirmation: Yup.string()
-                      .min(8, "Password must be at least 8 characters long!")
-                      .oneOf([Yup.ref("password"), undefined], "Passwords must be the same!")
-                      .required("Fill in this field!"),
-                  name: Yup.string().required("Fill in this field!"),
-                  cpf_cnpj: Yup.string().length(14).required("Fill in this field!"),
-                  phone: Yup.string().required("Fill in this field!"),
-                  date_birth: Yup.date().required("Fill in this field!")
-              })
-            : Yup.object().shape({
-                  email: Yup.string().email("Fill in with a valid e-mail!").required("Fill in this field!"),
-                  password: Yup.string().min(8, "Password must be at least 8 characters long!").required("Fill in this field!"),
-                  password_confirmation: Yup.string()
-                      .min(8, "Password must be at least 8 characters long!")
-                      .oneOf([Yup.ref("password"), undefined], "Passwords must be the same!")
-                      .required("Fill in this field!"),
-                  name: Yup.string().required("Fill in this field!"),
-                  cpf_cnpj: Yup.string().length(18).required("Fill in this field!"),
-                  phone: Yup.string().required("Fill in this field!")
-              });
+        return Yup.object().shape({
+            email: Yup.string().email("Fill in with a valid e-mail!").required("Fill in this field!"),
+            password: Yup.string().min(8, "Password must be at least 8 characters long!").required("Fill in this field!"),
+            password_confirmation: Yup.string()
+                .min(8, "Password must be at least 8 characters long!")
+                .oneOf([Yup.ref("password"), undefined], "Passwords must be the same!")
+                .required("Fill in this field!"),
+            name: Yup.string().required("Fill in this field!"),
+            cpf_cnpj: Yup.string().length(14).required("Fill in this field!"),
+            phone: Yup.string().required("Fill in this field!"),
+            date_birth: Yup.date().required("Fill in this field!")
+        });
     } else if (step === 2) {
         return Yup.object().shape({
             cep: Yup.string().required("Fill in this field!"),

@@ -1,7 +1,7 @@
 "use client";
 
 import { Form, Formik } from "formik";
-import { maskCEP, maskCNPJ, maskCPF, maskPhone } from "../../../utils/mask";
+import { maskCEP, maskCPF, maskPhone } from "../../../utils/mask";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Flex, FormControl, FormLabel, Heading, Input, Stack, Text, Box } from "@chakra-ui/react";
@@ -10,16 +10,13 @@ import { getCEP } from "../../../requests/cep.request";
 import StyleInput from "../../../components/style-input";
 import { NextPage } from "next";
 import { TypeFormRegister, schema } from "./util";
-import CardUser from "@/components/card-user";
-import { createAdmin } from "@/requests/admin.request";
 import { toastAlert } from "@/utils/function";
 
 const Register: NextPage = () => {
     const [step, setStep] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
-    const [type, setType] = useState<number | null>(null);
 
-    const titleText = ["Select user type", `${type === 1 ? "Store" : "Personal"} information`, "Address information"];
+    const titleText = [`Personal information`, "Address information"];
 
     const router = useRouter();
 
@@ -41,20 +38,14 @@ const Register: NextPage = () => {
     };
 
     const onSubmit = async (values: TypeFormRegister) => {
-        if (step !== 2) {
+        if (step !== 1) {
             return setStep((bef) => bef + 1);
         }
 
         setLoading(true);
 
         try {
-            let response;
-
-            if (type === 1) {
-                response = await createAdmin({ ...values, type });
-            } else {
-                response = await createUser({ ...values, type });
-            }
+            const response = await createUser(values);
 
             const response_json = await response.json();
 
@@ -97,18 +88,16 @@ const Register: NextPage = () => {
 
     return (
         <>
-            <Formik initialValues={initialValues} validationSchema={schema(step, type)} validateOnMount onSubmit={onSubmit}>
+            <Formik initialValues={initialValues} validationSchema={schema(step)} validateOnMount onSubmit={onSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit, setFieldValue }) => (
                     <Form method="post" onSubmit={handleSubmit} noValidate>
                         <Flex align={"center"} justify={"center"} minHeight={"calc(100vh - 64px)"}>
-                            <Stack spacing={4} w={"full"} maxW={"container.md"} rounded={"xl"} boxShadow={"xl"} p={6} my={12} bg={"gray.800"}>
-                                <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }} color={"gray.50"}>
+                            <Stack spacing={4} w={"full"} maxW={"container.md"} rounded={"xl"} boxShadow={"xl"} p={6} my={12} bg={"gray.50"}>
+                                <Heading lineHeight={1.1} fontSize={{ base: "2xl", sm: "3xl" }} color={"gray.500"}>
                                     {titleText[step]}
                                 </Heading>
 
-                                {step === 0 && <CardUser setType={setType} setStep={setStep} />}
-
-                                {step === 1 && (
+                                {step === 0 && (
                                     <>
                                         <Box gap={3} display={{ sm: "flex" }}>
                                             <StyleInput
@@ -127,13 +116,13 @@ const Register: NextPage = () => {
                                                 errors={errors.cpf_cnpj}
                                                 touched={touched.cpf_cnpj}
                                                 handleBlur={handleBlur}
-                                                handleChange={(e) => handleChange(type === 1 ? maskCNPJ(e) : maskCPF(e))}
+                                                handleChange={(e) => handleChange(maskCPF(e))}
                                                 name={"cpf_cnpj"}
-                                                title={type === 1 ? "CNPJ" : "CPF"}
+                                                title={"CPF"}
                                                 type={"text"}
                                                 value={values.cpf_cnpj}
                                                 isRequired={true}
-                                                max_length={type === 1 ? 18 : 14}
+                                                max_length={14}
                                             />
                                         </Box>
 
@@ -189,25 +178,23 @@ const Register: NextPage = () => {
                                             />
                                         </Box>
 
-                                        {type === 2 && (
-                                            <Box gap={3} display={{ sm: "flex" }}>
-                                                <StyleInput
-                                                    errors={errors.date_birth}
-                                                    touched={touched.date_birth}
-                                                    handleBlur={handleBlur}
-                                                    handleChange={handleChange}
-                                                    name={"date_birth"}
-                                                    title={"Date of birth"}
-                                                    type={"date"}
-                                                    value={values.date_birth}
-                                                    isRequired={true}
-                                                />
-                                            </Box>
-                                        )}
+                                        <Box gap={3} display={{ sm: "flex" }}>
+                                            <StyleInput
+                                                errors={errors.date_birth}
+                                                touched={touched.date_birth}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                                name={"date_birth"}
+                                                title={"Date of birth"}
+                                                type={"date"}
+                                                value={values.date_birth}
+                                                isRequired={true}
+                                            />
+                                        </Box>
                                     </>
                                 )}
 
-                                {step === 2 && (
+                                {step === 1 && (
                                     <>
                                         <Box gap={3} display={{ sm: "flex" }}>
                                             <FormControl isRequired>
@@ -359,35 +346,33 @@ const Register: NextPage = () => {
                                     </>
                                 )}
 
-                                {step > 0 && (
-                                    <Stack spacing={6} direction={["column", "row"]}>
-                                        <Button
-                                            bg={"red.500"}
-                                            color={"white"}
-                                            w="full"
-                                            isLoading={loading}
-                                            _hover={{
-                                                bg: "red.600"
-                                            }}
-                                            onClick={() => setStep((bef) => bef - 1)}
-                                        >
-                                            Return
-                                        </Button>
+                                <Stack spacing={6} direction={["column", "row"]}>
+                                    <Button
+                                        bg={"red.500"}
+                                        color={"white"}
+                                        w="full"
+                                        isLoading={loading}
+                                        _hover={{
+                                            bg: "red.600"
+                                        }}
+                                        onClick={() => setStep((bef) => bef - 1)}
+                                    >
+                                        Return
+                                    </Button>
 
-                                        <Button
-                                            type="submit"
-                                            bg={"green.500"}
-                                            color={"white"}
-                                            w="full"
-                                            isLoading={loading}
-                                            _hover={{
-                                                bg: "green.600"
-                                            }}
-                                        >
-                                            {step === 1 ? "Next" : "Submit"}
-                                        </Button>
-                                    </Stack>
-                                )}
+                                    <Button
+                                        type="submit"
+                                        bg={"green.500"}
+                                        color={"white"}
+                                        w="full"
+                                        isLoading={loading}
+                                        _hover={{
+                                            bg: "green.600"
+                                        }}
+                                    >
+                                        {step === 0 ? "Next" : "Submit"}
+                                    </Button>
+                                </Stack>
                             </Stack>
                         </Flex>
                     </Form>

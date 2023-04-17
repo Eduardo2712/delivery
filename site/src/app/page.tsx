@@ -4,9 +4,7 @@ import Footer from "@/components/footer";
 import Header from "@/components/header";
 import { Box, Container, Flex, Text } from "@chakra-ui/react";
 import { NextPage } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import burguer from "../../public/image/Burguer.png";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -20,10 +18,8 @@ const Card = () => {
                 justifyContent={"space-between"}
                 h={"56"}
                 cursor={"pointer"}
-                bg={"gray.800"}
+                bg={"gray.50"}
                 boxShadow={"xl"}
-                borderWidth={"0.1rem"}
-                borderColor={"gray.50"}
             ></Flex>
         </Link>
     );
@@ -53,22 +49,11 @@ const Page: NextPage = () => {
                     minHeight={"calc(100vh - 172px)"}
                     wrap={"wrap"}
                 >
-                    <Flex
-                        borderWidth={"0.1rem"}
-                        borderColor={"gray.50"}
-                        rounded={"xl"}
-                        padding={"2rem"}
-                        boxShadow={"xl"}
-                        justifyContent={"space-between"}
-                    >
-                        <Text color={"gray.50"} fontSize={"5xl"} fontWeight={"extrabold"} fontStyle={"oblique"}>
-                            All for your hunger
-                        </Text>
-
-                        <Image src={burguer} alt="Burguer" width={550} />
-                    </Flex>
-
                     <Flex justifyContent={"space-between"} alignItems={"center"}></Flex>
+
+                    <Text fontSize={"lg"} color={"gray.500"}>
+                        Category
+                    </Text>
 
                     <Card />
                 </Flex>

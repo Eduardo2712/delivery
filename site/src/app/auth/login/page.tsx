@@ -46,11 +46,11 @@ const Login: NextPage = () => {
                     <Flex minH={"calc(100vh - 168px)"} align={"center"} justify={"center"}>
                         <Stack spacing={8} mx={"auto"} w={"lg"} py={12} px={6}>
                             <Stack align={"center"}>
-                                <Heading fontSize={"4xl"} color={"gray.50"}>
+                                <Heading fontSize={"4xl"} color={"gray.500"}>
                                     Login
                                 </Heading>
                             </Stack>
-                            <Box rounded={"xl"} p={12} boxShadow={"xl"} bg={"gray.800"}>
+                            <Box rounded={"xl"} p={12} boxShadow={"xl"} bg={"gray.50"}>
                                 <Stack spacing={4}>
                                     <StyleInput
                                         errors={errors.email}
@@ -86,7 +86,7 @@ const Login: NextPage = () => {
                                             justify={"space-between"}
                                         >
                                             <Link href="/auth/register">
-                                                <Text color={"gray.50"}>{"I don't have an account"}</Text>
+                                                <Text color={"gray.500"}>{"I don't have an account"}</Text>
                                             </Link>
                                         </Stack>
 

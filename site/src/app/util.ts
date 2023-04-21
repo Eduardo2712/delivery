@@ -1,19 +1,29 @@
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { faPizzaSlice, faWineBottle } from "@fortawesome/free-solid-svg-icons";
+import { IconType } from "react-icons";
+import { IoPizzaOutline, IoWineOutline, IoFastFoodOutline, IoIceCreamOutline } from "react-icons/io5";
 
 export const categories: Array<{
     id: number;
     title: string;
-    icon: IconDefinition;
+    icon: IconType;
 }> = [
     {
         id: 1,
         title: "Drinks",
-        icon: faWineBottle
+        icon: IoWineOutline
     },
     {
         id: 2,
         title: "Pastas",
-        icon: faPizzaSlice
+        icon: IoPizzaOutline
+    },
+    {
+        id: 3,
+        title: "Burguer",
+        icon: IoFastFoodOutline
+    },
+    {
+        id: 4,
+        title: "IceCream",
+        icon: IoIceCreamOutline
     }
 ];

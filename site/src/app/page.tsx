@@ -5,8 +5,6 @@ import Header from "@/components/header";
 import { Box, Container, Flex, Text } from "@chakra-ui/react";
 import { NextPage } from "next";
 import Link from "next/link";
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { categories } from "./util";
 
@@ -24,16 +22,6 @@ const Card = () => {
                 boxShadow={"xl"}
             ></Flex>
         </Link>
-    );
-};
-
-const Category = (props: { name: string; icon: IconDefinition }) => {
-    return (
-        <Box bg={"gray.800"} boxShadow={"xl"} rounded={"xl"}>
-            <FontAwesomeIcon icon={props.icon} size={"2x"} />
-
-            <Text>{props.name}</Text>
-        </Box>
     );
 };
 
@@ -59,7 +47,7 @@ const Page: NextPage = () => {
                         Category
                     </Text>
 
-                    <Flex justifyContent={"space-between"} alignItems={"center"}>
+                    <Flex justifyContent={"flex-start"} alignItems={"center"} gap={"2rem"}>
                         {categories.map((category) => {
                             return (
                                 <Flex
@@ -74,11 +62,7 @@ const Page: NextPage = () => {
                                     onClick={() => setSelected(category.id)}
                                 >
                                     <Box backgroundColor={"gray.50"} padding={"1rem"} rounded={"xl"} boxShadow={"lg"}>
-                                        <FontAwesomeIcon
-                                            icon={category.icon}
-                                            fontSize={"2rem"}
-                                            color={selected === category.id ? "#63b3ed" : "#2d3748"}
-                                        />
+                                        <category.icon fontSize={"2.1rem"} color={selected === category.id ? "#63b3ed" : "#2d3748"} />
                                     </Box>
 
                                     <Text textAlign={"center"} color={selected === category.id ? "gray.50" : "gray.700"} fontWeight={"medium"}>
@@ -90,6 +74,12 @@ const Page: NextPage = () => {
                     </Flex>
 
                     <Card />
+                </Flex>
+
+                <Flex width={"10rem"} borderLeft={"gray.200"} borderLeftWidth={"0.1rem"} padding={"2rem"}>
+                    <Text fontSize={"xl"} color={"gray.500"} marginBottom={"3rem"}>
+                        Order
+                    </Text>
                 </Flex>
             </Container>
 

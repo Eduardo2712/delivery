@@ -1,5 +1,5 @@
 import { IconType } from "react-icons";
-import { IoPizzaOutline, IoWineOutline, IoFastFoodOutline, IoIceCreamOutline } from "react-icons/io5";
+import { IoPizzaOutline, IoWineOutline, IoFastFoodOutline, IoIceCreamOutline, IoRestaurantOutline, IoCartOutline } from "react-icons/io5";
 
 export const categories: Array<{
     id: number;
@@ -18,12 +18,22 @@ export const categories: Array<{
     },
     {
         id: 3,
-        title: "Burguer",
+        title: "Fast Food",
         icon: IoFastFoodOutline
     },
     {
         id: 4,
-        title: "IceCream",
+        title: "Ice Cream",
         icon: IoIceCreamOutline
+    },
+    {
+        id: 5,
+        title: "Snack",
+        icon: IoRestaurantOutline
+    },
+    {
+        id: 6,
+        title: "Market",
+        icon: IoCartOutline
     }
 ];

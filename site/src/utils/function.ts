@@ -1,4 +1,4 @@
-import { useToast } from "@chakra-ui/react";
+import { ToastOptions, useToast } from "@chakra-ui/react";
 
 export const typeUser = [
     {
@@ -17,21 +17,8 @@ export const firstCapital = (word: string) => {
     return `${word[0].toUpperCase()}${word.substring(1)}`;
 };
 
-type ToastType = {
-    title: string;
-    description: string;
-    status: "info" | "warning" | "loading" | "success" | "error";
-};
-
-export const toastAlert = (props: ToastType) => {
-    const toast = useToast();
-
-    return toast({
-        title: props.title,
-        description: props.description,
-        status: props.status,
-        duration: 5000,
-        isClosable: true,
-        position: "top-right"
-    });
+export const toastParams: Pick<ToastOptions, "duration" | "position"> & { isClosable: boolean } = {
+    duration: 4000,
+    isClosable: true,
+    position: "top-right"
 };

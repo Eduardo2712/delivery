@@ -16,7 +16,6 @@ export type User = {
     use_delete: boolean;
     use_id_photo: number | null;
     photo: File;
-    posts: Post[];
     created_at: Date;
     updated_at: Date;
 };

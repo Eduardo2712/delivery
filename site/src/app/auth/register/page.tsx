@@ -4,21 +4,23 @@ import { Form, Formik } from "formik";
 import { maskCEP, maskCPF, maskPhone } from "../../../utils/mask";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Flex, FormControl, FormLabel, Heading, Input, Stack, Text, Box } from "@chakra-ui/react";
+import { Button, Flex, FormControl, FormLabel, Heading, Input, Stack, Text, Box, useToast } from "@chakra-ui/react";
 import { createUser } from "../../../requests/user.request";
 import { getCEP } from "../../../requests/cep.request";
 import StyleInput from "../../../components/style-input";
 import { NextPage } from "next";
 import { TypeFormRegister, schema } from "./util";
-import { toastAlert } from "@/utils/function";
+import { toastParams } from "@/utils/function";
 
 const Register: NextPage = () => {
     const [step, setStep] = useState<number>(0);
     const [loading, setLoading] = useState<boolean>(false);
 
-    const titleText = [`Personal information`, "Address information"];
+    const titleText = ["Personal information", "Address information"];
 
     const router = useRouter();
+
+    const toast = useToast();
 
     const initialValues: TypeFormRegister = {
         email: "",
@@ -50,14 +52,14 @@ const Register: NextPage = () => {
             const response_json = await response.json();
 
             if (response.status !== 200) {
-                return toastAlert({ title: "Error", description: response_json.message.join(", "), status: "error" });
+                return toast({ ...toastParams, title: "Error", description: response_json.message, status: "error" });
             }
 
-            toastAlert({ title: "Success", description: "Successfully registered user", status: "success" });
+            toast({ ...toastParams, title: "Success", description: "Successfully registered user", status: "success" });
 
             router.push("/");
         } catch (error: any) {
-            toastAlert({ title: "Error", description: error ?? "An error has occurred", status: "error" });
+            toast({ ...toastParams, title: "Error", description: error ?? "An error has occurred", status: "error" });
         } finally {
             setLoading(false);
         }
@@ -67,14 +69,14 @@ const Register: NextPage = () => {
         const format_cep = cep.replaceAll("-", "");
 
         if (format_cep.length !== 8) {
-            return toastAlert({ title: "Warning", description: "CEP must be 8 characters long", status: "warning" });
+            return toast({ ...toastParams, title: "Warning", description: "CEP must be 8 characters long", status: "warning" });
         }
 
         try {
             const response = await (await getCEP(format_cep)).json();
 
             if (response.erro) {
-                return toastAlert({ title: "Error", description: "CEP not found", status: "error" });
+                return toast({ ...toastParams, title: "Error", description: "CEP not found", status: "error" });
             }
 
             setFieldValue("street", response.logradouro ?? "");
@@ -82,8 +84,16 @@ const Register: NextPage = () => {
             setFieldValue("city", response.localidade ?? "");
             setFieldValue("state", response.uf ?? "");
         } catch (error: any) {
-            toastAlert({ title: "Error", description: error ?? "An error has occurred", status: "error" });
+            toast({ ...toastParams, title: "Error", description: error ?? "An error has occurred", status: "error" });
         }
+    };
+
+    const returnButton = () => {
+        if (step === 0) {
+            return router.push("/auth/login");
+        }
+
+        setStep((bef) => bef - 1);
     };
 
     return (
@@ -355,7 +365,7 @@ const Register: NextPage = () => {
                                         _hover={{
                                             bg: "red.600"
                                         }}
-                                        onClick={() => setStep((bef) => bef - 1)}
+                                        onClick={() => returnButton()}
                                     >
                                         Return
                                     </Button>

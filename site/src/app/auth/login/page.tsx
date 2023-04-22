@@ -6,16 +6,20 @@ import { User } from "../../../types";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
-import { Flex, Box, Stack, Button, Heading, Text } from "@chakra-ui/react";
+import { Flex, Box, Stack, Button, Heading, Text, useToast } from "@chakra-ui/react";
 import StyleInput from "../../../components/style-input";
 import { schema } from "./util";
-import { useAuth } from "@/context/auth";
-import { toastAlert } from "@/utils/function";
+import { toastParams } from "@/utils/function";
+import { login } from "@/store/auth/auth.slice";
+import { useDispatch } from "react-redux";
+import { auth } from "@/requests/auth.request";
 
 const Login: NextPage = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
-    const { login } = useAuth();
+    const dispatch = useDispatch();
+
+    const toast = useToast();
 
     const router = useRouter();
 
@@ -23,9 +27,26 @@ const Login: NextPage = () => {
         setLoading(true);
 
         try {
-            await login(values.email, values.password);
+            const response = await auth({
+                email: values.email,
+                password: values.password
+            });
+
+            const response_json = await response.json();
+
+            if (response.status !== 200) {
+                return toast({ ...toastParams, title: "Error", description: response_json.message, status: "error" });
+            }
+
+            if (response_json.user && response_json.access_token) {
+                dispatch(login({ ...response_json.user, token: response_json.access_token }));
+
+                toast({ ...toastParams, title: "Success", description: "Successfully login", status: "success" });
+
+                router.push("/");
+            }
         } catch (error: any) {
-            toastAlert({ title: "Error", description: error ?? "An error has occurred", status: "error" });
+            toast({ ...toastParams, title: "Error", description: error ?? "An error has occurred", status: "error" });
         } finally {
             setLoading(false);
         }

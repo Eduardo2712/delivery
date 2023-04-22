@@ -2,14 +2,27 @@
 
 import { faBell, faGear, faRightFromBracket, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import { useAuth } from "../../context/auth";
+import { useState, useEffect } from "react";
 import { Box, Button, Container, Flex, Hide, Input, InputGroup, InputLeftElement, InputRightElement, Text } from "@chakra-ui/react";
 import Link from "next/link";
+import { RootState } from "@/store/store";
+import { useSelector, useDispatch } from "react-redux";
+import { logout, setUser } from "@/store/auth/auth.slice";
 
 const Header = () => {
-    const { logout, user } = useAuth();
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState<string>("");
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const user = localStorage.getItem("user");
+
+        if (user) {
+            dispatch(setUser({ user: JSON.parse(user) }));
+        }
+    }, []);
+
+    const user = useSelector((state: RootState) => state.auth.user);
 
     return (
         <Flex bg={"gray.50"} alignItems={"center"} borderBottomWidth={"0.1rem"} borderBottomColor={"gray.200"} margin={"0 2rem 0 2rem"}>
@@ -53,7 +66,7 @@ const Header = () => {
                                     onChange={(e) => setSearch(e.target.value)}
                                     placeholder="Search..."
                                     variant="solid"
-                                    color={"gray.400"}
+                                    color={"gray.500"}
                                     _placeholder={{
                                         color: "gray.400"
                                     }}
@@ -80,10 +93,10 @@ const Header = () => {
                                             cursor={"pointer"}
                                             title="Logout"
                                             icon={faRightFromBracket}
-                                            onClick={logout}
+                                            onClick={() => dispatch(logout())}
                                         />
 
-                                        <Text fontSize="md" as={"b"}>{`Hello, ${user.use_name.split(" ")[0]}`}</Text>
+                                        <Text fontSize="md" as={"b"}>{`Hello, ${user?.use_name?.split(" ")[0]}`}</Text>
                                     </Flex>
                                 </Flex>
                             ) : (

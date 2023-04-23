@@ -1,28 +1,27 @@
 "use client";
 
-import { faBell, faGear, faRightFromBracket, faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect } from "react";
 import { Box, Button, Container, Flex, Hide, Input, InputGroup, InputLeftElement, InputRightElement, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { RootState } from "@/store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, setUser } from "@/store/auth/auth.slice";
+import { IoLogOut, IoNotifications, IoOptions, IoSearch } from "react-icons/io5";
 
 const Header = () => {
     const [search, setSearch] = useState<string>("");
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        const user = localStorage.getItem("user");
+    const user = useSelector((state: RootState) => state.auth.user);
 
-        if (user) {
-            dispatch(setUser({ user: JSON.parse(user) }));
+    useEffect(() => {
+        const user_local = localStorage.getItem("user");
+
+        if (user_local) {
+            dispatch(setUser({ user: JSON.parse(user_local ?? "") }));
         }
     }, []);
-
-    const user = useSelector((state: RootState) => state.auth.user);
 
     return (
         <Flex bg={"gray.50"} alignItems={"center"} borderBottomWidth={"0.1rem"} borderBottomColor={"gray.200"} margin={"0 2rem 0 2rem"}>
@@ -74,7 +73,7 @@ const Header = () => {
                                     borderRadius={"0.7rem"}
                                 ></Input>
 
-                                <InputLeftElement children={<FontAwesomeIcon icon={faSearch} style={{ color: "gray" }} />} />
+                                <InputLeftElement children={<IoSearch color="gray" />} />
                             </InputGroup>
                         </Flex>
                     </Box>
@@ -84,19 +83,13 @@ const Header = () => {
                             {user ? (
                                 <Flex justifyContent={"center"} alignItems={"flex-end"} flexDirection={"column"} gap={"1rem"}>
                                     <Flex gap={"1rem"}>
-                                        <FontAwesomeIcon fontSize={"1.2rem"} cursor={"pointer"} title="Notifications" icon={faBell} />
+                                        <IoNotifications fontSize={"1.5rem"} cursor={"pointer"} color={"#a0aec0"} />
 
-                                        <FontAwesomeIcon fontSize={"1.2rem"} cursor={"pointer"} title="Options" icon={faGear} />
+                                        <IoOptions fontSize={"1.5rem"} cursor={"pointer"} color={"#a0aec0"} />
 
-                                        <FontAwesomeIcon
-                                            fontSize={"1.2rem"}
-                                            cursor={"pointer"}
-                                            title="Logout"
-                                            icon={faRightFromBracket}
-                                            onClick={() => dispatch(logout())}
-                                        />
+                                        <IoLogOut fontSize={"1.5rem"} cursor={"pointer"} color={"#a0aec0"} onClick={() => dispatch(logout())} />
 
-                                        <Text fontSize="md" as={"b"}>{`Hello, ${user?.use_name?.split(" ")[0]}`}</Text>
+                                        <Text color={"gray.400"} fontSize="md" as={"b"}>{`Hello, ${user?.use_name?.split(" ")[0]}`}</Text>
                                     </Flex>
                                 </Flex>
                             ) : (

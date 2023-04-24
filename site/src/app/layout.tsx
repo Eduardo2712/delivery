@@ -9,6 +9,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 import { Metadata } from "next";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
+import ProtectedRoute from "@/router";
 
 config.autoAddCss = false;
 
@@ -26,7 +27,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <CSSReset />
                     <ChakraProvider theme={themeDefault}>
                         <Provider store={store}>
-                            <div className="body_container">{children}</div>
+                            <ProtectedRoute>
+                                <div className="body_container">{children}</div>
+                            </ProtectedRoute>
                         </Provider>
                     </ChakraProvider>
                 </CacheProvider>

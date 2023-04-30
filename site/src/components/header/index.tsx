@@ -83,17 +83,17 @@ const Header = () => {
                             {user ? (
                                 <Flex justifyContent={"center"} alignItems={"flex-end"} flexDirection={"column"} gap={"1rem"}>
                                     <Flex gap={"1rem"}>
-                                        <IoNotifications fontSize={"1.5rem"} cursor={"pointer"} color={"#a0aec0"} />
+                                        <IoNotifications fontSize={"1.5rem"} cursor={"pointer"} color={"#718096"} />
 
-                                        <IoOptions fontSize={"1.5rem"} cursor={"pointer"} color={"#a0aec0"} />
+                                        <IoOptions fontSize={"1.5rem"} cursor={"pointer"} color={"#718096"} />
 
-                                        <IoLogOut fontSize={"1.5rem"} cursor={"pointer"} color={"#a0aec0"} onClick={() => dispatch(logout())} />
+                                        <IoLogOut fontSize={"1.5rem"} cursor={"pointer"} color={"#718096"} onClick={() => dispatch(logout())} />
 
-                                        <Text color={"gray.400"} fontSize="md" as={"b"}>{`Hello, ${user?.use_name?.split(" ")[0]}`}</Text>
+                                        <Text color={"gray.500"} fontSize="md" as={"b"}>{`Hello, ${user?.use_name?.split(" ")[0]}`}</Text>
                                     </Flex>
                                 </Flex>
                             ) : (
-                                <Flex justifyContent={"flex-end"} gap={"0.3rem"} fontSize={"1rem"} color={"gray.400"}>
+                                <Flex justifyContent={"flex-end"} gap={"0.3rem"} fontSize={"1rem"} color={"gray.500"}>
                                     <Link href={"/auth/register"}>
                                         <Text fontWeight={"bold"}>Register</Text>
                                     </Link>

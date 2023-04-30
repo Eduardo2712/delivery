@@ -4,6 +4,7 @@ import photosSeed from "../data/photosSeed";
 import usersSeed from "../data/usersSeed";
 import adminsSeed from "../data/adminsSeed";
 import adminAddressesSeed from "../data/adminAddressesSeed";
+import productsSeed from "../data/productsSeed";
 
 const prisma = new PrismaClient();
 
@@ -22,6 +23,10 @@ const main = async () => {
 
     await prisma.adminAddress.createMany({
         data: await adminAddressesSeed()
+    });
+
+    await prisma.product.createMany({
+        data: await productsSeed()
     });
 
     await prisma.photo.createMany({

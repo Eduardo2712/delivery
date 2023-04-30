@@ -71,60 +71,56 @@ model Admin {
     adm_name     String         @db.VarChar(255)
     email        String         @db.VarChar(255)
     adm_phone    String         @db.VarChar(255)
-    adm_cnpj     String         @db.VarChar(255)
     password     String         @db.VarChar(255)
     adm_delete   Boolean        @default(false)
     created_at   DateTime       @default(now())
     updated_at   DateTime       @default(now())
     photo        Photo?         @relation(fields: [adm_id_photo], references: [id], onDelete: Cascade, onUpdate: NoAction)
-    services     AdminService[]
     addresses    AdminAddress[]
-    products     AdminProduct[]
 
     @@index([adm_id_photo])
     @@map("admin")
 }
 
-model AdminProduct {
+model Product {
     id              Int      @id @default(autoincrement())
-    adp_id_admin    Int
-    adp_price       Float
-    adp_name        String   @db.VarChar(255)
-    adp_description String   @db.VarChar(255)
-    adp_delete      Boolean  @default(false)
+    pro_id_photo    Int?
+    pro_id_type     Int
+    pro_price       Float
+    pro_name        String   @db.VarChar(255)
+    pro_description String   @db.VarChar(255)
+    pro_delete      Boolean  @default(false)
     created_at      DateTime @default(now())
     updated_at      DateTime @default(now())
-    admin           Admin    @relation(fields: [adp_id_admin], references: [id], onDelete: Cascade, onUpdate: NoAction)
+    photo           Photo?   @relation(fields: [pro_id_photo], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-    @@index([adp_id_admin])
-    @@map("admin_products")
+    @@index([pro_id_photo])
+    @@map("products")
 }
 
-model AdminService {
+model Service {
     id           Int      @id @default(autoincrement())
-    ads_id_admin Int
-    ads_day_week Int
-    ads_start    DateTime
-    ads_final    DateTime
-    ads_delete   Boolean  @default(false)
+    ser_day_week Int
+    ser_start    DateTime
+    ser_final    DateTime
+    ser_delete   Boolean  @default(false)
     created_at   DateTime @default(now())
     updated_at   DateTime @default(now())
-    admin        Admin    @relation(fields: [ads_id_admin], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
-    @@index([ads_id_admin])
     @@map("admin_service")
 }
 
 model Photo {
-    id         Int      @id @default(autoincrement())
+    id         Int       @id @default(autoincrement())
     pho_size   Int
-    pho_name   String   @db.VarChar(255)
-    pho_delete Boolean  @default(false)
-    pho_path   String   @db.VarChar(255)
-    created_at DateTime @default(now())
-    updated_at DateTime @default(now())
+    pho_name   String    @db.VarChar(255)
+    pho_delete Boolean   @default(false)
+    pho_path   String    @db.VarChar(255)
+    created_at DateTime  @default(now())
+    updated_at DateTime  @default(now())
     User       User[]
     Admin      Admin[]
+    Product    Product[]
 
     @@map("photo")
 }

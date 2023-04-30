@@ -2,14 +2,18 @@
 
 import Footer from "@/components/footer";
 import Header from "@/components/header";
-import { Button, Container, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Spinner, Text, useToast } from "@chakra-ui/react";
 import { NextPage } from "next";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { categories } from "./util";
 import { IoArrowForward } from "react-icons/io5";
+import { listProducts } from "@/requests/product.request";
+import { toastParams } from "@/utils/function";
+import { Product } from "@/types";
+import Image from "next/image";
 
-const Card = () => {
+const Card = (props: { product: Product }) => {
     return (
         <Link href={"/"}>
             <Flex
@@ -21,7 +25,15 @@ const Card = () => {
                 cursor={"pointer"}
                 bg={"gray.50"}
                 boxShadow={"xl"}
-            ></Flex>
+            >
+                <Text color={"gray.500"} textAlign={"center"} marginTop={"1rem"} fontWeight={"medium"}>
+                    {props.product.pro_name}
+                </Text>
+
+                <Flex>
+                    <Image src={props.product.photo.pho_path} alt="" width={150} height={150} />
+                </Flex>
+            </Flex>
         </Link>
     );
 };
@@ -65,12 +77,40 @@ const MyOrder = () => {
 
 const Page: NextPage = () => {
     const [selected, setSelected] = useState<number>(1);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [products, setProducts] = useState<Product[]>([]);
+
+    const toast = useToast();
+
+    useEffect(() => {
+        searchProducts();
+    }, [selected]);
+
+    const searchProducts = async () => {
+        setLoading(true);
+
+        try {
+            const response = await listProducts({ id_type: selected });
+
+            const response_json = await response.json();
+
+            if (response.status !== 201) {
+                return toast({ ...toastParams, title: "Error", description: response_json.message, status: "error" });
+            }
+
+            setProducts(response_json);
+        } catch (error: any) {
+            toast({ ...toastParams, title: "Error", description: error ?? "An error has occurred", status: "error" });
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <>
             <Header />
 
-            <Flex>
+            <Flex marginTop={"1rem"} marginBottom={"1rem"}>
                 <Container maxW="container.xl" padding={"1.2rem"} display={"flex"} justifyContent={"center"}>
                     <Flex
                         justifyContent={"flex-start"}
@@ -86,7 +126,7 @@ const Page: NextPage = () => {
                             Category
                         </Text>
 
-                        <Flex justifyContent={"flex-start"} alignItems={"center"} gap={"2rem"}>
+                        <Flex justifyContent={"space-between"} alignItems={"center"} gap={"2rem"}>
                             {categories.map((category) => {
                                 return (
                                     <Flex
@@ -120,7 +160,19 @@ const Page: NextPage = () => {
                             })}
                         </Flex>
 
-                        <Card />
+                        {!loading ? (
+                            <>
+                                <Flex wrap={"wrap"} gap={"2rem"} justifyContent={"space-between"} marginTop={"1.5rem"} marginBottom={"2.5rem"}>
+                                    {products.map((product) => {
+                                        return <Card key={product.id} product={product} />;
+                                    })}
+                                </Flex>
+                            </>
+                        ) : (
+                            <Flex justifyContent={"center"} marginTop={"4rem"}>
+                                <Spinner size="xl" color="blue.300" thickness="0.3rem" />
+                            </Flex>
+                        )}
                     </Flex>
                 </Container>
 

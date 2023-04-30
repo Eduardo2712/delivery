@@ -1,11 +1,3 @@
-export type ContextLogin = {
-    auth: boolean;
-    user: User | null;
-    loading: boolean;
-    logout: () => void;
-    login: (email: string, password: string) => Promise<unknown>;
-};
-
 export type User = {
     id: number;
     use_name: string;
@@ -20,25 +12,6 @@ export type User = {
     updated_at: Date;
 };
 
-export type Post = {
-    id: number;
-    pos_id_user: number;
-    pos_text: string;
-    pos_delete: boolean;
-    created_at: Date;
-    updated_at: Date;
-};
-
-export type File = {
-    id: number;
-    fil_size: number;
-    fil_name: string;
-    fil_delete: boolean;
-    fil_path: string;
-    created_at: Date;
-    updated_at: Date;
-};
-
 export type Address = {
     id: number;
     add_cep: string;
@@ -48,6 +21,29 @@ export type Address = {
     add_complement: string;
     add_city: string;
     add_state: string;
+    created_at: Date;
+    updated_at: Date;
+};
+
+export type Product = {
+    id: number;
+    pro_id_photo: number | null;
+    pro_id_type: number;
+    pro_price: number;
+    pro_name: string;
+    pro_description: string;
+    pro_delete: boolean;
+    created_at: Date;
+    updated_at: Date;
+    photo: Photo;
+};
+
+export type Photo = {
+    id: number;
+    pho_size: number;
+    pho_name: string;
+    pho_delete: boolean;
+    pho_path: string;
     created_at: Date;
     updated_at: Date;
 };

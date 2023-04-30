@@ -15,7 +15,6 @@ const adminsSeed = async () => {
             adm_name: faker.name.fullName(),
             email: faker.internet.email(),
             adm_phone: faker.phone.number(),
-            adm_cnpj: faker.address.zipCode(),
             password: hash,
             adm_delete: false
         };

@@ -1,6 +1,6 @@
-import { IsString } from "class-validator";
+import { IsNumber } from "class-validator";
 
 export class ListProductDto {
-    @IsString()
-    type: string;
+    @IsNumber()
+    id_type: number;
 }

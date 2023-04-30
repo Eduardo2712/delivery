@@ -21,16 +21,6 @@ export class AdminsService {
             throw new HttpException("This email address is already in use", HttpStatus.BAD_REQUEST);
         }
 
-        const cnpj_unique = await this.prisma.admin.findFirst({
-            where: {
-                adm_cnpj: create_admin_dto.adm_cnpj
-            }
-        });
-
-        if (cnpj_unique) {
-            throw new HttpException("This cpf is already in use", HttpStatus.BAD_REQUEST);
-        }
-
         const salt_rounds = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(create_admin_dto.password, salt_rounds);
 
@@ -38,7 +28,6 @@ export class AdminsService {
             data: {
                 password: hash,
                 email: create_admin_dto.email,
-                adm_cnpj: create_admin_dto.adm_cnpj,
                 adm_name: create_admin_dto.adm_name,
                 adm_phone: create_admin_dto.adm_phone,
                 addresses: {

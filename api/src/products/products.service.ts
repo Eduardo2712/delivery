@@ -7,6 +7,16 @@ export class ProductsService {
     constructor(private readonly prisma: PrismaService) {}
 
     async list(listProductDto: ListProductDto) {
-        return "This action adds a new product";
+        const products = await this.prisma.product.findMany({
+            where: {
+                pro_delete: false,
+                pro_id_type: listProductDto.id_type
+            },
+            include: {
+                photo: true
+            }
+        });
+
+        return products;
     }
 }

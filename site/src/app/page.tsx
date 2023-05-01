@@ -2,7 +2,7 @@
 
 import Footer from "@/components/footer";
 import Header from "@/components/header";
-import { Box, Button, Container, Flex, Spinner, Text, useToast } from "@chakra-ui/react";
+import { Button, Container, Flex, Spinner, Text, useToast } from "@chakra-ui/react";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -25,14 +25,25 @@ const Card = (props: { product: Product }) => {
                 cursor={"pointer"}
                 bg={"gray.50"}
                 boxShadow={"xl"}
+                padding={"0.5rem"}
             >
-                <Text color={"gray.500"} textAlign={"center"} marginTop={"1rem"} fontWeight={"medium"}>
+                <Flex justifyContent={"center"}>
+                    <Image
+                        src={props.product.photo.pho_path}
+                        alt={`Image ${props.product.pro_name}`}
+                        width={200}
+                        height={200}
+                        style={{ borderRadius: "1rem" }}
+                    />
+                </Flex>
+
+                <Text color={"gray.600"} fontWeight={"medium"}>
                     {props.product.pro_name}
                 </Text>
 
-                <Flex>
-                    <Image src={props.product.photo.pho_path} alt="" width={150} height={150} />
-                </Flex>
+                <Text color={"blue.400"} textAlign={"center"} marginTop={"1rem"} fontWeight={"medium"}>
+                    {props.product.pro_price.toLocaleString("pt-br", { style: "currency", currency: "BRL" })}
+                </Text>
             </Flex>
         </Link>
     );

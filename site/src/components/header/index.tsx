@@ -1,16 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Box, Button, Container, Flex, Hide, Input, InputGroup, InputLeftElement, InputRightElement, Text } from "@chakra-ui/react";
+import { useEffect } from "react";
+import { Box, Container, Flex, Hide, Text } from "@chakra-ui/react";
 import Link from "next/link";
 import { RootState } from "@/store/store";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, setUser } from "@/store/auth/auth.slice";
-import { IoLogOut, IoNotifications, IoOptions, IoSearch } from "react-icons/io5";
+import { IoLogOut, IoNotifications, IoOptions } from "react-icons/io5";
 
 const Header = () => {
-    const [search, setSearch] = useState<string>("");
-
     const dispatch = useDispatch();
 
     const user = useSelector((state: RootState) => state.auth.user);
@@ -37,46 +35,6 @@ const Header = () => {
                             </Text>
                         </Flex>
                     </Hide>
-
-                    <Box flex={"2"}>
-                        <Flex gap={"0.5rem"} justifyContent={"center"} alignItems={"center"}>
-                            <InputGroup maxW={{ base: "30rem", md: "25rem" }}>
-                                <InputRightElement
-                                    marginRight={"0.4rem"}
-                                    width={"5rem"}
-                                    children={
-                                        <Button
-                                            backgroundColor={"blue.300"}
-                                            color={"gray.50"}
-                                            h={"8"}
-                                            rounded={"xl"}
-                                            _hover={{
-                                                backgroundColor: "blue.400"
-                                            }}
-                                        >
-                                            Search
-                                        </Button>
-                                    }
-                                />
-
-                                <Input
-                                    type={"text"}
-                                    value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
-                                    placeholder="Search..."
-                                    variant="solid"
-                                    color={"gray.500"}
-                                    _placeholder={{
-                                        color: "gray.400"
-                                    }}
-                                    bg={"gray.200"}
-                                    borderRadius={"0.7rem"}
-                                ></Input>
-
-                                <InputLeftElement children={<IoSearch color="gray" />} />
-                            </InputGroup>
-                        </Flex>
-                    </Box>
 
                     <Hide below="md">
                         <Box flex={"1"}>

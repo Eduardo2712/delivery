@@ -2,12 +2,12 @@
 
 import Footer from "@/components/footer";
 import Header from "@/components/header";
-import { Button, Container, Flex, Skeleton, Text, useToast } from "@chakra-ui/react";
+import { Button, Container, Flex, Input, InputGroup, InputLeftElement, Skeleton, Text, useToast } from "@chakra-ui/react";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { categories } from "./util";
-import { IoArrowForward } from "react-icons/io5";
+import { IoArrowForward, IoSearch } from "react-icons/io5";
 import { listProducts } from "@/requests/product.request";
 import { toastParams } from "@/utils/function";
 import { Product } from "@/types";
@@ -100,18 +100,24 @@ const Page: NextPage = () => {
     });
     const [loading, setLoading] = useState<boolean>(false);
     const [products, setProducts] = useState<Product[]>([]);
+    const [search, setSearch] = useState<string>("");
 
     const toast = useToast();
 
     useEffect(() => {
         searchProducts();
-    }, [selected]);
+    }, [selected, search]);
 
     const searchProducts = async () => {
         setLoading(true);
 
         try {
-            const response = await listProducts({ id_type: selected });
+            const data = {
+                id_type: selected,
+                search
+            };
+
+            const response = await listProducts(data);
 
             const response_json = await response.json();
 
@@ -149,21 +155,47 @@ const Page: NextPage = () => {
                         minHeight={"calc(100vh - 172px)"}
                         wrap={"wrap"}
                     >
-                        <Flex justifyContent={"space-between"} alignItems={"center"}></Flex>
+                        <Flex justifyContent={"center"} marginBottom={"1.5rem"}>
+                            <InputGroup maxW={"35rem"}>
+                                <Input
+                                    type={"text"}
+                                    value={search}
+                                    onChange={(e) => setSearch(e.target.value)}
+                                    placeholder="Search..."
+                                    variant="solid"
+                                    color={"gray.500"}
+                                    _placeholder={{
+                                        color: "gray.400"
+                                    }}
+                                    bg={"gray.200"}
+                                    borderRadius={"0.7rem"}
+                                ></Input>
 
-                        <Text fontSize={"lg"} color={"gray.500"}>
-                            Category
-                        </Text>
+                                <InputLeftElement children={<IoSearch color="gray" />} />
+                            </InputGroup>
+                        </Flex>
 
-                        <Flex justifyContent={"space-between"} alignItems={"center"} gap={"2rem"}>
+                        {Boolean(search.trim()) && (
+                            <Flex alignItems={"center"} gap={"0.5rem"}>
+                                <Text fontSize={"lg"} color={"gray.500"} fontWeight={"medium"}>
+                                    {`Searching for: `}
+                                </Text>
+
+                                <Text fontSize={"lg"} color={"gray.500"} fontWeight={"bold"}>
+                                    {search}
+                                </Text>
+                            </Flex>
+                        )}
+
+                        <Flex justifyContent={"flex-start"} alignItems={"center"} gap={"2rem"}>
                             {categories.map((category) => {
                                 return (
                                     <Flex
                                         key={category.id}
                                         backgroundColor={selected.includes(category.id) ? "blue.300" : "gray.50"}
-                                        padding={"1rem 2rem"}
-                                        width={"9rem"}
-                                        borderRadius={"2.3rem"}
+                                        padding={"1rem 0.5rem"}
+                                        width={"7rem"}
+                                        borderRadius={"2rem"}
                                         boxShadow={"lg"}
                                         flexDirection={"column"}
                                         gap={"0.4rem"}
@@ -172,7 +204,7 @@ const Page: NextPage = () => {
                                     >
                                         <Flex
                                             backgroundColor={"gray.50"}
-                                            padding={"1rem"}
+                                            padding={"0.5rem"}
                                             rounded={"xl"}
                                             boxShadow={"lg"}
                                             alignItems={"center"}
@@ -193,7 +225,7 @@ const Page: NextPage = () => {
                             })}
                         </Flex>
 
-                        <Flex wrap={"wrap"} gap={"2rem"} marginTop={"1.5rem"} justifyContent={"center"} marginBottom={"2.5rem"}>
+                        <Flex wrap={"wrap"} gap={"2rem"} marginTop={"1.5rem"} justifyContent={"flex-start"} marginBottom={"2.5rem"}>
                             {products.map((product) => {
                                 return <Card key={product.id} product={product} loading={loading} />;
                             })}

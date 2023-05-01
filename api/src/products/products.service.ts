@@ -12,11 +12,15 @@ export class ProductsService {
                 pro_delete: false,
                 pro_id_type: {
                     in: listProductDto.id_type
+                },
+                pro_name: {
+                    contains: listProductDto.search
                 }
             },
             include: {
                 photo: true
-            }
+            },
+            take: 10
         });
 
         return products;

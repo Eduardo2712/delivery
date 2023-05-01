@@ -1,3 +1,3 @@
 export class Product {
-    id_type: number;
+    id_type: number[];
 }

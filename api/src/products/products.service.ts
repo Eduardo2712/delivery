@@ -10,7 +10,9 @@ export class ProductsService {
         const products = await this.prisma.product.findMany({
             where: {
                 pro_delete: false,
-                pro_id_type: listProductDto.id_type
+                pro_id_type: {
+                    in: listProductDto.id_type
+                }
             },
             include: {
                 photo: true

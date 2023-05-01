@@ -1,6 +1,6 @@
-import { IsNumber } from "class-validator";
+import { IsArray } from "class-validator";
 
 export class ListProductDto {
-    @IsNumber()
-    id_type: number;
+    @IsArray()
+    id_type: number[];
 }

@@ -2,7 +2,7 @@
 
 import Footer from "@/components/footer";
 import Header from "@/components/header";
-import { Button, Container, Flex, Spinner, Text, useToast } from "@chakra-ui/react";
+import { Button, Container, Flex, Skeleton, Text, useToast } from "@chakra-ui/react";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -13,7 +13,7 @@ import { toastParams } from "@/utils/function";
 import { Product } from "@/types";
 import Image from "next/image";
 
-const Card = (props: { product: Product }) => {
+const Card = (props: { product: Product; loading: boolean }) => {
     return (
         <Link href={"/"}>
             <Flex
@@ -27,23 +27,25 @@ const Card = (props: { product: Product }) => {
                 boxShadow={"xl"}
                 padding={"0.5rem"}
             >
-                <Flex justifyContent={"center"}>
-                    <Image
-                        src={props.product.photo.pho_path}
-                        alt={`Image ${props.product.pro_name}`}
-                        width={200}
-                        height={200}
-                        style={{ borderRadius: "1rem" }}
-                    />
-                </Flex>
+                <Skeleton isLoaded={!props.loading}>
+                    <Flex justifyContent={"center"}>
+                        <Image
+                            src={props.product.photo.pho_path}
+                            alt={`Image ${props.product.pro_name}`}
+                            width={200}
+                            height={200}
+                            style={{ borderRadius: "1rem" }}
+                        />
+                    </Flex>
 
-                <Text color={"gray.600"} fontWeight={"medium"}>
-                    {props.product.pro_name}
-                </Text>
+                    <Text color={"gray.600"} fontWeight={"medium"}>
+                        {props.product.pro_name}
+                    </Text>
 
-                <Text color={"blue.400"} textAlign={"center"} marginTop={"1rem"} fontWeight={"medium"}>
-                    {props.product.pro_price.toLocaleString("pt-br", { style: "currency", currency: "BRL" })}
-                </Text>
+                    <Text color={"blue.400"} textAlign={"center"} marginTop={"1rem"} fontWeight={"medium"}>
+                        {props.product.pro_price.toLocaleString("pt-br", { style: "currency", currency: "BRL" })}
+                    </Text>
+                </Skeleton>
             </Flex>
         </Link>
     );
@@ -87,7 +89,15 @@ const MyOrder = () => {
 };
 
 const Page: NextPage = () => {
-    const [selected, setSelected] = useState<number>(1);
+    const [selected, setSelected] = useState<number[]>(() => {
+        const array_categories: number[] = [];
+
+        categories.forEach((category) => {
+            array_categories.push(category.id);
+        });
+
+        return array_categories;
+    });
     const [loading, setLoading] = useState<boolean>(false);
     const [products, setProducts] = useState<Product[]>([]);
 
@@ -117,6 +127,14 @@ const Page: NextPage = () => {
         }
     };
 
+    const selectType = (id_type: number) => {
+        if (selected.includes(id_type)) {
+            setSelected((prev) => prev.filter((a) => a !== id_type));
+        } else {
+            setSelected((prev) => [...prev, id_type]);
+        }
+    };
+
     return (
         <>
             <Header />
@@ -142,7 +160,7 @@ const Page: NextPage = () => {
                                 return (
                                     <Flex
                                         key={category.id}
-                                        backgroundColor={selected === category.id ? "blue.300" : "gray.50"}
+                                        backgroundColor={selected.includes(category.id) ? "blue.300" : "gray.50"}
                                         padding={"1rem 2rem"}
                                         width={"9rem"}
                                         borderRadius={"2.3rem"}
@@ -150,7 +168,7 @@ const Page: NextPage = () => {
                                         flexDirection={"column"}
                                         gap={"0.4rem"}
                                         cursor={"pointer"}
-                                        onClick={() => setSelected(category.id)}
+                                        onClick={() => selectType(category.id)}
                                     >
                                         <Flex
                                             backgroundColor={"gray.50"}
@@ -160,10 +178,14 @@ const Page: NextPage = () => {
                                             alignItems={"center"}
                                             justifyContent={"center"}
                                         >
-                                            <category.icon fontSize={"2.1rem"} color={selected === category.id ? "#63b3ed" : "#2d3748"} />
+                                            <category.icon fontSize={"2.1rem"} color={selected.includes(category.id) ? "#63b3ed" : "#2d3748"} />
                                         </Flex>
 
-                                        <Text textAlign={"center"} color={selected === category.id ? "gray.50" : "gray.700"} fontWeight={"medium"}>
+                                        <Text
+                                            textAlign={"center"}
+                                            color={selected.includes(category.id) ? "gray.50" : "gray.700"}
+                                            fontWeight={"medium"}
+                                        >
                                             {category.title}
                                         </Text>
                                     </Flex>
@@ -171,19 +193,11 @@ const Page: NextPage = () => {
                             })}
                         </Flex>
 
-                        {!loading ? (
-                            <>
-                                <Flex wrap={"wrap"} gap={"2rem"} justifyContent={"space-between"} marginTop={"1.5rem"} marginBottom={"2.5rem"}>
-                                    {products.map((product) => {
-                                        return <Card key={product.id} product={product} />;
-                                    })}
-                                </Flex>
-                            </>
-                        ) : (
-                            <Flex justifyContent={"center"} marginTop={"4rem"}>
-                                <Spinner size="xl" color="blue.300" thickness="0.3rem" />
-                            </Flex>
-                        )}
+                        <Flex wrap={"wrap"} gap={"2rem"} marginTop={"1.5rem"} justifyContent={"center"} marginBottom={"2.5rem"}>
+                            {products.map((product) => {
+                                return <Card key={product.id} product={product} loading={loading} />;
+                            })}
+                        </Flex>
                     </Flex>
                 </Container>
 

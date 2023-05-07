@@ -1,5 +1,4 @@
 import { faker } from "@faker-js/faker/locale/pt_BR";
-import { User } from "@prisma/client";
 import * as bcrypt from "bcrypt";
 
 const usersSeed = async () => {
@@ -10,7 +9,7 @@ const usersSeed = async () => {
         const text_password = "123456";
         const hash = bcrypt.hashSync(text_password, salt_rounds);
 
-        const user: Omit<User, "created_at" | "updated_at" | "id"> = {
+        const user = {
             use_id_photo: Math.floor(Math.random() * 300) + 1,
             use_name: faker.name.fullName(),
             email: faker.internet.email(),

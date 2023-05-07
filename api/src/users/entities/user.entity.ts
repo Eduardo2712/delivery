@@ -37,4 +37,10 @@ export class User extends Model<User> {
 
     @Column
     use_delete: boolean;
+
+    @Column
+    created_at: Date;
+
+    @Column
+    updated_at: Date;
 }

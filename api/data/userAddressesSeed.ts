@@ -1,11 +1,10 @@
 import { faker } from "@faker-js/faker/locale/pt_BR";
-import { UserAddress } from "@prisma/client";
 
 const userAddressesSeed = async () => {
     const data = [];
 
     for (let i = 0; i < 300; i++) {
-        const address: Omit<UserAddress, "created_at" | "updated_at" | "id"> = {
+        const address = {
             usa_cep: faker.address.zipCode("#####-###"),
             usa_city: faker.address.cityName(),
             usa_complement: faker.address.streetAddress(),

@@ -6,6 +6,8 @@ import { AuthModule } from "./auth/auth.module";
 import { JwtAuthGuard } from "./auth/guards/jwt-auth.guard";
 import { UsersModule } from "./users/users.module";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
+import { SequelizeModule } from "@nestjs/sequelize";
+import { ProductsModule } from './products/products.module';
 
 @Module({
     imports: [
@@ -15,7 +17,8 @@ import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
         }),
         UsersModule,
         AuthModule,
-        UsersModule
+        UsersModule,
+        ProductsModule
     ],
     controllers: [AppController],
     providers: [

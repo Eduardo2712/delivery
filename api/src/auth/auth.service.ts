@@ -6,14 +6,12 @@ import { UsersService } from "../users/users.service";
 import { UserPayload } from "./models/UserPayload";
 import { UserToken } from "./models/UserToken";
 import { User } from "src/types/user.type";
-import { Prisma } from "@prisma/client";
 
 @Injectable()
 export class AuthService {
     constructor(private readonly jwtService: JwtService, private readonly usersService: UsersService) {}
 
-    async login(user: Omit<User, "password">): Promise<UserToken & { user: Omit<User, "password"> }> {
-        console.log(user[0]);
+    async login(user: User): Promise<UserToken & { user: User }> {
         const payload: UserPayload = {
             sub: user.id,
             email: user.email,
@@ -26,7 +24,7 @@ export class AuthService {
         };
     }
 
-    async validateUser(email: string, password: string): Promise<Omit<User, "addresses" | "photo">> {
+    async validateUser(email: string, password: string): Promise<User> {
         const user = await this.usersService.findByEmail(email);
 
         if (user) {

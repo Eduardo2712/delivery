@@ -5,10 +5,11 @@ import * as bcrypt from "bcrypt";
 import { HttpException } from "@nestjs/common/exceptions";
 import { HttpStatus } from "@nestjs/common/enums";
 import { User } from "./entities/user.entity";
+import { USERS_REPOSITORY } from "src/repository/repository";
 
 @Injectable()
 export class UsersService {
-    constructor(@Inject("USERS_REPOSITORY") private usersRepository: typeof User) {}
+    constructor(@Inject(USERS_REPOSITORY) private usersRepository: typeof User) {}
 
     async create(create_user_dto: CreateUserDto) {
         // const email_unique = await this.prisma.user.findFirst({
@@ -57,10 +58,13 @@ export class UsersService {
     }
 
     async findByEmail(email: string) {
-        return await this.usersRepository.findOne<User>({
+        const user = await this.usersRepository.findOne<User>({
             where: {
-                email: email
-            }
+                email
+            },
+            raw: true
         });
+
+        return user;
     }
 }

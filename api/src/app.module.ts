@@ -4,11 +4,8 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { AuthModule } from "./auth/auth.module";
 import { JwtAuthGuard } from "./auth/guards/jwt-auth.guard";
-import { PrismaModule } from "./prisma/prisma.module";
 import { UsersModule } from "./users/users.module";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
-import { AdminsModule } from "./admins/admins.module";
-import { ProductsModule } from "./products/products.module";
 
 @Module({
     imports: [
@@ -16,12 +13,9 @@ import { ProductsModule } from "./products/products.module";
             ttl: 60,
             limit: 50
         }),
-        PrismaModule,
         UsersModule,
         AuthModule,
-        UsersModule,
-        AdminsModule,
-        ProductsModule
+        UsersModule
     ],
     controllers: [AppController],
     providers: [

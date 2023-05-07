@@ -13,6 +13,7 @@ export class AuthService {
     constructor(private readonly jwtService: JwtService, private readonly usersService: UsersService) {}
 
     async login(user: Omit<User, "password">): Promise<UserToken & { user: Omit<User, "password"> }> {
+        console.log(user[0]);
         const payload: UserPayload = {
             sub: user.id,
             email: user.email,
@@ -25,7 +26,7 @@ export class AuthService {
         };
     }
 
-    async validateUser(email: string, password: string): Promise<Omit<Prisma.UserCreateInput, "addresses" | "photo">> {
+    async validateUser(email: string, password: string): Promise<Omit<User, "addresses" | "photo">> {
         const user = await this.usersService.findByEmail(email);
 
         if (user) {

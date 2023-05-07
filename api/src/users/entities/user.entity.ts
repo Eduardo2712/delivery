@@ -1,21 +1,40 @@
-import { Prisma } from "@prisma/client";
+import { Column, Model, Table } from "sequelize-typescript";
 
-export class User implements Prisma.UserCreateManyInput, Prisma.UserAddressCreateManyUserInput {
-    id?: number;
+@Table({
+    tableName: "user",
+    defaultScope: {
+        attributes: {
+            exclude: ["createdAt", "updatedAt"]
+        }
+    }
+})
+export class User extends Model<User> {
+    @Column({
+        primaryKey: true
+    })
+    id: number;
+
+    @Column
     email: string;
-    use_date_birth: string | Date;
-    use_id_address: number;
+
+    @Column
+    use_date_birth: Date;
+
+    @Column
     use_id_photo?: number;
-    use_id_type_user: number;
+
+    @Column
     use_name: string;
+
+    @Column
     use_phone: string;
+
+    @Column
     password: string;
+
+    @Column
     use_cpf: string;
-    usa_cep: string;
-    usa_city: string;
-    usa_complement?: string;
-    usa_district: string;
-    usa_number: string;
-    usa_state: string;
-    usa_street: string;
+
+    @Column
+    use_delete: boolean;
 }

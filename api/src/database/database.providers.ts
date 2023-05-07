@@ -1,20 +1,34 @@
 import { Sequelize } from "sequelize-typescript";
 import { User } from "src/users/entities/user.entity";
+import { databaseConfig } from "./database.config";
+
+export const SEQUELIZE = "SEQUELIZE";
+export const DEVELOPMENT = "development";
+export const TEST = "test";
+export const PRODUCTION = "production";
 
 export const databaseProviders = [
     {
-        provide: "SEQUELIZE",
+        provide: SEQUELIZE,
         useFactory: async () => {
-            const sequelize = new Sequelize({
-                dialect: "mysql",
-                host: "localhost",
-                port: 3306,
-                username: "root",
-                password: "root",
-                database: "delivery"
-            });
+            let config: any;
+            switch (process.env.NODE_ENV as any) {
+                case DEVELOPMENT:
+                    config = databaseConfig.development;
+                    break;
+                case TEST:
+                    config = databaseConfig.test;
+                    break;
+                case PRODUCTION:
+                    config = databaseConfig.production;
+                    break;
+                default:
+                    config = databaseConfig.development;
+            }
+
+            const sequelize = new Sequelize(config);
             sequelize.addModels([User]);
-            await sequelize.sync();
+            // await sequelize.sync();
             return sequelize;
         }
     }

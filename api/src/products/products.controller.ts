@@ -1,13 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
+import { Controller, Post, Body } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { ListProductDto } from "./dto/list-product.dto";
+import { IsPublic } from "src/auth/decorators/is-public.decorator";
 
 @Controller("products")
 export class ProductsController {
     constructor(private readonly productsService: ProductsService) {}
 
+    @IsPublic()
     @Post("list")
     create(@Body() listProductDto: ListProductDto) {
-        return this.productsService.list(ListProductDto);
+        return this.productsService.list(listProductDto);
     }
 }

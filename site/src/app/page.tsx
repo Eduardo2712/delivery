@@ -113,7 +113,7 @@ const Page: NextPage = () => {
 
         try {
             const data = {
-                id_type: selected,
+                id_type_array: selected,
                 search
             };
 

@@ -1,5 +1,4 @@
-import { Model } from "sequelize";
-import { Column, Table } from "sequelize-typescript";
+import { Column, Table, Model } from "sequelize-typescript";
 
 @Table({
     tableName: "products",

@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize-typescript";
 import { User } from "src/users/entities/user.entity";
 import { databaseConfig } from "./database.config";
+import { Product } from "src/products/entities/product.entity";
 
 export const SEQUELIZE = "SEQUELIZE";
 export const DEVELOPMENT = "development";
@@ -12,7 +13,7 @@ export const databaseProviders = [
         provide: SEQUELIZE,
         useFactory: async () => {
             let config: unknown;
-            switch (process.env.NODE_ENV as string) {
+            switch (process.env.NODE_ENV) {
                 case DEVELOPMENT:
                     config = databaseConfig.development;
                     break;
@@ -27,7 +28,7 @@ export const databaseProviders = [
             }
 
             const sequelize = new Sequelize(config);
-            sequelize.addModels([User]);
+            sequelize.addModels([User, Product]);
             // await sequelize.sync();
             return sequelize;
         }

@@ -1,7 +1,7 @@
 import { Column, Model, Table } from "sequelize-typescript";
 
 @Table({
-    tableName: "user",
+    tableName: "users",
     defaultScope: {
         attributes: {
             exclude: ["createdAt", "updatedAt"]

@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 
 dotenv.config();
 
-interface IDatabaseConfigAttributes {
+export interface IDatabaseConfigAttributes {
     username?: string;
     password?: string;
     database?: string;

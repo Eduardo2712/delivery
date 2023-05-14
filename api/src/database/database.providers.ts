@@ -11,8 +11,8 @@ export const databaseProviders = [
     {
         provide: SEQUELIZE,
         useFactory: async () => {
-            let config: any;
-            switch (process.env.NODE_ENV as any) {
+            let config: unknown;
+            switch (process.env.NODE_ENV as string) {
                 case DEVELOPMENT:
                     config = databaseConfig.development;
                     break;

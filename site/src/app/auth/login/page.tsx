@@ -32,14 +32,12 @@ const Login: NextPage = () => {
                 password: values.password
             });
 
-            const response_json = await response.json();
-
             if (response.status !== 200) {
-                return toast({ ...toastParams, title: "Error", description: response_json.message, status: "error" });
+                return toast({ ...toastParams, title: "Error", description: response.data.message, status: "error" });
             }
 
-            if (response_json.user && response_json.access_token) {
-                dispatch(login({ ...response_json.user, token: response_json.access_token }));
+            if (response.data.user && response.data.access_token) {
+                dispatch(login({ ...response.data.user, token: response.data.access_token }));
 
                 toast({ ...toastParams, title: "Success", description: "Successfully login", status: "success" });
 

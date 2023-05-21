@@ -1,12 +1,6 @@
 import { User } from "../types";
+import axios from "axios";
 
 export const auth = ({ ...props }: Pick<User, "email" | "password">) => {
-    return fetch(`${process.env.NEXT_PUBLIC_URL_API}/login`, {
-        method: "POST",
-        body: JSON.stringify(props),
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        }
-    });
+    return axios.post(`${process.env.NEXT_PUBLIC_URL_API}/login`, props);
 };

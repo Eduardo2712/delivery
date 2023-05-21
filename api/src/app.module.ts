@@ -6,8 +6,8 @@ import { AuthModule } from "./auth/auth.module";
 import { JwtAuthGuard } from "./auth/guards/jwt-auth.guard";
 import { UsersModule } from "./users/users.module";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
-import { SequelizeModule } from "@nestjs/sequelize";
-import { ProductsModule } from './products/products.module';
+import { ProductsModule } from "./products/products.module";
+import { PhotosModule } from "./photos/photos.module";
 
 @Module({
     imports: [
@@ -18,7 +18,8 @@ import { ProductsModule } from './products/products.module';
         UsersModule,
         AuthModule,
         UsersModule,
-        ProductsModule
+        ProductsModule,
+        PhotosModule
     ],
     controllers: [AppController],
     providers: [

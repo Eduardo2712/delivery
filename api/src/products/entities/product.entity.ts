@@ -1,4 +1,5 @@
-import { Column, Table, Model } from "sequelize-typescript";
+import { Column, Table, Model, HasMany, HasOne, BelongsTo, ForeignKey, DataType } from "sequelize-typescript";
+import { Photo } from "src/photos/entities/photo.entity";
 
 @Table({
     tableName: "products",
@@ -30,11 +31,17 @@ export class Product extends Model<Product> {
     pro_id_type: number;
 
     @Column
-    pro_id_photo: number;
-
-    @Column
     created_at: Date;
 
     @Column
     updated_at: Date;
+
+    @ForeignKey(() => Photo)
+    @Column({
+        type: DataType.INTEGER
+    })
+    pro_id_photo: number;
+
+    @BelongsTo(() => Photo)
+    photo: Photo;
 }

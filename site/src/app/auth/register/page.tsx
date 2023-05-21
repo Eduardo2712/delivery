@@ -49,10 +49,8 @@ const Register: NextPage = () => {
         try {
             const response = await createUser(values);
 
-            const response_json = await response.json();
-
             if (response.status !== 200) {
-                return toast({ ...toastParams, title: "Error", description: response_json.message, status: "error" });
+                return toast({ ...toastParams, title: "Error", description: response.data.message, status: "error" });
             }
 
             toast({ ...toastParams, title: "Success", description: "Successfully registered user", status: "success" });
@@ -73,16 +71,16 @@ const Register: NextPage = () => {
         }
 
         try {
-            const response = await (await getCEP(format_cep)).json();
+            const response = await getCEP(format_cep);
 
-            if (response.erro) {
+            if (response.data.erro) {
                 return toast({ ...toastParams, title: "Error", description: "CEP not found", status: "error" });
             }
 
-            setFieldValue("street", response.logradouro ?? "");
-            setFieldValue("district", response.bairro ?? "");
-            setFieldValue("city", response.localidade ?? "");
-            setFieldValue("state", response.uf ?? "");
+            setFieldValue("street", response.data.logradouro ?? "");
+            setFieldValue("district", response.data.bairro ?? "");
+            setFieldValue("city", response.data.localidade ?? "");
+            setFieldValue("state", response.data.uf ?? "");
         } catch (error: any) {
             toast({ ...toastParams, title: "Error", description: error ?? "An error has occurred", status: "error" });
         }

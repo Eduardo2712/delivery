@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from "@nestjs/common";
+import { Controller, Post, Body, HttpCode, HttpStatus } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { ListProductDto } from "./dto/list-product.dto";
 import { IsPublic } from "src/auth/decorators/is-public.decorator";
@@ -9,7 +9,12 @@ export class ProductsController {
 
     @IsPublic()
     @Post("list")
-    create(@Body() listProductDto: ListProductDto) {
-        return this.productsService.list(listProductDto);
+    @HttpCode(HttpStatus.OK)
+    async list(@Body() listProductDto: ListProductDto) {
+        try {
+            return await this.productsService.list(listProductDto);
+        } catch (err) {
+            throw new Error("Erro ao obter dados.");
+        }
     }
 }

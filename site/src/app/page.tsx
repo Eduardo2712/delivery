@@ -119,13 +119,11 @@ const Page: NextPage = () => {
 
             const response = await listProducts(data);
 
-            const response_json = await response.json();
-
-            if (response.status !== 201) {
-                return toast({ ...toastParams, title: "Error", description: response_json.message, status: "error" });
+            if (response.status !== 200) {
+                return toast({ ...toastParams, title: "Error", description: response.data.message, status: "error" });
             }
 
-            setProducts(response_json);
+            setProducts(response.data);
         } catch (error: any) {
             toast({ ...toastParams, title: "Error", description: error ?? "An error has occurred", status: "error" });
         } finally {

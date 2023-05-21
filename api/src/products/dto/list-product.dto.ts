@@ -1,4 +1,4 @@
-import { IsArray, IsString } from "class-validator";
+import { IsArray, IsNumber, IsString } from "class-validator";
 import { Product } from "../entities/product.entity";
 
 export class ListProductDto extends Product {
@@ -7,4 +7,7 @@ export class ListProductDto extends Product {
 
     @IsString()
     search: string;
+
+    @IsNumber()
+    page: number;
 }

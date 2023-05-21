@@ -5,7 +5,7 @@ import Header from "@/components/header";
 import { Button, Container, Flex, Input, InputGroup, InputLeftElement, Skeleton, Text, useToast } from "@chakra-ui/react";
 import { NextPage } from "next";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { categories } from "./util";
 import { IoArrowForward, IoSearch } from "react-icons/io5";
 import { listProducts } from "@/requests/product.request";
@@ -48,6 +48,38 @@ const Card = (props: { product: Product; loading: boolean }) => {
                 </Skeleton>
             </Flex>
         </Link>
+    );
+};
+
+const Pagination = (props: { page: number; setPage: Dispatch<SetStateAction<number>>; products_total: number }) => {
+    const products_per_page = 20;
+    const number_of_pages = Math.ceil(props.products_total / products_per_page);
+
+    const pages = () => {
+        const list = [];
+
+        for (let i = 1; i <= number_of_pages; i++) {
+            list.push(
+                <Text
+                    key={i}
+                    cursor={"pointer"}
+                    onClick={() => props.setPage(i)}
+                    fontSize={"2xl"}
+                    color={props.page === i ? "blue.300" : "gray.500"}
+                    fontWeight={props.page === i ? "extrabold" : "bold"}
+                >
+                    {i}
+                </Text>
+            );
+        }
+
+        return list;
+    };
+
+    return (
+        <Flex justifyContent={"center"} gap={"1rem"}>
+            {pages()}
+        </Flex>
     );
 };
 
@@ -99,14 +131,15 @@ const Page: NextPage = () => {
         return array_categories;
     });
     const [loading, setLoading] = useState<boolean>(false);
-    const [products, setProducts] = useState<Product[]>([]);
+    const [data, setData] = useState<{ count: number; rows: Product[] }>({ count: 0, rows: [] });
     const [search, setSearch] = useState<string>("");
+    const [page, setPage] = useState<number>(1);
 
     const toast = useToast();
 
     useEffect(() => {
         searchProducts();
-    }, [selected, search]);
+    }, [selected, search, page]);
 
     const searchProducts = async () => {
         setLoading(true);
@@ -114,7 +147,8 @@ const Page: NextPage = () => {
         try {
             const data = {
                 id_type_array: selected,
-                search
+                search,
+                page
             };
 
             const response = await listProducts(data);
@@ -123,7 +157,7 @@ const Page: NextPage = () => {
                 return toast({ ...toastParams, title: "Error", description: response.data.message, status: "error" });
             }
 
-            setProducts(response.data);
+            setData(response.data);
         } catch (error: any) {
             toast({ ...toastParams, title: "Error", description: error ?? "An error has occurred", status: "error" });
         } finally {
@@ -224,10 +258,12 @@ const Page: NextPage = () => {
                         </Flex>
 
                         <Flex wrap={"wrap"} gap={"2rem"} marginTop={"1.5rem"} justifyContent={"flex-start"} marginBottom={"2.5rem"}>
-                            {products.map((product) => {
+                            {data.rows.map((product) => {
                                 return <Card key={product.id} product={product} loading={loading} />;
                             })}
                         </Flex>
+
+                        <Pagination page={page} setPage={setPage} products_total={data.count} />
                     </Flex>
                 </Container>
 

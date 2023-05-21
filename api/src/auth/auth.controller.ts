@@ -13,6 +13,10 @@ export class AuthController {
     @Post("login")
     @HttpCode(HttpStatus.OK)
     async login(@Request() req: AuthRequest) {
-        return this.authService.login(req.user);
+        try {
+            return this.authService.login(req.user);
+        } catch (err) {
+            throw new Error("Erro ao obter dados.");
+        }
     }
 }

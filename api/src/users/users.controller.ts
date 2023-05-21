@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from "@nestjs/common";
+import { Controller, Post, Body, HttpCode, HttpStatus } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { IsPublic } from "src/auth/decorators/is-public.decorator";
@@ -9,7 +9,12 @@ export class UsersController {
 
     @IsPublic()
     @Post()
+    @HttpCode(HttpStatus.OK)
     create(@Body() createUserDto: CreateUserDto) {
-        return this.usersService.create(createUserDto);
+        try {
+            return this.usersService.create(createUserDto);
+        } catch (err) {
+            throw new Error("Erro ao obter dados.");
+        }
     }
 }

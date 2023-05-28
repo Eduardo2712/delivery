@@ -14,7 +14,9 @@ export class UsersService {
         const email_unique = await this.usersRepository.findOne({
             where: {
                 email: create_user_dto.email
-            }
+            },
+            raw: true,
+            nest: true
         });
 
         if (email_unique) {
@@ -24,7 +26,9 @@ export class UsersService {
         const cpf_unique = await this.usersRepository.findOne({
             where: {
                 use_cpf: create_user_dto.use_cpf
-            }
+            },
+            raw: true,
+            nest: true
         });
 
         if (cpf_unique) {
@@ -35,8 +39,13 @@ export class UsersService {
         const hash = bcrypt.hashSync(create_user_dto.password, salt_rounds);
 
         const user = await this.usersRepository.create({
-            ...create_user_dto,
-            password: hash
+            password: hash,
+            email: create_user_dto.email,
+            use_date_birth: new Date(create_user_dto.use_date_birth.toString()),
+            use_name: create_user_dto.use_name,
+            use_phone: create_user_dto.use_phone,
+            use_cpf: create_user_dto.use_cpf,
+            use_delete: false
         });
 
         return {

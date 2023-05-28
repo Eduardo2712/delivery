@@ -1,4 +1,4 @@
-import { IsEmail, IsString, MaxLength, Length, IsDateString, Equals } from "class-validator";
+import { IsEmail, IsString, MaxLength, Length, IsDate } from "class-validator";
 import { User } from "../entities/user.entity";
 
 export class CreateUserDto extends User {
@@ -26,7 +26,7 @@ export class CreateUserDto extends User {
     @MaxLength(255)
     use_cpf: string;
 
-    @IsDateString()
+    @IsDate()
     use_date_birth: Date;
 
     @IsString()

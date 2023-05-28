@@ -6,7 +6,8 @@ import { Column, Model, Table } from "sequelize-typescript";
         attributes: {
             exclude: ["createdAt", "updatedAt"]
         }
-    }
+    },
+    timestamps: false
 })
 export class User extends Model<User> {
     @Column({

@@ -6,7 +6,7 @@ type Props = {
     handleChange: (e: React.ChangeEvent<any>) => void;
     handleBlur: (e: React.FocusEvent<any, Element>) => void;
     name: string;
-    type: string;
+    type?: string;
     title: string;
     errors: string | undefined;
     touched: boolean | undefined;
@@ -21,7 +21,7 @@ const StyleInput = (props: Props) => {
             <FormLabel color={"gray.500"}>{props.title}</FormLabel>
 
             <Input
-                type={props.type}
+                type={props.type ?? "text"}
                 name={props.name}
                 onChange={props.handleChange}
                 onBlur={props.handleBlur}

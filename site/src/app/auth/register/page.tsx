@@ -4,7 +4,7 @@ import { Form, Formik } from "formik";
 import { maskCEP, maskCPF, maskPhone } from "../../../utils/mask";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Flex, FormControl, FormLabel, Heading, Input, Stack, Text, Box, useToast } from "@chakra-ui/react";
+import { Button, Flex, Heading, Stack, Box, useToast } from "@chakra-ui/react";
 import { createUser } from "../../../requests/user.request";
 import { getCEP } from "../../../requests/cep.request";
 import StyleInput from "../../../components/style-input";
@@ -26,17 +26,17 @@ const Register: NextPage = () => {
         email: "",
         password: "",
         password_confirmation: "",
-        name: "",
-        cpf_cnpj: "",
-        phone: "",
-        date_birth: "",
-        cep: "",
-        street: "",
-        number: "",
-        district: "",
-        complement: "",
-        city: "",
-        state: ""
+        use_name: "",
+        use_cpf: "",
+        use_phone: "",
+        use_date_birth: "",
+        usa_cep: "",
+        usa_street: "",
+        usa_number: "",
+        usa_district: "",
+        usa_complement: "",
+        usa_city: "",
+        usa_state: ""
     };
 
     const onSubmit = async (values: TypeFormRegister) => {
@@ -77,10 +77,10 @@ const Register: NextPage = () => {
                 return toast({ ...toastParams, title: "Error", description: "CEP not found", status: "error" });
             }
 
-            setFieldValue("street", response.data.logradouro ?? "");
-            setFieldValue("district", response.data.bairro ?? "");
-            setFieldValue("city", response.data.localidade ?? "");
-            setFieldValue("state", response.data.uf ?? "");
+            setFieldValue("usa_street", response.data.logradouro ?? "");
+            setFieldValue("usa_district", response.data.bairro ?? "");
+            setFieldValue("usa_city", response.data.localidade ?? "");
+            setFieldValue("usa_state", response.data.uf ?? "");
         } catch (error: any) {
             toast({ ...toastParams, title: "Error", description: error ?? "An error has occurred", status: "error" });
         }
@@ -109,26 +109,26 @@ const Register: NextPage = () => {
                                     <>
                                         <Box gap={3} display={{ sm: "flex" }}>
                                             <StyleInput
-                                                errors={errors.name}
-                                                touched={touched.name}
+                                                errors={errors.use_name}
+                                                touched={touched.use_name}
                                                 handleBlur={handleBlur}
                                                 handleChange={handleChange}
-                                                name={"name"}
+                                                name={"use_name"}
                                                 title={"Name"}
                                                 type={"text"}
-                                                value={values.name}
+                                                value={values.use_name}
                                                 isRequired={true}
                                             />
 
                                             <StyleInput
-                                                errors={errors.cpf_cnpj}
-                                                touched={touched.cpf_cnpj}
+                                                errors={errors.use_cpf}
+                                                touched={touched.use_cpf}
                                                 handleBlur={handleBlur}
                                                 handleChange={(e) => handleChange(maskCPF(e))}
-                                                name={"cpf_cnpj"}
+                                                name={"use_cpf"}
                                                 title={"CPF"}
                                                 type={"text"}
-                                                value={values.cpf_cnpj}
+                                                value={values.use_cpf}
                                                 isRequired={true}
                                                 max_length={14}
                                             />
@@ -136,14 +136,14 @@ const Register: NextPage = () => {
 
                                         <Box gap={3} display={{ sm: "flex" }}>
                                             <StyleInput
-                                                errors={errors.phone}
-                                                touched={touched.phone}
+                                                errors={errors.use_phone}
+                                                touched={touched.use_phone}
                                                 handleBlur={handleBlur}
                                                 handleChange={(e) => handleChange(maskPhone(e))}
-                                                name={"phone"}
+                                                name={"use_phone"}
                                                 title={"Phone number"}
                                                 type={"text"}
-                                                value={values.phone}
+                                                value={values.use_phone}
                                                 isRequired={true}
                                             />
 
@@ -188,14 +188,14 @@ const Register: NextPage = () => {
 
                                         <Box gap={3} display={{ sm: "flex" }}>
                                             <StyleInput
-                                                errors={errors.date_birth}
-                                                touched={touched.date_birth}
+                                                errors={errors.use_date_birth}
+                                                touched={touched.use_date_birth}
                                                 handleBlur={handleBlur}
                                                 handleChange={handleChange}
-                                                name={"date_birth"}
+                                                name={"use_date_birth"}
                                                 title={"Date of birth"}
                                                 type={"date"}
-                                                value={values.date_birth}
+                                                value={values.use_date_birth}
                                                 isRequired={true}
                                             />
                                         </Box>
@@ -205,151 +205,88 @@ const Register: NextPage = () => {
                                 {step === 1 && (
                                     <>
                                         <Box gap={3} display={{ sm: "flex" }}>
-                                            <FormControl isRequired>
-                                                <FormLabel color={"blackAlpha.900"}>CEP</FormLabel>
+                                            <StyleInput
+                                                errors={errors.usa_cep}
+                                                touched={touched.usa_cep}
+                                                handleBlur={(e) => searchCEP(maskCEP(e).target.value, setFieldValue)}
+                                                handleChange={(e) => handleChange(maskCEP(e))}
+                                                name={"usa_cep"}
+                                                title={"CEP"}
+                                                value={values.usa_cep}
+                                                isRequired={true}
+                                            />
 
-                                                <Input
-                                                    placeholder="CEP"
-                                                    _placeholder={{
-                                                        color: "gray.500"
-                                                    }}
-                                                    type="text"
-                                                    name="cep"
-                                                    value={values.cep}
-                                                    onChange={(e) => handleChange(maskCEP(e))}
-                                                    onBlur={(e) => searchCEP(maskCEP(e).target.value, setFieldValue)}
-                                                />
-
-                                                <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.cep && touched.cep && errors.cep}
-                                                </Text>
-                                            </FormControl>
-
-                                            <FormControl isRequired>
-                                                <FormLabel color={"blackAlpha.900"}>Street</FormLabel>
-
-                                                <Input
-                                                    placeholder="Street"
-                                                    _placeholder={{
-                                                        color: "gray.500"
-                                                    }}
-                                                    type="text"
-                                                    name="street"
-                                                    value={values.street}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                />
-
-                                                <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.street && touched.street && errors.street}
-                                                </Text>
-                                            </FormControl>
+                                            <StyleInput
+                                                errors={errors.usa_street}
+                                                touched={touched.usa_street}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                                name={"usa_street"}
+                                                title={"Street"}
+                                                value={values.usa_street}
+                                                isRequired={true}
+                                            />
                                         </Box>
 
                                         <Box gap={3} display={{ sm: "flex" }}>
-                                            <FormControl isRequired>
-                                                <FormLabel color={"blackAlpha.900"}>Number</FormLabel>
+                                            <StyleInput
+                                                errors={errors.usa_number}
+                                                touched={touched.usa_number}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                                name={"usa_number"}
+                                                title={"Number"}
+                                                value={values.usa_number}
+                                                isRequired={true}
+                                            />
 
-                                                <Input
-                                                    placeholder="Number"
-                                                    _placeholder={{
-                                                        color: "gray.500"
-                                                    }}
-                                                    type="text"
-                                                    name="number"
-                                                    value={values.number}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                />
-
-                                                <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.number && touched.number && errors.number}
-                                                </Text>
-                                            </FormControl>
-
-                                            <FormControl>
-                                                <FormLabel color={"blackAlpha.900"}>Complement</FormLabel>
-
-                                                <Input
-                                                    placeholder="Complement"
-                                                    _placeholder={{
-                                                        color: "gray.500"
-                                                    }}
-                                                    type="text"
-                                                    name="complement"
-                                                    value={values.complement}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                />
-
-                                                <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.complement && touched.complement && errors.complement}
-                                                </Text>
-                                            </FormControl>
+                                            <StyleInput
+                                                errors={errors.usa_complement}
+                                                touched={touched.usa_complement}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                                name={"usa_complement"}
+                                                title={"Complement"}
+                                                value={values.usa_complement}
+                                                isRequired={false}
+                                            />
                                         </Box>
 
                                         <Box gap={3} display={{ sm: "flex" }}>
-                                            <FormControl isRequired>
-                                                <FormLabel color={"blackAlpha.900"}>District</FormLabel>
+                                            <StyleInput
+                                                errors={errors.usa_district}
+                                                touched={touched.usa_district}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                                name={"usa_district"}
+                                                title={"District"}
+                                                value={values.usa_district}
+                                                isRequired={true}
+                                            />
 
-                                                <Input
-                                                    placeholder="District"
-                                                    _placeholder={{
-                                                        color: "gray.500"
-                                                    }}
-                                                    type="text"
-                                                    name="district"
-                                                    value={values.district}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                />
-
-                                                <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.district && touched.district && errors.district}
-                                                </Text>
-                                            </FormControl>
-
-                                            <FormControl isRequired>
-                                                <FormLabel color={"blackAlpha.900"}>City</FormLabel>
-
-                                                <Input
-                                                    placeholder="City"
-                                                    _placeholder={{
-                                                        color: "gray.500"
-                                                    }}
-                                                    type="text"
-                                                    name="city"
-                                                    value={values.city}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                />
-
-                                                <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.city && touched.city && errors.city}
-                                                </Text>
-                                            </FormControl>
+                                            <StyleInput
+                                                errors={errors.usa_city}
+                                                touched={touched.usa_city}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                                name={"usa_city"}
+                                                title={"City"}
+                                                value={values.usa_city}
+                                                isRequired={true}
+                                            />
                                         </Box>
 
                                         <Box gap={3} display={{ sm: "flex" }}>
-                                            <FormControl isRequired>
-                                                <FormLabel color={"blackAlpha.900"}>State</FormLabel>
-
-                                                <Input
-                                                    placeholder="State"
-                                                    _placeholder={{
-                                                        color: "gray.500"
-                                                    }}
-                                                    type="text"
-                                                    name="state"
-                                                    value={values.state}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                />
-
-                                                <Text fontSize="sm" color={"red.500"} fontWeight={"semibold"} mt={1}>
-                                                    {errors.state && touched.state && errors.state}
-                                                </Text>
-                                            </FormControl>
+                                            <StyleInput
+                                                errors={errors.usa_state}
+                                                touched={touched.usa_state}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                                name={"usa_state"}
+                                                title={"State"}
+                                                value={values.usa_state}
+                                                isRequired={true}
+                                            />
                                         </Box>
                                     </>
                                 )}

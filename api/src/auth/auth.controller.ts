@@ -14,9 +14,9 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     async login(@Request() req: AuthRequest) {
         try {
-            return this.authService.login(req.user);
+            return await this.authService.login(req.user);
         } catch (err) {
-            throw new Error("Erro ao obter dados.");
+            throw new Error("Error getting data.");
         }
     }
 }

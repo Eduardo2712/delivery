@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "./axios.config";
 
 type Props = {
     id_type_array: number[];

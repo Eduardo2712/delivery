@@ -29,9 +29,6 @@ export class CreateUserDto extends User {
     @IsDateString()
     use_date_birth: Date;
 
-    @Equals(2)
-    type: number;
-
     @IsString()
     @Length(9)
     usa_cep: string;

@@ -14,7 +14,7 @@ export class ProductsController {
         try {
             return await this.productsService.list(listProductDto);
         } catch (err) {
-            throw new Error("Erro ao obter dados.");
+            throw new Error("Error getting data.");
         }
     }
 }

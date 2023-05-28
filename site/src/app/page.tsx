@@ -138,7 +138,9 @@ const Page: NextPage = () => {
     const toast = useToast();
 
     useEffect(() => {
-        searchProducts();
+        (async () => {
+            await searchProducts();
+        })();
     }, [selected, search, page]);
 
     const searchProducts = async () => {
@@ -166,11 +168,18 @@ const Page: NextPage = () => {
     };
 
     const selectType = (id_type: number) => {
+        setPage(1);
+
         if (selected.includes(id_type)) {
             setSelected((prev) => prev.filter((a) => a !== id_type));
         } else {
             setSelected((prev) => [...prev, id_type]);
         }
+    };
+
+    const onChangeSearch = (value: string) => {
+        setPage(1);
+        setSearch(value);
     };
 
     return (
@@ -192,7 +201,7 @@ const Page: NextPage = () => {
                                 <Input
                                     type={"text"}
                                     value={search}
-                                    onChange={(e) => setSearch(e.target.value)}
+                                    onChange={(e) => onChangeSearch(e.target.value)}
                                     placeholder="Search..."
                                     variant="solid"
                                     color={"gray.500"}

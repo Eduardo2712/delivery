@@ -10,11 +10,11 @@ export class UsersController {
     @IsPublic()
     @Post()
     @HttpCode(HttpStatus.OK)
-    create(@Body() createUserDto: CreateUserDto) {
+    async create(@Body() createUserDto: CreateUserDto) {
         try {
-            return this.usersService.create(createUserDto);
+            return await this.usersService.create(createUserDto);
         } catch (err) {
-            throw new Error("Erro ao obter dados.");
+            throw new Error("Error getting data.");
         }
     }
 }

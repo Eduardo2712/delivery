@@ -18,7 +18,7 @@ export type TypeFormRegister = {
 };
 
 export const schema = (step: number) => {
-    if (step === 1) {
+    if (step === 0) {
         return Yup.object().shape({
             email: Yup.string().email("Fill in with a valid e-mail!").required("Fill in this field!"),
             password: Yup.string().min(8, "Password must be at least 8 characters long!").required("Fill in this field!"),
@@ -31,7 +31,7 @@ export const schema = (step: number) => {
             use_phone: Yup.string().required("Fill in this field!"),
             use_date_birth: Yup.date().required("Fill in this field!")
         });
-    } else if (step === 2) {
+    } else if (step === 1) {
         return Yup.object().shape({
             usa_cep: Yup.string().required("Fill in this field!"),
             usa_street: Yup.string().required("Fill in this field!"),

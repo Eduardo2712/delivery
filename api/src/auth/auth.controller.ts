@@ -1,4 +1,4 @@
-import { Controller, HttpCode, HttpStatus, Post, Request, UseGuards } from "@nestjs/common";
+import { BadRequestException, Controller, HttpCode, HttpStatus, Post, Request, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { LocalAuthGuard } from "./guards/local-auth.guard";
 import { AuthRequest } from "./models/AuthRequest";
@@ -15,8 +15,8 @@ export class AuthController {
     async login(@Request() req: AuthRequest) {
         try {
             return await this.authService.login(req.user);
-        } catch (err) {
-            throw new Error("Error getting data.");
+        } catch (error: any) {
+            throw new BadRequestException(error.message);
         }
     }
 }

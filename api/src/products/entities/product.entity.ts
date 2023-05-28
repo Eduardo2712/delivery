@@ -1,4 +1,4 @@
-import { Column, Table, Model, HasMany, HasOne, BelongsTo, ForeignKey, DataType } from "sequelize-typescript";
+import { Column, Table, Model, BelongsTo, ForeignKey, DataType } from "sequelize-typescript";
 import { Photo } from "src/photos/entities/photo.entity";
 
 @Table({
@@ -11,7 +11,8 @@ import { Photo } from "src/photos/entities/photo.entity";
 })
 export class Product extends Model<Product> {
     @Column({
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
     })
     id: number;
 

@@ -12,7 +12,7 @@ export class UsersController {
     async create(@Body() createUserDto: CreateUserDto) {
         try {
             return await this.usersService.create(createUserDto);
-        } catch (error) {
+        } catch (error: any) {
             throw new BadRequestException(error.message);
         }
     }

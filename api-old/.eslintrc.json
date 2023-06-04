@@ -15,6 +15,5 @@
         "quotes": ["error", "double"],
         "semi": ["error", "always"],
         "eqeqeq": ["error"]
-        // "@typescript-eslint/no-explicit-any": "off"
     }
 }

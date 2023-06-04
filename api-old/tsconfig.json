@@ -1,13 +1,16 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "declaration": true,
-    "removeComments": true,
+    "esModuleInterop": true,
+    "declaration": false,
+    "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es2017",
+    "target": "ES2018",
     "sourceMap": true,
+    "strict": true,
+    "removeComments": true,
+    "allowSyntheticDefaultImports": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
@@ -16,6 +19,9 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
-  }
+    "noFallthroughCasesInSwitch": false,
+    "types": ["node"]
+  },
+  "include": ["src/**/*", "database"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

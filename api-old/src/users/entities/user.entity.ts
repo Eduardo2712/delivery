@@ -16,22 +16,16 @@ export class User extends Model<User> {
     })
     id: number;
 
-    @Column({
-        allowNull: true
-    })
+    @Column
     email: string;
 
-    @Column({
-        allowNull: false
-    })
+    @Column
     use_date_birth: Date;
 
     @Column
     use_id_photo?: number;
 
-    @Column({
-        allowNull: false
-    })
+    @Column
     use_name: string;
 
     @Column

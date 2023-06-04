@@ -4,7 +4,7 @@ import { Form, Formik } from "formik";
 import { maskCEP, maskCPF, maskPhone } from "../../../utils/mask";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Flex, Heading, Stack, Box, useToast } from "@chakra-ui/react";
+import { Button, Flex, Heading, Stack, Box, useToast, ToastId } from "@chakra-ui/react";
 import { createUser } from "../../../requests/user.request";
 import { getCEP } from "../../../requests/cep.request";
 import StyleInput from "../../../components/style-input";

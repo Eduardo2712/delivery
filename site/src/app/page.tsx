@@ -64,7 +64,7 @@ const Pagination = (props: { page: number; setPage: Dispatch<SetStateAction<numb
                     key={i}
                     cursor={"pointer"}
                     onClick={() => props.setPage(i)}
-                    fontSize={"2xl"}
+                    fontSize={"xl"}
                     color={props.page === i ? "blue.300" : "gray.500"}
                     fontWeight={props.page === i ? "extrabold" : "bold"}
                 >
@@ -85,7 +85,7 @@ const Pagination = (props: { page: number; setPage: Dispatch<SetStateAction<numb
 
 const MyOrder = () => {
     return (
-        <Flex width={"20rem"} borderLeft={"gray.200"} borderLeftWidth={"0.1rem"} padding={"2rem"} flexDirection={"column"}>
+        <Flex width={"20rem"} borderLeftColor={"gray.200"} borderLeftWidth={"0.1rem"} padding={"2rem"} flexDirection={"column"}>
             <Flex gap={"0.3rem"}>
                 <Text fontSize={"lg"} color={"gray.900"} fontWeight={"bold"} marginBottom={"3rem"}>
                     My

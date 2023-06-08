@@ -21,7 +21,6 @@ import "dotenv/config";
     controllers: [AuthController],
     providers: [AuthService, LocalStrategy, JwtStrategy]
 })
-
 export class AuthModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer.apply(LoginValidationMiddleware).forRoutes("login");

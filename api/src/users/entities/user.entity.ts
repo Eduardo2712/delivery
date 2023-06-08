@@ -1,4 +1,4 @@
-import { Column, Model, Table } from "sequelize-typescript";
+import { Column, DataType, Default, Model, Table } from "sequelize-typescript";
 
 @Table({
     tableName: "users",
@@ -17,38 +17,64 @@ export class User extends Model<User> {
     id: number;
 
     @Column({
-        allowNull: true
+        allowNull: true,
+        type: DataType.STRING
     })
     email: string;
 
     @Column({
-        allowNull: false
+        allowNull: false,
+        type: DataType.STRING
     })
     use_date_birth: Date;
 
-    @Column
+    @Column({
+        allowNull: true,
+        type: DataType.BIGINT
+    })
     use_id_photo?: number;
 
     @Column({
-        allowNull: false
+        allowNull: false,
+        type: DataType.STRING
     })
     use_name: string;
 
-    @Column
+    @Column({
+        allowNull: false,
+        type: DataType.STRING
+    })
     use_phone: string;
 
-    @Column
+    @Column({
+        allowNull: false,
+        type: DataType.STRING
+    })
     password: string;
 
-    @Column
+    @Column({
+        allowNull: false,
+        type: DataType.STRING
+    })
     use_cpf: string;
 
-    @Column
+    @Column({
+        allowNull: false,
+        defaultValue: false
+    })
     use_delete: boolean;
 
-    @Column
+    @Default(DataType.NOW)
+    @Column({
+        allowNull: false,
+        type: DataType.DATE
+    })
     created_at: Date;
 
-    @Column
+    @Default(DataType.NOW)
+    @Column({
+        allowNull: false,
+        type: DataType.DATE
+    })
     updated_at: Date;
 }

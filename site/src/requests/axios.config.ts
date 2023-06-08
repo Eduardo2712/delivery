@@ -8,11 +8,13 @@ if (typeof window !== "undefined") {
 
 const axios_instance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_URL_API,
-    headers: {
-        common: {
-            Authorization: `Bearer ${user?.token}`
-        }
-    }
+    headers: user?.token
+        ? {
+              common: {
+                  Authorization: `Bearer ${user?.token}`
+              }
+          }
+        : {}
 });
 
 export default axios_instance;

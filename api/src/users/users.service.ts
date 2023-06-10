@@ -17,9 +17,7 @@ export class UsersService {
         const email_unique = await this.userModel.findOne({
             where: {
                 email: create_user_dto.email
-            },
-            raw: true,
-            nest: true
+            }
         });
 
         if (email_unique) {
@@ -29,9 +27,7 @@ export class UsersService {
         const cpf_unique = await this.userModel.findOne({
             where: {
                 use_cpf: create_user_dto.use_cpf
-            },
-            raw: true,
-            nest: true
+            }
         });
 
         if (cpf_unique) {
@@ -44,7 +40,7 @@ export class UsersService {
         const user = await this.userModel.create({
             password: hash,
             email: create_user_dto.email,
-            use_date_birth: new Date(create_user_dto.use_date_birth.toString()),
+            use_date_birth: create_user_dto.use_date_birth,
             use_name: create_user_dto.use_name,
             use_phone: create_user_dto.use_phone,
             use_cpf: create_user_dto.use_cpf,

@@ -6,6 +6,7 @@ import { UsersModule } from "./users/users.module";
 import { User } from "./users/entities/user.entity";
 import { AuthModule } from "./auth/auth.module";
 import { Dialect } from "sequelize";
+import { ProductsModule } from './products/products.module';
 
 @Module({
     imports: [
@@ -21,7 +22,8 @@ import { Dialect } from "sequelize";
             synchronize: true
         }),
         UsersModule,
-        AuthModule
+        AuthModule,
+        ProductsModule
     ],
 
     controllers: [AppController],

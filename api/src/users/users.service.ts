@@ -10,8 +10,13 @@ import * as bcrypt from "bcrypt";
 export class UsersService {
     constructor(
         @InjectModel(User)
-        private userModel: typeof User
-    ) {}
+        private readonly userModel: typeof User
+    ) {
+        this.userModel.addHook("beforeCreate", (user: User) => {
+            user.created_at = new Date();
+            user.updated_at = new Date();
+        });
+    }
 
     async create(create_user_dto: CreateUserDto) {
         const email_unique = await this.userModel.findOne({

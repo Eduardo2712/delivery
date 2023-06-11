@@ -1,4 +1,4 @@
-import { Column, DataType, Default, Model, Table } from "sequelize-typescript";
+import { Column, DataType, Model, Table } from "sequelize-typescript";
 
 @Table({
     tableName: "users",
@@ -60,19 +60,20 @@ export class User extends Model<User> {
 
     @Column({
         allowNull: false,
-        defaultValue: false
+        defaultValue: false,
+        type: DataType.BOOLEAN
     })
     use_delete: boolean;
 
-    @Default(DataType.NOW)
     @Column({
+        defaultValue: DataType.NOW,
         allowNull: false,
         type: DataType.DATE
     })
     created_at: Date;
 
-    @Default(DataType.NOW)
     @Column({
+        defaultValue: DataType.NOW,
         allowNull: false,
         type: DataType.DATE
     })

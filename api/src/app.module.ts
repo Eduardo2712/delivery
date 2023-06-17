@@ -6,7 +6,10 @@ import { UsersModule } from "./users/users.module";
 import { User } from "./users/entities/user.entity";
 import { AuthModule } from "./auth/auth.module";
 import { Dialect } from "sequelize";
-import { ProductsModule } from './products/products.module';
+import { ProductsModule } from "./products/products.module";
+import { File } from "./files/entities/file.entity";
+import { Product } from "./products/entities/product.entity";
+import { ProductFile } from "./product_files/entities/product_file.entity";
 
 @Module({
     imports: [
@@ -17,7 +20,7 @@ import { ProductsModule } from './products/products.module';
             username: process.env.DB_USER,
             password: process.env.DB_PASS,
             database: process.env.DB_NAME,
-            models: [User],
+            models: [User, File, Product, ProductFile],
             autoLoadModels: true,
             synchronize: true
         }),

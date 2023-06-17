@@ -1,4 +1,5 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { File } from "src/files/entities/file.entity";
 
 @Table({
     tableName: "users",
@@ -12,9 +13,15 @@ import { Column, DataType, Model, Table } from "sequelize-typescript";
 export class User extends Model<User> {
     @Column({
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        allowNull: false,
+        type: DataType.INTEGER
     })
     id: number;
+
+    @ForeignKey(() => File)
+    @Column
+    use_id_file: number;
 
     @Column({
         allowNull: true,
@@ -27,12 +34,6 @@ export class User extends Model<User> {
         type: DataType.STRING
     })
     use_date_birth: Date;
-
-    @Column({
-        allowNull: true,
-        type: DataType.BIGINT
-    })
-    use_id_photo?: number;
 
     @Column({
         allowNull: false,
@@ -78,4 +79,7 @@ export class User extends Model<User> {
         type: DataType.DATE
     })
     updated_at: Date;
+
+    @BelongsTo(() => File)
+    file: File;
 }

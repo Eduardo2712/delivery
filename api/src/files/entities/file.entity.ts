@@ -1,7 +1,8 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, DataType, HasOne, Model, Table } from "sequelize-typescript";
+import { User } from "src/users/entities/user.entity";
 
 @Table({
-    tableName: "products",
+    tableName: "files",
     defaultScope: {
         attributes: {
             exclude: ["createdAt", "updatedAt"]
@@ -9,7 +10,7 @@ import { Column, DataType, Model, Table } from "sequelize-typescript";
     },
     timestamps: false
 })
-export class Product extends Model<Product> {
+export class File extends Model<File> {
     @Column({
         primaryKey: true,
         autoIncrement: true,
@@ -20,33 +21,15 @@ export class Product extends Model<Product> {
 
     @Column({
         allowNull: false,
-        type: DataType.DECIMAL(10, 2)
+        type: DataType.TEXT
     })
-    pro_price: number;
-
-    @Column({
-        allowNull: false,
-        type: DataType.STRING
-    })
-    pro_name: string;
-
-    @Column({
-        allowNull: false,
-        type: DataType.STRING
-    })
-    pro_description: string;
+    fil_url: string;
 
     @Column({
         allowNull: false,
         type: DataType.BOOLEAN
     })
-    pro_delete: boolean;
-
-    @Column({
-        allowNull: false,
-        type: DataType.INTEGER
-    })
-    pro_id_type: number;
+    fil_delete: boolean;
 
     @Column({
         defaultValue: DataType.NOW,
@@ -61,4 +44,7 @@ export class Product extends Model<Product> {
         type: DataType.DATE
     })
     updated_at: Date;
+
+    @HasOne(() => User)
+    user: User;
 }

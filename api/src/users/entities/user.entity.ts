@@ -31,7 +31,7 @@ export class User extends Model<User> {
 
     @Column({
         allowNull: false,
-        type: DataType.STRING
+        type: DataType.DATE
     })
     use_date_birth: Date;
 

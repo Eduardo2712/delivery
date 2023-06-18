@@ -1,4 +1,5 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, DataType, HasMany, Model, Table } from "sequelize-typescript";
+import { ProductFile } from "src/product_files/entities/product_file.entity";
 
 @Table({
     tableName: "products",
@@ -61,4 +62,7 @@ export class Product extends Model<Product> {
         type: DataType.DATE
     })
     updated_at: Date;
+
+    @HasMany(() => ProductFile)
+    files: ProductFile;
 }

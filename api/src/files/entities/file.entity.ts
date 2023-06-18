@@ -1,4 +1,5 @@
-import { Column, DataType, HasOne, Model, Table } from "sequelize-typescript";
+import { Column, DataType, HasMany, HasOne, Model, Table } from "sequelize-typescript";
+import { ProductFile } from "src/product_files/entities/product_file.entity";
 import { User } from "src/users/entities/user.entity";
 
 @Table({
@@ -47,4 +48,7 @@ export class File extends Model<File> {
 
     @HasOne(() => User)
     user: User;
+
+    @HasMany(() => ProductFile)
+    products: ProductFile;
 }

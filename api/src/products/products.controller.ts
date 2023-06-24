@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from "@nestjs/common";
+import { Controller, Post, Body, HttpCode, HttpStatus, BadRequestException } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { IsPublic } from "src/auth/decorators/is-public.decorator";
 import { ListProductDto } from "./dto/list-product.dto";
@@ -13,8 +13,12 @@ export class ProductsController {
     async list(@Body() listProductDto: ListProductDto) {
         try {
             return await this.productsService.list(listProductDto);
-        } catch (err) {
-            throw new Error("Error getting data.");
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw new BadRequestException(error.message);
+            }
+
+            throw new BadRequestException("Error");
         }
     }
 }

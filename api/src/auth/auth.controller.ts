@@ -15,8 +15,11 @@ export class AuthController {
     async login(@Request() req: AuthRequestInterface) {
         try {
             return await this.authService.login(req.user);
-        } catch (error: any) {
-            throw new BadRequestException(error.message);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw new BadRequestException(error.message);
+            }
+            throw new BadRequestException("Error");
         }
     }
 }

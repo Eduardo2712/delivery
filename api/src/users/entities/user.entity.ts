@@ -1,5 +1,4 @@
-import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
-import { File } from "src/files/entities/file.entity";
+import { Column, DataType, Model, Table } from "sequelize-typescript";
 
 @Table({
     tableName: "users",
@@ -19,12 +18,8 @@ export class User extends Model<User> {
     })
     id: number;
 
-    @ForeignKey(() => File)
-    @Column
-    use_id_file: number;
-
     @Column({
-        allowNull: true,
+        allowNull: false,
         type: DataType.STRING
     })
     email: string;
@@ -79,7 +74,4 @@ export class User extends Model<User> {
         type: DataType.DATE
     })
     updated_at: Date;
-
-    @BelongsTo(() => File)
-    file: File;
 }

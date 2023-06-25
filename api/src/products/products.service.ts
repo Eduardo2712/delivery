@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/sequelize";
-import { Product } from "./entities/product.entity";
+import { Product } from "../models/product.model";
 import { Op } from "sequelize";
 import { ListProductDto } from "./dto/list-product.dto";
 
@@ -9,12 +9,7 @@ export class ProductsService {
     constructor(
         @InjectModel(Product)
         private readonly productModel: typeof Product
-    ) {
-        this.productModel.addHook("beforeCreate", (product: Product) => {
-            product.created_at = new Date();
-            product.updated_at = new Date();
-        });
-    }
+    ) {}
 
     list(list_product_dto: ListProductDto) {
         let where = {};

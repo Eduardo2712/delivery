@@ -1,22 +1,16 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { BelongsTo, Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
+import { File } from "./file.model";
 
 @Table({
-    tableName: "users",
-    defaultScope: {
-        attributes: {
-            exclude: ["createdAt", "updatedAt"]
-        }
-    },
-    timestamps: false
+    tableName: "users"
 })
 export class User extends Model<User> {
+    @ForeignKey(() => File)
     @Column({
-        primaryKey: true,
-        autoIncrement: true,
-        allowNull: false,
+        allowNull: true,
         type: DataType.INTEGER
     })
-    id: number;
+    use_id_photo: number;
 
     @Column({
         allowNull: false,
@@ -61,17 +55,6 @@ export class User extends Model<User> {
     })
     use_delete: boolean;
 
-    @Column({
-        defaultValue: DataType.NOW,
-        allowNull: false,
-        type: DataType.DATE
-    })
-    created_at: Date;
-
-    @Column({
-        defaultValue: DataType.NOW,
-        allowNull: false,
-        type: DataType.DATE
-    })
-    updated_at: Date;
+    @BelongsTo(() => File)
+    photo: File;
 }

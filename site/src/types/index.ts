@@ -8,8 +8,8 @@ export type User = {
     use_delete: boolean;
     use_id_photo: number | null;
     photo: File;
-    created_at: Date;
-    updated_at: Date;
+    createdAt: Date;
+    updatedAt: Date;
 };
 
 export type Address = {
@@ -21,8 +21,8 @@ export type Address = {
     add_complement: string;
     add_city: string;
     add_state: string;
-    created_at: Date;
-    updated_at: Date;
+    createdAt: Date;
+    updatedAt: Date;
 };
 
 export type Product = {
@@ -33,8 +33,8 @@ export type Product = {
     pro_name: string;
     pro_description: string;
     pro_delete: boolean;
-    created_at: Date;
-    updated_at: Date;
+    createdAt: Date;
+    updatedAt: Date;
     photo: Photo;
 };
 
@@ -44,6 +44,6 @@ export type Photo = {
     pho_name: string;
     pho_delete: boolean;
     pho_path: string;
-    created_at: Date;
-    updated_at: Date;
+    createdAt: Date;
+    updatedAt: Date;
 };

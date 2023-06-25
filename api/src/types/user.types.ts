@@ -8,8 +8,8 @@ export type UserType = {
     use_cpf: string;
     use_date_birth: Date;
     use_delete: boolean;
-    created_at: Date;
-    updated_at: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 };
 
 export type UserPayloadType = {

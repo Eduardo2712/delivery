@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { InjectModel } from "@nestjs/sequelize";
-import { User } from "./entities/user.entity";
+import { User } from "../models/user.model";
 import { HttpException } from "@nestjs/common/exceptions";
 import { HttpStatus } from "@nestjs/common/enums";
 import * as bcrypt from "bcrypt";
@@ -11,12 +11,7 @@ export class UsersService {
     constructor(
         @InjectModel(User)
         private readonly userModel: typeof User
-    ) {
-        this.userModel.addHook("beforeCreate", (user: User) => {
-            user.created_at = new Date();
-            user.updated_at = new Date();
-        });
-    }
+    ) {}
 
     async create(create_user_dto: CreateUserDto) {
         const email_unique = await this.userModel.findOne({

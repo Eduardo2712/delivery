@@ -1,22 +1,18 @@
-import { Column, DataType, ForeignKey, Model, Table } from "sequelize-typescript";
-import { File } from "src/models/file.model";
-import { Product } from "src/models/product.model";
+// @Table({
+//     tableName: "product_files"
+// })
+// export class ProductFile extends Model<ProductFile> {
+//     @ForeignKey(() => File)
+//     @Column({
+//         allowNull: true,
+//         type: DataType.INTEGER
+//     })
+//     prf_id_file: number;
 
-@Table({
-    tableName: "product_files"
-})
-export class ProductFile extends Model<ProductFile> {
-    @ForeignKey(() => File)
-    @Column({
-        allowNull: true,
-        type: DataType.INTEGER
-    })
-    prf_id_file: number;
-
-    @ForeignKey(() => Product)
-    @Column({
-        allowNull: true,
-        type: DataType.INTEGER
-    })
-    prf_id_product: number;
-}
+//     @ForeignKey(() => Product)
+//     @Column({
+//         allowNull: true,
+//         type: DataType.INTEGER
+//     })
+//     prf_id_product: number;
+// }

@@ -1,20 +1,21 @@
 import { Injectable } from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
-import { InjectModel } from "@nestjs/sequelize";
-import { User } from "../models/user.model";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 import { HttpException } from "@nestjs/common/exceptions";
 import { HttpStatus } from "@nestjs/common/enums";
 import * as bcrypt from "bcrypt";
+import { User } from "./entities/user.entity";
 
 @Injectable()
 export class UsersService {
     constructor(
-        @InjectModel(User)
-        private readonly userModel: typeof User
+        @InjectRepository(User)
+        private usersRepository: Repository<User>
     ) {}
 
-    async create(create_user_dto: CreateUserDto) {
-        const email_unique = await this.userModel.findOne({
+    create(create_user_dto: CreateUserDto) {
+        const email_unique = this.usersRepository.findOne({
             where: {
                 email: create_user_dto.email
             }
@@ -24,7 +25,7 @@ export class UsersService {
             throw new HttpException("This email address is already in use", HttpStatus.BAD_REQUEST);
         }
 
-        const cpf_unique = await this.userModel.findOne({
+        const cpf_unique = this.usersRepository.findOne({
             where: {
                 use_cpf: create_user_dto.use_cpf
             }
@@ -37,7 +38,7 @@ export class UsersService {
         const salt_rounds = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(create_user_dto.password, salt_rounds);
 
-        const user = await this.userModel.create({
+        const user = this.usersRepository.create({
             password: hash,
             email: create_user_dto.email,
             use_date_birth: create_user_dto.use_date_birth,
@@ -54,11 +55,10 @@ export class UsersService {
     }
 
     findByEmail(email: string) {
-        const user = this.userModel.findOne<User>({
+        const user = this.usersRepository.findOne({
             where: {
                 email
-            },
-            raw: true
+            }
         });
 
         return user;

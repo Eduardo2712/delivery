@@ -1,5 +1,5 @@
 import { IsArray, IsNumber, IsString } from "class-validator";
-import { Product } from "../../models/product.model";
+import { Product } from "../entities/product.entity";
 
 export class ListProductDto extends Product {
     @IsArray()

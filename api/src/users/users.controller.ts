@@ -9,9 +9,9 @@ export class UsersController {
 
     @IsPublic()
     @Post()
-    async create(@Body() createUserDto: CreateUserDto) {
+    create(@Body() createUserDto: CreateUserDto) {
         try {
-            return await this.usersService.create(createUserDto);
+            return this.usersService.create(createUserDto);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 throw new BadRequestException(error.message);

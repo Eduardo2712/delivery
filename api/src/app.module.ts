@@ -1,35 +1,33 @@
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { SequelizeModule } from "@nestjs/sequelize";
 import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
 import { ProductsModule } from "./products/products.module";
-import databaseConfig from "./database/database.config";
-import { User } from "./models/user.model";
-import { File } from "./models/file.model";
-import { ProductFile } from "./models/product-file.model";
-import { AdminsModule } from "./admins/admins.module";
-import { Admin } from "./models/admin.model";
-import { Product } from "./models/product.model";
-import { OrdersModule } from "./orders/orders.module";
-import { Order } from "./models/order.model";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { DataSource } from "typeorm";
+import "dotenv/config";
 
 @Module({
     imports: [
-        SequelizeModule.forRoot({
-            ...databaseConfig,
-            autoLoadModels: true,
+        TypeOrmModule.forRoot({
+            type: "mysql",
+            host: process.env.DB_HOST,
+            port: parseInt(process.env.DB_PORT),
+            username: process.env.DB_USER,
+            password: process.env.DB_PASS,
+            database: process.env.DB_NAME,
+            entities: ["dist/**/*.entity.js"],
             synchronize: true,
-            models: [User, File, ProductFile, Admin, Product, Order]
+            autoLoadEntities: true
         }),
         UsersModule,
         AuthModule,
-        ProductsModule,
-        AdminsModule,
-        OrdersModule
+        ProductsModule
     ],
     controllers: [AppController],
     providers: [AppService]
 })
-export class AppModule {}
+export class AppModule {
+    constructor(private dataSource: DataSource) {}
+}

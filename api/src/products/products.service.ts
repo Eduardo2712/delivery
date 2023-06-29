@@ -1,36 +1,24 @@
 import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/sequelize";
-import { Product } from "../models/product.model";
-import { Op } from "sequelize";
+import { InjectRepository } from "@nestjs/typeorm";
+import { In, Like, Repository } from "typeorm";
 import { ListProductDto } from "./dto/list-product.dto";
+import { Product } from "./entities/product.entity";
 
 @Injectable()
 export class ProductsService {
     constructor(
-        @InjectModel(Product)
-        private readonly productModel: typeof Product
+        @InjectRepository(Product)
+        private usersRepository: Repository<Product>
     ) {}
 
-    list(list_product_dto: ListProductDto) {
-        let where = {};
-
-        where = {
-            pro_id_type: list_product_dto.id_type_array
-        };
-
-        if (list_product_dto.search) {
-            where = {
-                ...where,
-                pro_name: { [Op.like]: `%${list_product_dto.search}%` }
-            };
-        }
-
-        const products = this.productModel.findAndCountAll<Product>({
-            where: where,
-            limit: 20,
-            offset: (list_product_dto.page - 1) * 20
+    async list(list_product_dto: ListProductDto) {
+        return await this.usersRepository.findAndCount({
+            where: {
+                pro_id_type: In(list_product_dto.id_type_array),
+                ...(list_product_dto.search ? { pro_name: Like(`%${list_product_dto.search}%`) } : {})
+            },
+            take: 20,
+            skip: (list_product_dto.page - 1) * 20
         });
-
-        return products;
     }
 }

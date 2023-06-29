@@ -1,5 +1,5 @@
 import { IsEmail, IsString, MaxLength, Length, IsDateString } from "class-validator";
-import { User } from "../../models/user.model";
+import { User } from "../entities/user.entity";
 
 export class CreateUserDto extends User {
     @IsEmail()

@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { ProductFile } from "src/product-files/entities/product-file.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({
     name: "files"
@@ -18,4 +19,8 @@ export class File {
 
     @UpdateDateColumn()
     updated_at: Date;
+
+    @OneToMany(() => ProductFile, (productFile) => productFile.file)
+    @JoinColumn({ name: "prl_id_file" })
+    productFiles: ProductFile[];
 }

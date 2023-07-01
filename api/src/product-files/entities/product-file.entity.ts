@@ -15,11 +15,11 @@ export class ProductFile {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToOne(() => Product)
-    @JoinColumn({ name: "prf_id_product" })
-    product: Product;
-
-    @ManyToOne(() => File)
-    @JoinColumn({ name: "prf_id_file" })
+    @ManyToOne(() => File, (file) => file.productFiles)
+    @JoinColumn({ name: "prl_id_file" })
     file: File;
+
+    @ManyToOne(() => Product, (product) => product.productFiles)
+    @JoinColumn({ name: "prl_id_product" })
+    product: Product;
 }

@@ -7,6 +7,7 @@ import { ProductsModule } from "./products/products.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
 import { AdminsModule } from "./admins/admins.module";
+import { OrdersModule } from './orders/orders.module';
 import "dotenv/config";
 
 @Module({
@@ -25,7 +26,8 @@ import "dotenv/config";
         UsersModule,
         AuthModule,
         ProductsModule,
-        AdminsModule
+        AdminsModule,
+        OrdersModule
     ],
     controllers: [AppController],
     providers: [AppService]

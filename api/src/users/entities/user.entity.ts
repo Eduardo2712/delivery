@@ -1,5 +1,6 @@
 import { File } from "src/files/entities/file.entity";
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from "typeorm";
+import { Order } from "src/orders/entities/order.entity";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, OneToMany } from "typeorm";
 
 @Entity({
     name: "users"
@@ -60,4 +61,8 @@ export class User {
     @OneToOne(() => File, { cascade: true, eager: true })
     @JoinColumn({ name: "use_id_picture" })
     picture: File;
+
+    @OneToMany(() => Order, (order) => order.user)
+    @JoinColumn({ name: "ord_id_user" })
+    orders: Order[];
 }

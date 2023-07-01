@@ -1,10 +1,10 @@
 import { File } from "src/files/entities/file.entity";
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity({
-    name: "users"
+    name: "admins"
 })
-export class User {
+export class Admin {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -12,7 +12,7 @@ export class User {
         nullable: false,
         type: "varchar"
     })
-    use_name: string;
+    adm_name: string;
 
     @Column({
         nullable: false,
@@ -22,15 +22,9 @@ export class User {
 
     @Column({
         nullable: false,
-        type: "date"
-    })
-    use_date_birth: Date;
-
-    @Column({
-        nullable: false,
         type: "varchar"
     })
-    use_phone: string;
+    adm_phone: string;
 
     @Column({
         nullable: false,
@@ -40,16 +34,10 @@ export class User {
 
     @Column({
         nullable: false,
-        type: "varchar"
-    })
-    use_cpf: string;
-
-    @Column({
-        nullable: false,
         default: false,
         type: "boolean"
     })
-    use_delete: boolean;
+    adm_delete: boolean;
 
     @CreateDateColumn()
     created_at: Date;
@@ -58,6 +46,6 @@ export class User {
     updated_at: Date;
 
     @OneToOne(() => File, { cascade: true, eager: true })
-    @JoinColumn({ name: "use_id_picture" })
+    @JoinColumn({ name: "adm_id_picture" })
     picture: File;
 }

@@ -1,24 +1,21 @@
 "use client";
 
-import { CacheProvider } from "@chakra-ui/next-js";
-import { ChakraProvider, CSSReset } from "@chakra-ui/react";
-import { themeDefault } from "../styles/theme";
-import { config } from "@fortawesome/fontawesome-svg-core";
-import "@fortawesome/fontawesome-svg-core/styles.css";
-import { Metadata } from "next";
+import "./globals.css";
+import { Inter } from "next/font/google";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
 import ProtectedRoute from "@/router";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import { Toaster } from "react-hot-toast";
 
-config.autoAddCss = false;
+const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-    title: "Delivery",
-    description: "Delivery"
+export const metadata = {
+    title: "Admin",
+    description: "Admin"
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
@@ -28,18 +25,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="pt-BR">
             <head></head>
-            <body>
+            <body className={inter.className}>
                 {loading && (
-                    <CacheProvider>
-                        <CSSReset />
-                        <ChakraProvider theme={themeDefault}>
-                            <Provider store={store}>
-                                <ProtectedRoute>
-                                    <div className="body_container">{children}</div>
-                                </ProtectedRoute>
-                            </Provider>
-                        </ChakraProvider>
-                    </CacheProvider>
+                    <Provider store={store}>
+                        <ProtectedRoute>
+                            <Toaster />
+                            {children}
+                        </ProtectedRoute>
+                    </Provider>
                 )}
             </body>
         </html>

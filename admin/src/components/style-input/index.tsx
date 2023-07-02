@@ -1,7 +1,5 @@
 "use client";
 
-import { FormControl, FormLabel, Input, Text } from "@chakra-ui/react";
-
 type Props = {
     handleChange: (e: React.ChangeEvent<any>) => void;
     handleBlur: (e: React.FocusEvent<any, Element>) => void;
@@ -11,33 +9,31 @@ type Props = {
     errors: string | undefined;
     touched: boolean | undefined;
     value: string | number | undefined;
-    isRequired: boolean;
+    is_required: boolean;
     max_length?: number;
 };
 
-const StyleInput = (props: Props) => {
+const StyleInput = ({ handleChange, handleBlur, name, type = "text", title, errors, touched, value, is_required, max_length = undefined }: Props) => {
     return (
-        <FormControl id={props.name} isRequired={props.isRequired}>
-            <FormLabel color={"gray.500"}>{props.title}</FormLabel>
+        <>
+            <label className="block text-sm font-medium leading-6 text-gray-100" htmlFor={name}>
+                {`${title}${is_required ? " *" : ""}`}
+            </label>
 
-            <Input
-                type={props.type ?? "text"}
-                name={props.name}
-                onChange={props.handleChange}
-                onBlur={props.handleBlur}
-                value={props.value}
-                placeholder={props.title}
-                color={"gray.500"}
-                _placeholder={{
-                    color: "gray.400"
-                }}
-                maxLength={props.max_length ?? undefined}
+            <input
+                className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6"
+                id={name}
+                type={type}
+                name={name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={value}
+                placeholder={title}
+                maxLength={max_length}
             />
 
-            <Text fontSize={"0.9rem"} color={"red.500"} fontWeight={"normal"} mt={2}>
-                {props.errors && props.touched && props.errors}
-            </Text>
-        </FormControl>
+            <p className="text-sm text-red-600">{errors && touched && errors}</p>
+        </>
     );
 };
 

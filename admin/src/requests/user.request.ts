@@ -1,4 +1,4 @@
-import { TypeFormRegister } from "@/app/auth/register/util";
+import { TypeFormRegister } from "@/app/auth/register/utils";
 import axios from "./axios.config";
 
 export const createUser = (props: TypeFormRegister) => {

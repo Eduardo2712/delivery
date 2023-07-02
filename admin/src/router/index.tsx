@@ -7,7 +7,7 @@ export type Props = {
     children: any;
 };
 
-const ProtectedRoute = (props: Props) => {
+const ProtectedRoute = ({ children }: Props) => {
     const PRIVATE_ROUTES = ["/"];
     const LOGIN_ROUTES = ["/auth/login", "/auth/register"];
 
@@ -21,15 +21,12 @@ const ProtectedRoute = (props: Props) => {
             dispatch(setUser({ user: JSON.parse(user_local ?? "") }));
         }
 
-        if (
-            (localStorage.getItem("user") && LOGIN_ROUTES.includes(window.location.pathname)) ||
-            (!localStorage.getItem("user") && PRIVATE_ROUTES.includes(window.location.pathname))
-        ) {
-            router.push("/");
+        if (!user_local && PRIVATE_ROUTES.includes(window.location.pathname)) {
+            return router.push("/auth/login");
         }
     }, []);
 
-    return props.children;
+    return children;
 };
 
 export default ProtectedRoute;

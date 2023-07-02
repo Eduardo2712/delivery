@@ -1,17 +1,15 @@
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { UsersModule } from "./users/users.module";
-import { AuthModule } from "./auth/auth.module";
-import { ProductsModule } from "./products/products.module";
-import { TypeOrmModule } from "@nestjs/typeorm";
+import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
-import { AdminsModule } from "./admins/admins.module";
-import { OrdersModule } from './orders/orders.module';
-import "dotenv/config";
+import { ConfigModule } from "@nestjs/config";
+import { AdminModule } from "./admin/admin/admin.module";
+import { AuthModule } from './admin/auth/auth.module';
 
 @Module({
     imports: [
+        ConfigModule.forRoot(),
         TypeOrmModule.forRoot({
             type: "mysql",
             host: process.env.DB_HOST,
@@ -22,12 +20,9 @@ import "dotenv/config";
             entities: ["dist/**/*.entity.js"],
             synchronize: true,
             autoLoadEntities: true
-        }),
-        UsersModule,
-        AuthModule,
-        ProductsModule,
-        AdminsModule,
-        OrdersModule
+        } as TypeOrmModuleOptions),
+        AdminModule,
+        AuthModule
     ],
     controllers: [AppController],
     providers: [AppService]

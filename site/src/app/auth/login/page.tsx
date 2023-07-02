@@ -1,29 +1,24 @@
 "use client";
 
 import { Formik, Form } from "formik";
-import { NextPage } from "next";
-import { User } from "../../../types";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import Link from "next/link";
-import { Flex, Box, Stack, Button, Heading, Text, useToast } from "@chakra-ui/react";
-import StyleInput from "../../../components/style-input";
 import { schema } from "./util";
-import { toastParams } from "@/utils/function";
 import { login } from "@/store/auth/auth.slice";
 import { useDispatch } from "react-redux";
 import { auth } from "@/requests/auth.request";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import StyleInput from "@/components/style-input";
+import Link from "next/link";
+import { toast } from "react-hot-toast";
 
-const Login: NextPage = () => {
+const Page = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
-    const toast = useToast();
-
     const router = useRouter();
 
-    const onSubmit = async (values: Pick<User, "email" | "password">) => {
+    const onSubmit = async (values: { email: string; password: string }) => {
         setLoading(true);
 
         try {
@@ -33,120 +28,86 @@ const Login: NextPage = () => {
             });
 
             if (response.status !== 200) {
-                return toast({ ...toastParams, title: "Error", description: response.data.message, status: "error" });
+                return toast.error(response.data.message);
             }
 
             if (response.data.user && response.data.access_token) {
                 dispatch(login({ ...response.data.user, token: response.data.access_token }));
 
-                toast({ ...toastParams, title: "Success", description: "Successfully login", status: "success" });
+                toast.success("Successfully login");
 
                 router.push("/");
             }
         } catch (error: any) {
-            toast({ ...toastParams, title: "Error", description: error ?? "An error has occurred", status: "error" });
+            return toast.error(error ?? "An error has occurred");
         } finally {
             setLoading(false);
         }
     };
 
+    const initialValues = {
+        email: "",
+        password: ""
+    };
+
     return (
-        <Formik
-            onSubmit={onSubmit}
-            validateOnMount
-            validationSchema={schema}
-            initialValues={{
-                email: "",
-                password: ""
-            }}
-        >
+        <Formik onSubmit={onSubmit} validateOnMount validationSchema={schema} initialValues={initialValues}>
             {({ handleChange, handleBlur, values, errors, touched }) => (
                 <Form method="post" noValidate>
-                    <Flex minH={"calc(100vh - 168px)"} align={"center"} justify={"center"}>
-                        <Stack spacing={8} mx={"auto"} w={"lg"} py={12} px={6}>
-                            <Stack align={"center"}>
-                                <Heading fontSize={"4xl"} color={"gray.500"}>
-                                    Login
-                                </Heading>
-                            </Stack>
-                            <Box rounded={"xl"} p={12} boxShadow={"xl"} bg={"gray.50"}>
-                                <Stack spacing={4}>
-                                    <StyleInput
-                                        errors={errors.email}
-                                        touched={touched.email}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                        name={"email"}
-                                        title={"Email address"}
-                                        type={"email"}
-                                        value={values.email}
-                                        isRequired={true}
-                                    />
+                    <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+                        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-100">Sign in</h2>
+                        </div>
 
-                                    <StyleInput
-                                        errors={errors.password}
-                                        touched={touched.password}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                        name={"password"}
-                                        title={"Password"}
-                                        type={"password"}
-                                        value={values.password}
-                                        isRequired={true}
-                                    />
+                        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                            <div className="space-y-3">
+                                <StyleInput
+                                    errors={errors.email}
+                                    touched={touched.email}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    name={"email"}
+                                    title={"Email"}
+                                    type={"email"}
+                                    value={values.email}
+                                    is_required={true}
+                                />
 
-                                    <Stack spacing={6}>
-                                        <Stack
-                                            direction={{
-                                                base: "column",
-                                                sm: "row"
-                                            }}
-                                            align={"start"}
-                                            justify={"space-between"}
-                                        >
-                                            <Link href="/auth/register">
-                                                <Text color={"gray.500"}>{"I don't have an account"}</Text>
-                                            </Link>
-                                        </Stack>
+                                <StyleInput
+                                    errors={errors.password}
+                                    touched={touched.password}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    name={"password"}
+                                    title={"Password"}
+                                    type={"password"}
+                                    value={values.password}
+                                    is_required={true}
+                                />
 
-                                        <Flex gap={"0.5rem"}>
-                                            <Button
-                                                flex={"1"}
-                                                bg={"red.500"}
-                                                color={"white"}
-                                                isLoading={loading}
-                                                _hover={{
-                                                    bg: "red.600"
-                                                }}
-                                                onClick={() => {
-                                                    router.push("/");
-                                                }}
-                                            >
-                                                Return
-                                            </Button>
+                                <div>
+                                    <button
+                                        type="submit"
+                                        className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 mt-4"
+                                    >
+                                        Sign in
+                                    </button>
+                                </div>
+                            </div>
 
-                                            <Button
-                                                flex={"1"}
-                                                type="submit"
-                                                bg={"green.500"}
-                                                color={"white"}
-                                                _hover={{
-                                                    bg: "green.600"
-                                                }}
-                                                isLoading={loading}
-                                            >
-                                                Sign in
-                                            </Button>
-                                        </Flex>
-                                    </Stack>
-                                </Stack>
-                            </Box>
-                        </Stack>
-                    </Flex>
+                            <div className="text-center mt-3">
+                                <Link href="/auth/register">
+                                    <span className="text-sm font-semibold leading-6 text-blue-600 hover:text-blue-500">
+                                        {"I don't have an account"}
+                                    </span>
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                 </Form>
             )}
         </Formik>
     );
 };
 
-export default Login;
+export default Page;

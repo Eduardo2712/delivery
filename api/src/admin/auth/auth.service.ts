@@ -1,26 +1,40 @@
 import { Injectable } from "@nestjs/common";
-import { CreateAuthDto } from "./dto/create-auth.dto";
-import { UpdateAuthDto } from "./dto/update-auth.dto";
+import { AdminService } from "../admin/admin.service";
+import { Admin } from "src/entities/admin.entity";
+import { compareSync } from "bcrypt";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export class AuthService {
-    create(createAuthDto: CreateAuthDto) {
-        return "This action adds a new auth";
+    constructor(private readonly adminService: AdminService, private readonly jwtService: JwtService) {}
+
+    async validateAdmin(email: string, password: string) {
+        let admin: Admin;
+
+        try {
+            admin = await this.adminService.findOneOrFail({
+                where: {
+                    email
+                }
+            });
+        } catch (error) {
+            return null;
+        }
+
+        const is_password_valid = compareSync(password, admin.password);
+
+        if (!is_password_valid) {
+            return null;
+        }
+
+        return admin;
     }
 
-    findAll() {
-        return "This action returns all auth";
-    }
+    async login(admin: Admin) {
+        const payload = { sub: admin.id, email: admin.email };
 
-    findOne(id: number) {
-        return `This action returns a #${id} auth`;
-    }
-
-    update(id: number, updateAuthDto: UpdateAuthDto) {
-        return `This action updates a #${id} auth`;
-    }
-
-    remove(id: number) {
-        return `This action removes a #${id} auth`;
+        return {
+            token: this.jwtService.sign(payload)
+        };
     }
 }

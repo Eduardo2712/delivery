@@ -7,9 +7,9 @@ export class AdminController {
     constructor(private readonly adminService: AdminService) {}
 
     @Post()
-    create(@Body() createAdminDto: CreateAdminDto) {
+    async create(@Body() createAdminDto: CreateAdminDto) {
         try {
-            return this.adminService.create(createAdminDto);
+            return await this.adminService.create(createAdminDto);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 throw new BadRequestException(error.message);

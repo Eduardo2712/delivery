@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
 import { ConfigModule } from "@nestjs/config";
-import { AdminModule } from "./admin/admin/admin.module";
-import { AuthModule } from './admin/auth/auth.module';
+import { APP_GUARD } from "@nestjs/core";
+import { JwtService } from "@nestjs/jwt";
+import { AuthGuard } from "./route-admin/auth/guard/auth.guard";
+import { RouteAdminModule } from "./route-admin/route-admin.module";
 
 @Module({
     imports: [
@@ -21,11 +21,15 @@ import { AuthModule } from './admin/auth/auth.module';
             synchronize: true,
             autoLoadEntities: true
         } as TypeOrmModuleOptions),
-        AdminModule,
-        AuthModule
+        RouteAdminModule
     ],
-    controllers: [AppController],
-    providers: [AppService]
+    providers: [
+        JwtService,
+        {
+            provide: APP_GUARD,
+            useClass: AuthGuard
+        }
+    ]
 })
 export class AppModule {
     constructor(private dataSource: DataSource) {}

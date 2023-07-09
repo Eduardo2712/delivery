@@ -33,8 +33,15 @@ export class AuthService {
     async login(admin: Admin) {
         const payload = { sub: admin.id, email: admin.email };
 
+        const user = await this.adminService.findOneOrFail({
+            where: {
+                id: admin.id
+            }
+        });
+
         return {
-            token: this.jwtService.sign(payload)
+            token: this.jwtService.sign(payload),
+            user
         };
     }
 }

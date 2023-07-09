@@ -29,7 +29,8 @@ export class Admin {
 
     @Column({
         nullable: false,
-        type: "varchar"
+        type: "varchar",
+        select: false
     })
     password: string;
 

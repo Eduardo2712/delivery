@@ -28,12 +28,12 @@ const Page = () => {
                 password: values.password
             });
 
-            if (response.status !== 200) {
+            if (response.status !== 201) {
                 return toast.error(response.data.message);
             }
 
-            if (response.data.user && response.data.access_token) {
-                dispatch(login({ ...response.data.user, token: response.data.access_token }));
+            if (response.data.user && response.data.token) {
+                dispatch(login({ ...response.data.user, token: response.data.token }));
 
                 toast.success("Successfully login");
 

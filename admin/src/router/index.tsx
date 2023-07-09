@@ -1,18 +1,18 @@
 import { setUser } from "@/store/auth/auth.slice";
+import { ROUTES, checkUserAuthenticated } from "@/utils/route";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, ReactNode } from "react";
 import { useDispatch } from "react-redux";
 
 export type Props = {
-    children: any;
+    children: ReactNode;
 };
 
 const ProtectedRoute = ({ children }: Props) => {
-    const PRIVATE_ROUTES = ["/"];
-    const LOGIN_ROUTES = ["/auth/login", "/auth/register"];
-
     const dispatch = useDispatch();
     const router = useRouter();
+
+    const isUserAuthenticated = checkUserAuthenticated();
 
     useEffect(() => {
         const user_local = localStorage.getItem("user");
@@ -21,12 +21,17 @@ const ProtectedRoute = ({ children }: Props) => {
             dispatch(setUser({ user: JSON.parse(user_local ?? "") }));
         }
 
-        if (!user_local && PRIVATE_ROUTES.includes(window.location.pathname)) {
-            return router.push("/auth/login");
+        if (!isUserAuthenticated) {
+            return router.push(ROUTES.public.login);
         }
-    }, []);
+    }, [router.push, isUserAuthenticated, dispatch]);
 
-    return children;
+    return (
+        <>
+            {!isUserAuthenticated && null}
+            {isUserAuthenticated && children}
+        </>
+    );
 };
 
 export default ProtectedRoute;

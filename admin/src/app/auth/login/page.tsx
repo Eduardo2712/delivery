@@ -11,8 +11,9 @@ import StyleInput from "@/components/style-input";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { FaSpinner } from "react-icons/fa";
+import { NextPage } from "next";
 
-const Page = () => {
+const Page: NextPage = () => {
     const [submitting, setSubmitting] = useState<boolean>(false);
 
     const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const Page = () => {
             }
 
             if (response.data.user && response.data.token) {
-                dispatch(login({ ...response.data.user, token: response.data.token }));
+                dispatch(login({ user: response.data.user, token: response.data.token }));
 
                 toast.success("Successfully login");
 

@@ -6,9 +6,9 @@ export const ROUTES = {
 };
 
 export const checkUserAuthenticated = () => {
-    const user = localStorage.getItem("user") ?? "";
+    const token = localStorage.getItem("token") ?? "";
 
-    return !!user;
+    return !!token;
 };
 
 export const checkIsPublicRoute = (route: string) => {

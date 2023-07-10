@@ -1,4 +1,4 @@
-import { setUser } from "@/store/auth/auth.slice";
+import { update } from "@/store/auth/auth.slice";
 import { ROUTES, checkUserAuthenticated } from "@/utils/route";
 import { useRouter } from "next/navigation";
 import { useEffect, ReactNode } from "react";
@@ -16,9 +16,10 @@ const ProtectedRoute = ({ children }: Props) => {
 
     useEffect(() => {
         const user_local = localStorage.getItem("user");
+        const token_local = localStorage.getItem("token");
 
-        if (user_local) {
-            dispatch(setUser({ user: JSON.parse(user_local ?? "") }));
+        if (isUserAuthenticated) {
+            dispatch(update({ user: JSON.parse(user_local ?? ""), token: JSON.parse(token_local ?? "") }));
         }
 
         if (!isUserAuthenticated) {

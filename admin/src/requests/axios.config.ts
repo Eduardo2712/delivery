@@ -1,17 +1,17 @@
 import axios from "axios";
 
-let user = { token: "" };
+let token = "";
 
 if (typeof window !== "undefined") {
-    user = localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user") ?? "") : {};
+    token = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token") ?? "") : {};
 }
 
 const axios_instance = axios.create({
     baseURL: process.env.NEXT_PUBLIC_URL_API,
-    headers: user?.token
+    headers: token
         ? {
               common: {
-                  Authorization: `Bearer ${user?.token}`
+                  Authorization: `Bearer ${token}`
               }
           }
         : {}

@@ -1,12 +1,7 @@
-import { User } from "@/types";
+import { AuthStoreType, AdminStoreType } from "@/types/store/auth.type";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type AuthState = {
-    user: User | null;
-    token: string | null;
-};
-
-const initialState: AuthState = {
+const initialState: AuthStoreType = {
     user: null,
     token: null
 };
@@ -15,7 +10,7 @@ const authSlice = createSlice({
     name: "auth",
     initialState,
     reducers: {
-        login: (state, action: PayloadAction<{ user: User; token: string }>) => {
+        login: (state, action: PayloadAction<{ user: AdminStoreType; token: string }>) => {
             localStorage.setItem("user", JSON.stringify(action.payload.user));
             localStorage.setItem("token", JSON.stringify(action.payload.token));
 
@@ -29,7 +24,7 @@ const authSlice = createSlice({
             state.user = null;
             state.token = null;
         },
-        update: (state, action: PayloadAction<{ user: User; token: string }>) => {
+        update: (state, action: PayloadAction<{ user: AdminStoreType; token: string }>) => {
             state.user = action.payload.user;
         }
     }

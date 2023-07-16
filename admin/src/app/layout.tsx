@@ -9,6 +9,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
 import { usePathname } from "next/navigation";
 import { checkIsPublicRoute } from "@/utils/route";
+import Sidebar from "@/components/sidebar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,7 +44,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                         {!isPublicPage && (
                             <ProtectedRoute>
                                 <Toaster />
-                                {children}
+
+                                <Sidebar>{children}</Sidebar>
                             </ProtectedRoute>
                         )}
                     </Provider>

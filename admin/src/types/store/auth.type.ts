@@ -3,6 +3,13 @@ export type AuthStoreType = {
     token: string | null;
 };
 
+export type PictureStoreType = {
+    id: number;
+    fil_url: string;
+    created_at: Date;
+    updated_at: Date;
+};
+
 export type AdminStoreType = {
     id: number;
     adm_id_picture: number;
@@ -13,4 +20,5 @@ export type AdminStoreType = {
     adm_delete: boolean;
     created_at: Date;
     updated_at: Date;
+    picture: PictureStoreType;
 };

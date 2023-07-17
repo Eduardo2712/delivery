@@ -36,6 +36,9 @@ export class AuthService {
         const user = await this.adminService.findOneOrFail({
             where: {
                 id: admin.id
+            },
+            relations: {
+                picture: true
             }
         });
 

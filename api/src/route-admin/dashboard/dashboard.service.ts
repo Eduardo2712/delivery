@@ -1,19 +1,25 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Admin } from "src/entities/admin.entity";
+import { AdminEntity } from "src/entities/admin.entity";
 import { Repository } from "typeorm";
-import { User } from "src/entities/user.entity";
-import { Product } from "src/entities/product.entity";
+import { UserEntity } from "src/entities/user.entity";
+import { ProductEntity } from "src/entities/product.entity";
+import { OrderEntity } from "src/entities/order.entity";
+import { ItemEntity } from "src/entities/item.entity";
 
 @Injectable()
 export class DashboardService {
     constructor(
-        @InjectRepository(Admin)
-        private readonly adminRepository: Repository<Admin>,
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>,
-        @InjectRepository(Product)
-        private readonly productRepository: Repository<Product>
+        @InjectRepository(AdminEntity)
+        private readonly adminRepository: Repository<AdminEntity>,
+        @InjectRepository(UserEntity)
+        private readonly userRepository: Repository<UserEntity>,
+        @InjectRepository(ProductEntity)
+        private readonly productRepository: Repository<ProductEntity>,
+        @InjectRepository(OrderEntity)
+        private readonly orderRepository: Repository<OrderEntity>,
+        @InjectRepository(ItemEntity)
+        private readonly itemRepository: Repository<ItemEntity>
     ) {}
 
     async get() {
@@ -22,21 +28,40 @@ export class DashboardService {
                 adm_delete: false
             }
         });
+
         const user_count = await this.userRepository.count({
             where: {
                 use_delete: false
             }
         });
+
         const product_count = await this.productRepository.count({
             where: {
                 pro_delete: false
             }
         });
 
+        const order_count = await this.orderRepository.count({
+            where: {
+                ord_delete: false
+            }
+        });
+
+        const value_amount = 0;
+
+        const itens_count = await this.itemRepository.count({
+            where: {
+                ite_delete: false
+            }
+        });
+
         return {
             admin_count,
             user_count,
-            product_count
+            product_count,
+            order_count,
+            value_amount,
+            itens_count
         };
     }
 }

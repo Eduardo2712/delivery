@@ -3,6 +3,6 @@ export type DashboardReturnType = {
     user_count: number;
     product_count: number;
     order_count: number;
-    values_amount: number;
+    value_amount: number;
     itens_count: number;
 };

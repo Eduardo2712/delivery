@@ -1,13 +1,19 @@
 import { BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { File } from "./file.entity";
+import { FileEntity } from "./file.entity";
 import { hashSync } from "bcrypt";
 
 @Entity({
     name: "admins"
 })
-export class Admin {
+export class AdminEntity {
     @PrimaryGeneratedColumn()
     id: number;
+
+    @Column({
+        nullable: true,
+        type: "int"
+    })
+    adm_id_picture: number;
 
     @Column({
         nullable: false,
@@ -47,9 +53,9 @@ export class Admin {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToOne(() => File, { cascade: true, eager: true })
+    @OneToOne(() => FileEntity, { cascade: true, eager: true })
     @JoinColumn({ name: "adm_id_picture" })
-    picture: File;
+    picture: FileEntity;
 
     @BeforeInsert()
     hashPassword() {

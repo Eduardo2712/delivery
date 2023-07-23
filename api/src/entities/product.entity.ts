@@ -1,10 +1,12 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn } from "typeorm";
-import { ProductFile } from "./product-file.entity";
+import { ProductFileEntity } from "./product-file.entity";
+import { ItemEntity } from "./item.entity";
+import { ProductHistoryEntity } from "./product-history.entity";
 
 @Entity({
     name: "products"
 })
-export class Product {
+export class ProductEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -47,7 +49,15 @@ export class Product {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToMany(() => ProductFile, (productFile) => productFile.product)
+    @OneToMany(() => ProductFileEntity, (productFile) => productFile.product)
     @JoinColumn({ name: "prl_id_product" })
-    productFiles: ProductFile[];
+    files: ProductFileEntity[];
+
+    @OneToMany(() => ItemEntity, (item) => item.product)
+    @JoinColumn({ name: "ite_id_product" })
+    itens: ItemEntity[];
+
+    @OneToMany(() => ProductHistoryEntity, (productHistory) => productHistory.product)
+    @JoinColumn({ name: "prh_id_product" })
+    histories: ProductHistoryEntity[];
 }

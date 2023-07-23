@@ -14,7 +14,7 @@ const Page: NextPage = () => {
         itens_count: 0,
         order_count: 0,
         product_count: 0,
-        values_amount: 0
+        value_amount: 0
     });
 
     useEffect(() => {
@@ -69,7 +69,7 @@ const Page: NextPage = () => {
                 <div className="bg-gray-800 w-full px-8 rounded-md h-20 flex justify-center flex-col items-center border-b-2 border-b-blue-600">
                     <p className="text-gray-400 font-extrabold text-xl">Values</p>
 
-                    <p className="text-white font-bold text-xl">{data.values_amount}</p>
+                    <p className="text-white font-bold text-xl">{data.value_amount}</p>
                 </div>
 
                 <div className="bg-gray-800 w-full px-8 rounded-md h-20 flex justify-center flex-col items-center border-b-2 border-b-blue-600">

@@ -2,14 +2,14 @@ import { Injectable, NotFoundException } from "@nestjs/common";
 import { CreateAdminDto } from "./dto/create-admin.dto";
 import { UpdateAdminDto } from "./dto/update-admin.dto";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Admin } from "src/entities/admin.entity";
+import { AdminEntity } from "src/entities/admin.entity";
 import { FindOneOptions, Repository } from "typeorm";
 
 @Injectable()
 export class AdminService {
     constructor(
-        @InjectRepository(Admin)
-        private readonly adminRepository: Repository<Admin>
+        @InjectRepository(AdminEntity)
+        private readonly adminRepository: Repository<AdminEntity>
     ) {}
 
     async create(createAdminDto: CreateAdminDto) {
@@ -21,7 +21,7 @@ export class AdminService {
         return await this.adminRepository.find();
     }
 
-    async findOneOrFail(options?: FindOneOptions<Admin>) {
+    async findOneOrFail(options?: FindOneOptions<AdminEntity>) {
         try {
             return await this.adminRepository.findOneOrFail(options);
         } catch (error) {

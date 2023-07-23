@@ -1,11 +1,11 @@
 import { CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { File } from "./file.entity";
-import { Product } from "./product.entity";
+import { FileEntity } from "./file.entity";
+import { ProductEntity } from "./product.entity";
 
 @Entity({
     name: "product_files"
 })
-export class ProductFile {
+export class ProductFileEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -15,11 +15,11 @@ export class ProductFile {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToOne(() => File, (file) => file.productFiles)
+    @ManyToOne(() => FileEntity, (file) => file.files)
     @JoinColumn({ name: "prl_id_file" })
-    file: File;
+    file: FileEntity;
 
-    @ManyToOne(() => Product, (product) => product.productFiles)
+    @ManyToOne(() => ProductEntity, (product) => product.itens)
     @JoinColumn({ name: "prl_id_product" })
-    product: Product;
+    product: ProductEntity;
 }

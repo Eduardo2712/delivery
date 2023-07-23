@@ -86,8 +86,12 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                 </div>
             </nav>
 
-            <aside className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700">
-                <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
+            <aside className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700">
+                <Link href="/">
+                    <p className="mx-0 text-white font-extrabold italic text-2xl pt-6 text-center">Delivery</p>
+                </Link>
+
+                <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800 pt-14">
                     <ul className="space-y-2 font-medium">
                         <li>
                             <Link

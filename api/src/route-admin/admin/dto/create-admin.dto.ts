@@ -1,9 +1,9 @@
 import { IsNotEmpty, Matches, IsEmail } from "class-validator";
-import { Admin } from "src/entities/admin.entity";
+import { AdminEntity } from "src/entities/admin.entity";
 import { MessagesHelper } from "src/helpers/message.helpers";
 import { RegExHelper } from "src/helpers/regex.helper";
 
-export class CreateAdminDto extends Admin {
+export class CreateAdminDto extends AdminEntity {
     @IsNotEmpty()
     adm_name: string;
 

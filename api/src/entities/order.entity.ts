@@ -1,10 +1,11 @@
-import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn, JoinColumn, Column } from "typeorm";
-import { User } from "./user.entity";
+import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn, JoinColumn, Column, OneToMany } from "typeorm";
+import { UserEntity } from "./user.entity";
+import { ItemEntity } from "./item.entity";
 
 @Entity({
     name: "orders"
 })
-export class Order {
+export class OrderEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -89,7 +90,10 @@ export class Order {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToOne(() => User, (user) => user.orders)
+    @ManyToOne(() => UserEntity, (user) => user.orders)
     @JoinColumn({ name: "ord_id_user" })
-    user: User;
+    user: UserEntity;
+
+    @OneToMany(() => ItemEntity, (item) => item.order)
+    itens: ItemEntity[];
 }

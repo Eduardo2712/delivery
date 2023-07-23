@@ -1,11 +1,11 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, OneToMany } from "typeorm";
-import { Order } from "./order.entity";
-import { File } from "./file.entity";
+import { OrderEntity } from "./order.entity";
+import { FileEntity } from "./file.entity";
 
 @Entity({
     name: "users"
 })
-export class User {
+export class UserEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -58,11 +58,11 @@ export class User {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToOne(() => File, { cascade: true, eager: true })
+    @OneToOne(() => FileEntity, { cascade: true, eager: true })
     @JoinColumn({ name: "use_id_picture" })
-    picture: File;
+    picture: FileEntity;
 
-    @OneToMany(() => Order, (order) => order.user)
+    @OneToMany(() => OrderEntity, (order) => order.user)
     @JoinColumn({ name: "ord_id_user" })
-    orders: Order[];
+    orders: OrderEntity[];
 }

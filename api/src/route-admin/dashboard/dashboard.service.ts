@@ -47,7 +47,19 @@ export class DashboardService {
             }
         });
 
-        const value_amount = 0;
+        const orders = await this.orderRepository.find({
+            relations: ["itens"]
+        });
+
+        let value_amount = 0;
+
+        orders.forEach((order) => {
+            value_amount += order.ord_delivery_fee;
+
+            order.itens.forEach((item) => {
+                value_amount += item.ite_price;
+            });
+        });
 
         const itens_count = await this.itemRepository.count({
             where: {

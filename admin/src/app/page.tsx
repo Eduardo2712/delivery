@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 const Page: NextPage = () => {
-    const [loading, setLoading] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
     const [data, setData] = useState<DashboardReturnType>({
         admin_count: 0,
         user_count: 0,
@@ -38,8 +38,10 @@ const Page: NextPage = () => {
     }, []);
 
     return (
-        <div className={`flex min-h-full flex-col justify-center mx-auto container gap-5 mt-4 xl:flex-row px-2 ${loading ? "animate-pulse" : ""}`}>
-            <div className="w-full flex flex-col md:flex-row gap-5">
+        <div className={`flex min-h-full flex-col justify-center mx-auto container gap-5 mt-4 px-2 ${loading ? "animate-pulse" : ""}`}>
+            <p className="text-2xl font-bold">Dashboard</p>
+
+            <div className="w-full flex flex-col lg:flex-row gap-5">
                 <div className="bg-gray-800 w-full px-8 rounded-md h-20 flex justify-center flex-col items-center border-b-2 border-b-blue-600">
                     <p className="text-gray-400 font-extrabold text-xl">Admins</p>
 
@@ -59,7 +61,7 @@ const Page: NextPage = () => {
                 </div>
             </div>
 
-            <div className="w-full flex flex-col md:flex-row gap-5">
+            <div className="w-full flex flex-col lg:flex-row gap-5">
                 <div className="bg-gray-800 w-full px-8 rounded-md h-20 flex justify-center flex-col items-center border-b-2 border-b-blue-600">
                     <p className="text-gray-400 font-extrabold text-xl">Orders</p>
 

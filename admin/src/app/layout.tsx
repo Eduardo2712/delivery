@@ -10,6 +10,8 @@ import { Toaster } from "react-hot-toast";
 import { usePathname } from "next/navigation";
 import { checkIsPublicRoute } from "@/utils/route";
 import Sidebar from "@/components/sidebar";
+import "primereact/resources/primereact.min.css";
+import "primereact/resources/themes/lara-dark-indigo/theme.css";
 
 const inter = Inter({ subsets: ["latin"] });
 

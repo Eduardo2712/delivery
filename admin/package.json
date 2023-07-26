@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
-    "@tanstack/react-table": "^8.9.3",
     "@types/node": "20.3.3",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
@@ -21,6 +20,7 @@
     "formik": "^2.4.2",
     "next": "13.4.7",
     "postcss": "8.4.24",
+    "primereact": "^9.6.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",

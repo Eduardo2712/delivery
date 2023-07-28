@@ -11,7 +11,7 @@ const Page: NextPage = () => {
             <p className="text-2xl font-bold">Admin</p>
 
             <div className="w-full">
-                <CustomTable request={getDatatable}>
+                <CustomTable request={getDatatable} button_edit button_delete button_view>
                     <Column field="id" header="Id" />
                     <Column field="adm_name" header="Name" />
                     <Column field="email" header="Email" />

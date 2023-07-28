@@ -1,11 +1,16 @@
 import { AxiosResponse } from "axios";
+import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { useState, ReactNode, useEffect } from "react";
 import toast from "react-hot-toast";
+import { FaEye, FaPen, FaTrash } from "react-icons/fa6";
 
 type Props = {
-    request: (props: any) => Promise<AxiosResponse>;
+    request: (props: Params) => Promise<AxiosResponse>;
     children: ReactNode;
+    button_edit?: boolean;
+    button_delete?: boolean;
+    button_view?: boolean;
 };
 
 type Params = {
@@ -14,7 +19,7 @@ type Params = {
     rows_per_page: number;
 };
 
-const CustomTable = ({ children, request }: Props) => {
+const CustomTable = ({ children, request, button_delete = false, button_edit = false, button_view = false }: Props) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [params, setParams] = useState<Params>({
@@ -67,8 +72,43 @@ const CustomTable = ({ children, request }: Props) => {
                 rows={params.rows_per_page}
                 rowsPerPageOptions={[10, 25, 50]}
                 loading={loading}
+                onPage={(e) => setParams({ ...params, rows_per_page: e.rows, page: e.page ?? 1 })}
             >
                 {children}
+
+                {(button_edit || button_delete || button_view) && (
+                    <Column
+                        className="w-12 min-w-12"
+                        field="options"
+                        header="Options"
+                        body={() => {
+                            return (
+                                <div className="flex gap-2">
+                                    <button
+                                        type="button"
+                                        className="bg-green-600 hover:bg-green-700 rounded px-2 py-2 text-gray-100 h-9 w-9 flex text-center items-center justify-center"
+                                    >
+                                        <FaPen />
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        className="bg-blue-600 hover:bg-blue-700 rounded px-2 py-2 text-gray-100 h-9 w-9 flex text-center items-center justify-center"
+                                    >
+                                        <FaEye />
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        className="bg-red-600 hover:bg-red-700 rounded px-2 py-2 text-gray-100 h-9 w-9 flex text-center items-center justify-center"
+                                    >
+                                        <FaTrash />
+                                    </button>
+                                </div>
+                            );
+                        }}
+                    />
+                )}
             </DataTable>
         </>
     );

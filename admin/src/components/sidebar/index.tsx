@@ -15,7 +15,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
     const user = useSelector<RootState, AdminStoreType | null>((state) => state.auth.user);
 
     return (
-        <>
+        <div className="min-h-screen bg-gray-700">
             <nav className="w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
                 <div className="px-3 py-3 lg:px-5 lg:pl-3">
                     <div className="flex items-center justify-between">
@@ -175,7 +175,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
             </aside>
 
             <div className="p-4 sm:ml-64">{children}</div>
-        </>
+        </div>
     );
 };
 

@@ -1,18 +1,23 @@
 import { Injectable } from "@nestjs/common";
-import { AdminService } from "../admin/admin.service";
 import { AdminEntity } from "src/entities/admin.entity";
 import { compareSync } from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class AuthService {
-    constructor(private readonly adminService: AdminService, private readonly jwtService: JwtService) {}
+    constructor(
+        @InjectRepository(AdminEntity)
+        private readonly adminRepository: Repository<AdminEntity>,
+        private readonly jwtService: JwtService
+    ) {}
 
     async validateAdmin(email: string, password: string) {
         let admin: AdminEntity;
 
         try {
-            admin = await this.adminService.findOneOrFail({
+            admin = await this.adminRepository.findOneOrFail({
                 where: {
                     email
                 }
@@ -33,7 +38,7 @@ export class AuthService {
     async login(admin: AdminEntity) {
         const payload = { sub: admin.id, email: admin.email };
 
-        const user = await this.adminService.findOneOrFail({
+        const user = await this.adminRepository.findOneOrFail({
             where: {
                 id: admin.id
             },

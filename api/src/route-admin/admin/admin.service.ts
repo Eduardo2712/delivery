@@ -1,9 +1,9 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { CreateAdminDto } from "./dto/create-admin.dto";
 import { UpdateAdminDto } from "./dto/update-admin.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AdminEntity } from "src/entities/admin.entity";
-import { FindOneOptions, ILike, Repository } from "typeorm";
+import { ILike, Repository } from "typeorm";
 
 @Injectable()
 export class AdminService {
@@ -14,6 +14,7 @@ export class AdminService {
 
     async create(createAdminDto: CreateAdminDto) {
         const admin = this.adminRepository.create(createAdminDto);
+
         return await this.adminRepository.save(admin);
     }
 
@@ -31,22 +32,18 @@ export class AdminService {
         });
     }
 
-    async findOneOrFail(options?: FindOneOptions<AdminEntity>) {
-        try {
-            return await this.adminRepository.findOneOrFail(options);
-        } catch (error) {
-            throw new NotFoundException(error.message);
-        }
-    }
-
     async update(id: number, updateAdminDto: UpdateAdminDto) {
-        const admin = await this.findOneOrFail({ where: { id } });
+        const admin = await this.adminRepository.findOneOrFail({ where: { id } });
+
         this.adminRepository.merge(admin, updateAdminDto);
         return await this.adminRepository.save(admin);
     }
 
     async remove(id: number) {
-        await this.adminRepository.findOneOrFail({ where: { id } });
-        this.adminRepository.softDelete({ id });
+        const obj = await this.adminRepository.findOneOrFail({ where: { id } });
+
+        obj.adm_delete = true;
+
+        await this.adminRepository.save(obj);
     }
 }

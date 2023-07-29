@@ -38,14 +38,28 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                     <Provider store={store}>
                         {isPublicPage && (
                             <>
-                                <Toaster />
+                                <Toaster
+                                    toastOptions={{
+                                        style: {
+                                            background: "#012",
+                                            color: "#fff"
+                                        }
+                                    }}
+                                />
                                 {children}
                             </>
                         )}
 
                         {!isPublicPage && (
                             <ProtectedRoute>
-                                <Toaster />
+                                <Toaster
+                                    toastOptions={{
+                                        style: {
+                                            background: "#012",
+                                            color: "#fff"
+                                        }
+                                    }}
+                                />
 
                                 <Sidebar>{children}</Sidebar>
                             </ProtectedRoute>

@@ -7,6 +7,8 @@ import { ConfigModule } from "@nestjs/config";
 import { JwtModule } from "@nestjs/jwt";
 import { LocalStrategy } from "./strategies/local.strategy";
 import { JwtStrategy } from "./strategies/jwt.strategy";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { AdminEntity } from "src/entities/admin.entity";
 
 @Module({
     imports: [
@@ -18,7 +20,8 @@ import { JwtStrategy } from "./strategies/jwt.strategy";
             signOptions: {
                 expiresIn: "30d"
             }
-        })
+        }),
+        TypeOrmModule.forFeature([AdminEntity])
     ],
     controllers: [AuthController],
     providers: [AuthService, LocalStrategy, JwtStrategy]

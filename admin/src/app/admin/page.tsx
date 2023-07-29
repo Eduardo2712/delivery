@@ -1,7 +1,7 @@
 "use client";
 
 import CustomTable from "@/components/custom-table";
-import { getDatatable } from "@/requests/admin.request";
+import { getDatatable, remove } from "@/requests/admin.request";
 import { NextPage } from "next";
 import { Column } from "primereact/column";
 
@@ -11,7 +11,7 @@ const Page: NextPage = () => {
             <p className="text-2xl font-bold">Admin</p>
 
             <div className="w-full">
-                <CustomTable request={getDatatable} button_edit button_delete button_view>
+                <CustomTable request={getDatatable} button_edit button_delete button_view url={"/admin"} delete_request={remove}>
                     <Column field="id" header="Id" />
                     <Column field="adm_name" header="Name" />
                     <Column field="email" header="Email" />

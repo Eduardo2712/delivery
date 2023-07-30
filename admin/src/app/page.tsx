@@ -39,7 +39,7 @@ const Page: NextPage = () => {
 
     return (
         <div
-            className={`flex min-h-full flex-col justify-center mx-auto gap-5 mt-4 rounded px-3 py-4 bg-slate-800 ${loading ? "animate-pulse" : ""}`}
+            className={`flex min-h-full flex-col justify-center mx-auto gap-5 mt-4 rounded px-8 py-4 bg-slate-800 ${loading ? "animate-pulse" : ""}`}
         >
             <p className="text-2xl font-bold">Dashboard</p>
 

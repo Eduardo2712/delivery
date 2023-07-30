@@ -7,7 +7,7 @@ import { Column } from "primereact/column";
 
 const Page: NextPage = () => {
     return (
-        <div className={`flex min-h-full flex-col justify-center mx-auto gap-5 rounded px-3 py-4 bg-slate-800`}>
+        <div className={`flex min-h-full flex-col justify-center mx-auto gap-5 rounded px-8 py-4 bg-slate-800`}>
             <p className="text-2xl font-bold">Admin</p>
 
             <div className="w-full">

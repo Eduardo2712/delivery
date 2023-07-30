@@ -1,4 +1,4 @@
-import { logout, update } from "@/store/auth/auth.slice";
+import { logout } from "@/store/auth/auth.slice";
 import { RootState } from "@/store/store";
 import { AdminStoreType } from "@/types/store/auth.type";
 import Link from "next/link";

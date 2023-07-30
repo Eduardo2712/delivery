@@ -14,13 +14,17 @@ export class AdminService {
     ) {}
 
     async create(createAdminDto: CreateAdminDto) {
+        const hash_password = bcrypt.hashSync(createAdminDto.password, 10);
+
         const admin = this.adminRepository.create({
             ...createAdminDto,
             adm_delete: false,
-            password: bcrypt.hashSync(createAdminDto.password, 10)
+            password: hash_password
         });
 
-        return await this.adminRepository.save(admin);
+        await this.adminRepository.save(admin);
+
+        return { ...admin, password: undefined };
     }
 
     async findAll(search: string, rows_per_page: number, page: number) {

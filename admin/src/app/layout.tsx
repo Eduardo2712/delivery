@@ -22,7 +22,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
     const path = usePathname();
-    const isPublicPage = checkIsPublicRoute(path);
+    const is_public_page = checkIsPublicRoute(path);
 
     const [loading, setLoading] = useState(false);
 
@@ -33,11 +33,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="pt-BR">
             <head></head>
+
             <body className={inter.className}>
                 {loading && (
                     <Provider store={store}>
-                        {isPublicPage && (
-                            <>
+                        {is_public_page && (
+                            <ProtectedRoute>
                                 <Toaster
                                     toastOptions={{
                                         style: {
@@ -47,10 +48,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                                     }}
                                 />
                                 {children}
-                            </>
+                            </ProtectedRoute>
                         )}
 
-                        {!isPublicPage && (
+                        {!is_public_page && (
                             <ProtectedRoute>
                                 <Toaster
                                     toastOptions={{

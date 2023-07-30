@@ -1,6 +1,6 @@
 import { update } from "@/store/auth/auth.slice";
-import { ROUTES, checkUserAuthenticated } from "@/utils/route";
-import { useRouter } from "next/navigation";
+import { ROUTES, checkIsPublicRoute, checkUserAuthenticated } from "@/utils/route";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, ReactNode } from "react";
 import { useDispatch } from "react-redux";
 
@@ -11,26 +11,33 @@ export type Props = {
 const ProtectedRoute = ({ children }: Props) => {
     const dispatch = useDispatch();
     const router = useRouter();
+    const path = usePathname();
 
-    const isUserAuthenticated = checkUserAuthenticated();
+    const is_user_authenticated = checkUserAuthenticated();
+
+    const is_public_page = checkIsPublicRoute(path);
 
     useEffect(() => {
         const user_local = localStorage.getItem("user");
         const token_local = localStorage.getItem("token");
 
-        if (isUserAuthenticated) {
+        if (is_user_authenticated) {
             dispatch(update({ user: JSON.parse(user_local ?? ""), token: JSON.parse(token_local ?? "") }));
+
+            if (is_public_page) {
+                return router.push("/");
+            }
         }
 
-        if (!isUserAuthenticated) {
+        if (!is_user_authenticated) {
             return router.push(ROUTES.public.login);
         }
-    }, [router.push, isUserAuthenticated, dispatch]);
+    }, [router, is_user_authenticated, dispatch, is_public_page]);
 
     return (
         <>
-            {!isUserAuthenticated && null}
-            {isUserAuthenticated && children}
+            {!is_user_authenticated && null}
+            {is_user_authenticated && !is_public_page && children}
         </>
     );
 };

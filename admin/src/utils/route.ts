@@ -12,7 +12,7 @@ export const checkUserAuthenticated = () => {
 };
 
 export const checkIsPublicRoute = (route: string) => {
-    const publicRoutes = Object.values(ROUTES.public);
+    const public_routes = Object.values(ROUTES.public);
 
-    return publicRoutes.includes(route);
+    return public_routes.includes(route);
 };

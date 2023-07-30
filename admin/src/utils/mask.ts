@@ -1,4 +1,6 @@
-export const maskCEP = (e: React.ChangeEvent<HTMLInputElement>) => {
+import { ChangeEvent } from "react";
+
+export const maskCEP = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
     e.target.value = value
@@ -8,7 +10,7 @@ export const maskCEP = (e: React.ChangeEvent<HTMLInputElement>) => {
     return e;
 };
 
-export const maskCPF = (e: React.ChangeEvent<HTMLInputElement>) => {
+export const maskCPF = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
     e.target.value = value
@@ -20,7 +22,7 @@ export const maskCPF = (e: React.ChangeEvent<HTMLInputElement>) => {
     return e;
 };
 
-export const maskCNPJ = (e: React.ChangeEvent<HTMLInputElement>) => {
+export const maskCNPJ = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
     e.target.value = value
@@ -33,7 +35,7 @@ export const maskCNPJ = (e: React.ChangeEvent<HTMLInputElement>) => {
     return e;
 };
 
-export const maskMoney = (e: React.ChangeEvent<HTMLInputElement>) => {
+export const maskMoney = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
     e.target.value = value
@@ -43,7 +45,7 @@ export const maskMoney = (e: React.ChangeEvent<HTMLInputElement>) => {
     return e;
 };
 
-export const maskPhone = (e: React.ChangeEvent<HTMLInputElement>) => {
+export const maskPhone = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
     e.target.value = value

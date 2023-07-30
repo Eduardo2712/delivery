@@ -1,9 +1,7 @@
-import { IsNotEmpty, Matches, IsEmail, IsString, MaxLength } from "class-validator";
-import { AdminEntity } from "src/entities/admin.entity";
+import { IsNotEmpty, IsEmail, IsString, MaxLength, Length, Validate } from "class-validator";
 import { MessagesHelper } from "src/helpers/message.helpers";
-import { RegExHelper } from "src/helpers/regex.helper";
 
-export class CreateAdminDto extends AdminEntity {
+export class CreateAdminDto {
     @IsNotEmpty()
     @IsString()
     @MaxLength(255)
@@ -19,6 +17,16 @@ export class CreateAdminDto extends AdminEntity {
     adm_phone: string;
 
     @IsNotEmpty()
-    @Matches(RegExHelper.password, { message: MessagesHelper.PASSWORD_VALID })
+    @Length(6, 30, { message: MessagesHelper.PASSWORD_VALID })
     password: string;
+
+    @IsNotEmpty()
+    @Length(6, 30)
+    @Validate(
+        function (this: CreateAdminDto) {
+            return this.password === this.confirm_password;
+        },
+        { message: MessagesHelper.CONFIRM_PASSWORD }
+    )
+    confirm_password: string;
 }

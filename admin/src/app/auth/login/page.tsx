@@ -12,6 +12,7 @@ import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { FaSpinner } from "react-icons/fa";
 import { NextPage } from "next";
+import { AuthRequestType } from "@/types/request/auth.type";
 
 const Page: NextPage = () => {
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -20,7 +21,7 @@ const Page: NextPage = () => {
 
     const router = useRouter();
 
-    const onSubmit = async (values: { email: string; password: string }) => {
+    const onSubmit = async (values: AuthRequestType) => {
         setSubmitting(true);
 
         try {
@@ -47,7 +48,7 @@ const Page: NextPage = () => {
         }
     };
 
-    const initialValues = {
+    const initialValues: AuthRequestType = {
         email: "",
         password: ""
     };

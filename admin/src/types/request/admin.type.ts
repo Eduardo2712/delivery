@@ -3,3 +3,5 @@ export type GetDatatableRequestType = {
     page: number;
     rows_per_page: number;
 };
+
+export type CreateRequestType = {};

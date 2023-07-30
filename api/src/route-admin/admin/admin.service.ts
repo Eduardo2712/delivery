@@ -4,6 +4,7 @@ import { UpdateAdminDto } from "./dto/update-admin.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AdminEntity } from "src/entities/admin.entity";
 import { ILike, Repository } from "typeorm";
+import bcrypt from "bcrypt";
 
 @Injectable()
 export class AdminService {
@@ -13,7 +14,11 @@ export class AdminService {
     ) {}
 
     async create(createAdminDto: CreateAdminDto) {
-        const admin = this.adminRepository.create(createAdminDto);
+        const admin = this.adminRepository.create({
+            ...createAdminDto,
+            adm_delete: false,
+            password: bcrypt.hashSync(createAdminDto.password, 10)
+        });
 
         return await this.adminRepository.save(admin);
     }

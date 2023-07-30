@@ -1,18 +1,29 @@
+import { logout, update } from "@/store/auth/auth.slice";
 import { RootState } from "@/store/store";
 import { AdminStoreType } from "@/types/store/auth.type";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
 import { FaBars, FaGauge, FaPlateWheat, FaRightFromBracket, FaUser, FaUsers } from "react-icons/fa6";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Sidebar = ({ children }: { children: ReactNode }) => {
     const [openMenu, setOpenMenu] = useState<boolean>(false);
     const [openSidebar, setOpenSidebar] = useState<boolean>(false);
 
+    const dispatch = useDispatch();
+
+    const router = useRouter();
+
     const pathname = usePathname();
 
     const user = useSelector<RootState, AdminStoreType | null>((state) => state.auth.user);
+
+    const logoutSystem = () => {
+        dispatch(logout());
+
+        router.push("/auth/login");
+    };
 
     return (
         <div className="min-h-screen bg-gray-700">
@@ -161,6 +172,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
 
                         <li>
                             <button
+                                onClick={logoutSystem}
                                 className={`${
                                     pathname === "/logout" ? "bg-gray-700" : ""
                                 } flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group w-full`}

@@ -24,7 +24,7 @@ const authSlice = createSlice({
             state.user = null;
             state.token = null;
         },
-        update: (state, action: PayloadAction<{ user: AdminStoreType; token: string }>) => {
+        update: (state, action: PayloadAction<{ user: AdminStoreType | null; token: string | null }>) => {
             state.user = action.payload.user;
         },
         getUser: (state) => {

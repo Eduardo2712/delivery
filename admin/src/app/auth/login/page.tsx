@@ -1,7 +1,7 @@
 "use client";
 
 import { Formik, Form } from "formik";
-import { schema } from "./util";
+import { schema } from "./utils";
 import { login } from "@/store/auth/auth.slice";
 import { useDispatch } from "react-redux";
 import { auth } from "@/requests/auth.request";

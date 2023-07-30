@@ -1,7 +1,7 @@
 "use client";
 
 import { get } from "@/requests/dashboard.request";
-import { DashboardReturnType } from "@/types/page/index.type";
+import { DashboardReturnType } from "@/types/request/dashboard.type";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";

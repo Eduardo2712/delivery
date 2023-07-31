@@ -9,3 +9,5 @@ export const schema = Yup.object().shape({
     adm_name: Yup.string().required("Fill in this field!"),
     adm_phone: Yup.string().min(11, "Must contain at least 11 characters!").required("Fill in this field!")
 });
+
+export const router_base = "/admin";

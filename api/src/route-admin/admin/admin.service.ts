@@ -4,7 +4,7 @@ import { UpdateAdminDto } from "./dto/update-admin.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AdminEntity } from "src/entities/admin.entity";
 import { ILike, Repository } from "typeorm";
-import bcrypt from "bcrypt";
+import { checkUnique } from "src/helpers/service.helpers";
 
 @Injectable()
 export class AdminService {
@@ -14,12 +14,21 @@ export class AdminService {
     ) {}
 
     async create(createAdminDto: CreateAdminDto) {
-        const hash_password = bcrypt.hashSync(createAdminDto.password, 10);
+        const aux = await checkUnique(
+            this.adminRepository,
+            {
+                adm_name: createAdminDto.adm_name
+            },
+            "email"
+        );
+
+        if (aux) {
+            throw new Error(aux);
+        }
 
         const admin = this.adminRepository.create({
             ...createAdminDto,
-            adm_delete: false,
-            password: hash_password
+            adm_delete: false
         });
 
         await this.adminRepository.save(admin);

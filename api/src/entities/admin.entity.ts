@@ -1,6 +1,7 @@
 import { BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { FileEntity } from "./file.entity";
 import { hashSync } from "bcrypt";
+import { Exclude } from "class-transformer";
 
 @Entity({
     name: "admins"
@@ -38,6 +39,7 @@ export class AdminEntity {
         type: "varchar",
         select: false
     })
+    @Exclude()
     password: string;
 
     @Column({

@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, OneToMany } from "typeorm";
 import { OrderEntity } from "./order.entity";
 import { FileEntity } from "./file.entity";
+import { Exclude } from "class-transformer";
 
 @Entity({
     name: "users"
@@ -37,6 +38,7 @@ export class UserEntity {
         nullable: false,
         type: "varchar"
     })
+    @Exclude()
     password: string;
 
     @Column({

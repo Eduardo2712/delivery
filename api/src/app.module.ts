@@ -6,6 +6,7 @@ import { APP_GUARD } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
 import { AuthGuard } from "./route-admin/auth/guard/auth.guard";
 import { RouteAdminModule } from "./route-admin/route-admin.module";
+import { ThrottlerModule, ThrottlerGuard } from "@nestjs/throttler";
 
 @Module({
     imports: [
@@ -21,13 +22,21 @@ import { RouteAdminModule } from "./route-admin/route-admin.module";
             synchronize: true,
             autoLoadEntities: true
         } as TypeOrmModuleOptions),
-        RouteAdminModule
+        RouteAdminModule,
+        ThrottlerModule.forRoot({
+            ttl: 60,
+            limit: 10
+        })
     ],
     providers: [
         JwtService,
         {
             provide: APP_GUARD,
             useClass: AuthGuard
+        },
+        {
+            provide: APP_GUARD,
+            useClass: ThrottlerGuard
         }
     ]
 })

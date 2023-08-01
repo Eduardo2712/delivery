@@ -2,6 +2,7 @@
 
 import { get } from "@/requests/dashboard.request";
 import { DashboardReturnType } from "@/types/request/dashboard.type";
+import axios from "axios";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -30,7 +31,11 @@ const Page: NextPage = () => {
 
                 setData(response.data);
             } catch (error: any) {
-                return toast.error(error ?? "An error has occurred");
+                if (axios.isAxiosError(error)) {
+                    return toast.error(error.response?.data?.message ?? "An error has occurred");
+                } else {
+                    return toast.error("An error has occurred");
+                }
             } finally {
                 setLoading(false);
             }

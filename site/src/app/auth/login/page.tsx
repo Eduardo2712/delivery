@@ -10,6 +10,7 @@ import { useState } from "react";
 import StyleInput from "@/components/style-input";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
+import axios from "axios";
 
 const Page = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -38,8 +39,12 @@ const Page = () => {
 
                 router.push("/");
             }
-        } catch (error: any) {
-            return toast.error(error ?? "An error has occurred");
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return toast.error(error.response?.data?.message ?? "An error has occurred");
+            } else {
+                return toast.error("An error has occurred");
+            }
         } finally {
             setLoading(false);
         }

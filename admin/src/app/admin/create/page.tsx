@@ -12,6 +12,7 @@ import Link from "next/link";
 import { create } from "@/requests/admin.request";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import axios, { AxiosError } from "axios";
 
 const Page: NextPage = () => {
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -31,9 +32,12 @@ const Page: NextPage = () => {
             toast.success("User created successfully");
 
             router.push(router_base);
-        } catch (error: any) {
-            console.log(error);
-            return toast.error(error?.message ?? "An error has occurred");
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return toast.error(error.response?.data?.message ?? "An error has occurred");
+            } else {
+                return toast.error("An error has occurred");
+            }
         } finally {
             setSubmitting(false);
         }

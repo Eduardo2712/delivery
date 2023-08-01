@@ -8,6 +8,7 @@ import { createUser } from "@/requests/user.request";
 import { toast } from "react-hot-toast";
 import StyleInput from "@/components/style-input";
 import { maskCPF, maskPhone } from "@/utils/mask";
+import axios from "axios";
 
 const Page = () => {
     const [step, setStep] = useState<number>(1);
@@ -49,8 +50,12 @@ const Page = () => {
             toast.success("Successfully registered user");
 
             router.push("/");
-        } catch (error: any) {
-            return toast.error(error ?? "An error has occurred");
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return toast.error(error.response?.data?.message ?? "An error has occurred");
+            } else {
+                return toast.error("An error has occurred");
+            }
         } finally {
             setSubmitting(false);
         }

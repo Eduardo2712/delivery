@@ -13,6 +13,7 @@ import { toast } from "react-hot-toast";
 import { FaSpinner } from "react-icons/fa";
 import { NextPage } from "next";
 import { AuthRequestType } from "@/types/request/auth.type";
+import axios from "axios";
 
 const Page: NextPage = () => {
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -41,8 +42,12 @@ const Page: NextPage = () => {
 
                 router.push("/");
             }
-        } catch (error: any) {
-            return toast.error(error ?? "An error has occurred");
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return toast.error(error.response?.data?.message ?? "An error has occurred");
+            } else {
+                return toast.error("An error has occurred");
+            }
         } finally {
             setSubmitting(false);
         }

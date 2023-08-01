@@ -1,4 +1,4 @@
-import { AxiosResponse } from "axios";
+import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
@@ -46,8 +46,12 @@ const CustomTable = ({ children, request, button_delete = false, button_edit = f
             }
 
             setData(response.data);
-        } catch (error: any) {
-            return toast.error(error ?? "An error has occurred");
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return toast.error(error.response?.data?.message ?? "An error has occurred");
+            } else {
+                return toast.error("An error has occurred");
+            }
         } finally {
             setLoading(false);
         }
@@ -98,8 +102,12 @@ const CustomTable = ({ children, request, button_delete = false, button_edit = f
             toast.success("Deleted successfully");
 
             fetchData();
-        } catch (error: any) {
-            return toast.error(error ?? "An error has occurred");
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return toast.error(error.response?.data?.message ?? "An error has occurred");
+            } else {
+                return toast.error("An error has occurred");
+            }
         }
     };
 

@@ -1,3 +1,4 @@
+import useDebounce from "@/hooks/debounce";
 import axios, { AxiosResponse } from "axios";
 import Link from "next/link";
 import { Column } from "primereact/column";
@@ -34,6 +35,7 @@ const CustomTable = ({ children, request, button_delete = false, button_edit = f
         page: 1,
         rows_per_page: 10
     });
+    const debouncedInputValue = useDebounce(params.search, 500);
 
     const fetchData = async () => {
         setLoading(true);
@@ -113,7 +115,7 @@ const CustomTable = ({ children, request, button_delete = false, button_edit = f
 
     useEffect(() => {
         fetchData();
-    }, [params]);
+    }, [params.page, params.rows_per_page, debouncedInputValue]);
 
     const buttons = (e: DataItem<number>) => {
         return (

@@ -25,7 +25,7 @@ import { ThrottlerModule, ThrottlerGuard } from "@nestjs/throttler";
         RouteAdminModule,
         ThrottlerModule.forRoot({
             ttl: 60,
-            limit: 10
+            limit: 20
         })
     ],
     providers: [

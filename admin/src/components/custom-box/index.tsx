@@ -1,7 +1,11 @@
 import { ReactNode } from "react";
 
-const CustomBox = (children: ReactNode) => {
-    return <div className="flex gap-4 flex-col bg-slate-800 rounded px-8 py-8">{children}</div>;
+type Props = {
+    children: ReactNode;
+};
+
+const CustomBox = ({ children }: Props) => {
+    return <div className="flex gap-4 flex-col bg-slate-800 rounded px-8 py-8 my-3">{children}</div>;
 };
 
 export default CustomBox;

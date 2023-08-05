@@ -13,6 +13,7 @@ import { create } from "@/requests/admin.request";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import CustomBox from "@/components/custom-box";
 
 const Page: NextPage = () => {
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -52,13 +53,13 @@ const Page: NextPage = () => {
     };
 
     return (
-        <div className={`flex min-h-full flex-col justify-center mx-auto gap-5 px-8 py-4`}>
+        <>
             <p className="text-2xl font-bold">Admin - Create</p>
 
             <Formik onSubmit={onSubmit} validateOnMount validationSchema={schema} initialValues={initialValues}>
                 {({ handleChange, handleBlur, values, errors, touched }) => (
                     <Form method="post" noValidate>
-                        <div className="flex gap-4 flex-col bg-slate-800 rounded px-8 py-8">
+                        <CustomBox>
                             <div className="flex min-h-full flex-col justify-between gap-4 container mx-auto px-4 lg:flex-row">
                                 <div className="max-w-2xl flex-1">
                                     <StyleInput
@@ -136,27 +137,29 @@ const Page: NextPage = () => {
 
                                 <div className="max-w-2xl flex-1"></div>
                             </div>
-                        </div>
+                        </CustomBox>
 
-                        <div className="mt-3 gap-2 flex flex-col justify-between md:flex-row bg-slate-800 rounded px-8 py-8">
-                            <Link
-                                href={router_base}
-                                className="flex h-10 items-center justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:w-36"
-                            >
-                                {!submitting ? "Return" : <FaSpinner className="animate-spin" size={20} />}
-                            </Link>
+                        <CustomBox>
+                            <div className="gap-2 flex flex-col justify-between md:flex-row">
+                                <Link
+                                    href={router_base}
+                                    className="flex h-10 items-center justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:w-36"
+                                >
+                                    {!submitting ? "Return" : <FaSpinner className="animate-spin" size={20} />}
+                                </Link>
 
-                            <button
-                                type="submit"
-                                className="flex h-10 items-center justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:w-36"
-                            >
-                                {!submitting ? "Create" : <FaSpinner className="animate-spin" size={20} />}
-                            </button>
-                        </div>
+                                <button
+                                    type="submit"
+                                    className="flex h-10 items-center justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:w-36"
+                                >
+                                    {!submitting ? "Create" : <FaSpinner className="animate-spin" size={20} />}
+                                </button>
+                            </div>
+                        </CustomBox>
                     </Form>
                 )}
             </Formik>
-        </div>
+        </>
     );
 };
 

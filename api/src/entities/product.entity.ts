@@ -38,10 +38,10 @@ export class ProductEntity {
 
     @Column({
         nullable: false,
-        default: false,
+        default: true,
         type: "boolean"
     })
-    pro_delete: boolean;
+    pro_active: boolean;
 
     @CreateDateColumn()
     created_at: Date;

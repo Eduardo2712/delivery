@@ -14,7 +14,7 @@ export class AdminService {
     ) {}
 
     async create(createAdminDto: CreateAdminDto) {
-        const error = await checkUnique(this.adminRepository, { adm_name: createAdminDto.adm_name, adm_delete: false }, "email");
+        const error = await checkUnique(this.adminRepository, { adm_name: createAdminDto.adm_name, adm_active: true }, "email");
 
         if (error) {
             throw new HttpException(error, HttpStatus.BAD_REQUEST);
@@ -22,7 +22,7 @@ export class AdminService {
 
         const admin = this.adminRepository.create({
             ...createAdminDto,
-            adm_delete: false
+            adm_active: true
         });
 
         await this.adminRepository.save(admin);
@@ -33,7 +33,7 @@ export class AdminService {
     async findAll(search: string, rows_per_page: number, page: number) {
         return await this.adminRepository.find({
             where: {
-                adm_delete: false,
+                adm_active: true,
                 adm_name: ILike(`%${search}%`)
             },
             order: {
@@ -57,7 +57,7 @@ export class AdminService {
     async remove(id: number) {
         const obj = await this.adminRepository.findOneOrFail({ where: { id } });
 
-        obj.adm_delete = true;
+        obj.adm_active = false;
 
         await this.adminRepository.save(obj);
 

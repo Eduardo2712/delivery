@@ -31,10 +31,10 @@ export class ItemEntity {
 
     @Column({
         nullable: false,
-        default: false,
+        default: true,
         type: "boolean"
     })
-    ite_delete: boolean;
+    ite_active: boolean;
 
     @CreateDateColumn()
     created_at: Date;

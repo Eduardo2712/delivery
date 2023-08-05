@@ -9,5 +9,6 @@ export type AdminCreateRequestType = {
     password: string;
     adm_phone: string;
     adm_name: string;
+    adm_status: number | string;
     confirm_password: string;
 };

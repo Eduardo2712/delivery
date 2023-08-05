@@ -49,10 +49,10 @@ export class UserEntity {
 
     @Column({
         nullable: false,
-        default: false,
+        default: true,
         type: "boolean"
     })
-    use_delete: boolean;
+    use_active: boolean;
 
     @CreateDateColumn()
     created_at: Date;

@@ -153,9 +153,9 @@ const CustomTable = ({ children, request, button_delete = false, button_edit = f
 
     return (
         <>
-            <div className="flex gap-4">
+            <div className="flex flex-col gap-1 lg:flex-row">
                 <div className="mb-4 flex items-center justify-start flex-1">
-                    <Link href={`${url}/create`} className="bg-blue-700 flex items-center gap-3 rounded px-3 py-2 text-gray-100">
+                    <Link href={`${url}/create`} className="bg-blue-700 flex items-center gap-3 rounded px-3 py-2 text-gray-100 font-semibold">
                         <FaPlus fontSize={18} className="cursor-pointer" />
                         New
                     </Link>

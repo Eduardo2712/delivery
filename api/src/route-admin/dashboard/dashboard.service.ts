@@ -25,25 +25,25 @@ export class DashboardService {
     async get() {
         const admin_count = await this.adminRepository.count({
             where: {
-                adm_delete: false
+                adm_active: true
             }
         });
 
         const user_count = await this.userRepository.count({
             where: {
-                use_delete: false
+                use_active: true
             }
         });
 
         const product_count = await this.productRepository.count({
             where: {
-                pro_delete: false
+                pro_active: true
             }
         });
 
         const order_count = await this.orderRepository.count({
             where: {
-                ord_delete: false
+                ord_active: true
             }
         });
 
@@ -63,7 +63,7 @@ export class DashboardService {
 
         const itens_count = await this.itemRepository.count({
             where: {
-                ite_delete: false
+                ite_active: true
             }
         });
 

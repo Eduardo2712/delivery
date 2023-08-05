@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsEmail, IsString, MaxLength, Length, Validate } from "class-validator";
+import { IsNotEmpty, IsEmail, IsString, MaxLength, Length, Validate, IsBooleanString } from "class-validator";
 import { MessagesHelper } from "src/helpers/message.helpers";
 
 export class CreateAdminDto {
@@ -15,6 +15,10 @@ export class CreateAdminDto {
     @IsString()
     @MaxLength(15)
     adm_phone: string;
+
+    @IsNotEmpty()
+    @IsBooleanString()
+    adm_status: boolean;
 
     @IsNotEmpty()
     @Length(6, 30, { message: MessagesHelper.PASSWORD_VALID })

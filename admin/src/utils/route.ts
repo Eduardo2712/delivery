@@ -1,5 +1,5 @@
 export const ROUTES = {
-    // private: {},
+    private: {},
     public: {
         login: "/auth/login"
     }

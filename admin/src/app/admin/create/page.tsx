@@ -14,6 +14,8 @@ import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import CustomBox from "@/components/custom-box";
+import StyleSelect from "@/components/style-select";
+import { listEnableDisable } from "@/utils/other";
 
 const Page: NextPage = () => {
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -49,6 +51,7 @@ const Page: NextPage = () => {
         password: "",
         adm_name: "",
         adm_phone: "",
+        adm_status: "",
         confirm_password: ""
     };
 
@@ -60,8 +63,8 @@ const Page: NextPage = () => {
                 {({ handleChange, handleBlur, values, errors, touched }) => (
                     <Form method="post" noValidate>
                         <CustomBox>
-                            <div className="flex min-h-full flex-col justify-between gap-4 container mx-auto px-4 lg:flex-row">
-                                <div className="max-w-2xl flex-1">
+                            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                                <div>
                                     <StyleInput
                                         errors={errors.adm_name}
                                         touched={touched.adm_name}
@@ -75,7 +78,7 @@ const Page: NextPage = () => {
                                     />
                                 </div>
 
-                                <div className="max-w-2xl flex-1">
+                                <div>
                                     <StyleInput
                                         errors={errors.adm_phone}
                                         touched={touched.adm_phone}
@@ -88,10 +91,8 @@ const Page: NextPage = () => {
                                         is_required={true}
                                     />
                                 </div>
-                            </div>
 
-                            <div className="flex min-h-full flex-col justify-between gap-4 container mx-auto px-4 lg:flex-row">
-                                <div className="max-w-2xl flex-1">
+                                <div>
                                     <StyleInput
                                         errors={errors.email}
                                         touched={touched.email}
@@ -105,7 +106,29 @@ const Page: NextPage = () => {
                                     />
                                 </div>
 
-                                <div className="max-w-2xl flex-1">
+                                <div>
+                                    <StyleSelect
+                                        errors={errors.adm_status}
+                                        touched={touched.adm_status}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        name={"adm_status"}
+                                        title={"Status"}
+                                        value={values.adm_status}
+                                        is_required={true}
+                                        emptyOption
+                                    >
+                                        {listEnableDisable.map((item) => {
+                                            return (
+                                                <option key={item.value} value={item.value}>
+                                                    {item.label}
+                                                </option>
+                                            );
+                                        })}
+                                    </StyleSelect>
+                                </div>
+
+                                <div>
                                     <StyleInput
                                         errors={errors.password}
                                         touched={touched.password}
@@ -118,10 +141,8 @@ const Page: NextPage = () => {
                                         is_required={true}
                                     />
                                 </div>
-                            </div>
 
-                            <div className="flex min-h-full flex-col gap-4 container mx-auto px-4 lg:flex-row">
-                                <div className="max-w-2xl flex-1">
+                                <div>
                                     <StyleInput
                                         errors={errors.confirm_password}
                                         touched={touched.confirm_password}
@@ -134,8 +155,6 @@ const Page: NextPage = () => {
                                         is_required={true}
                                     />
                                 </div>
-
-                                <div className="max-w-2xl flex-1"></div>
                             </div>
                         </CustomBox>
 

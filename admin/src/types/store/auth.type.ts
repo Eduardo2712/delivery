@@ -17,7 +17,7 @@ export type AdminStoreType = {
     email: string;
     adm_phone: string;
     password: string;
-    adm_delete: boolean;
+    adm_active: boolean;
     created_at: Date;
     updated_at: Date;
     picture: PictureStoreType;

@@ -7,7 +7,8 @@ export const schema = Yup.object().shape({
         .required("Fill in this field!")
         .oneOf([Yup.ref("password"), ""], "Passwords must match!"),
     adm_name: Yup.string().required("Fill in this field!"),
-    adm_phone: Yup.string().min(11, "Must contain at least 11 characters!").required("Fill in this field!")
+    adm_phone: Yup.string().min(14, "Must contain at least 14 characters!").required("Fill in this field!"),
+    adm_status: Yup.number().required("Fill in this field!")
 });
 
 export const router_base = "/admin";

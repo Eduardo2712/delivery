@@ -79,10 +79,10 @@ export class OrderEntity {
 
     @Column({
         nullable: false,
-        default: false,
+        default: true,
         type: "boolean"
     })
-    ord_delete: boolean;
+    ord_active: boolean;
 
     @CreateDateColumn()
     created_at: Date;

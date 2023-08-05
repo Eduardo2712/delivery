@@ -5,7 +5,7 @@ export type User = {
     use_phone: string;
     use_date_birth: Date;
     password: string;
-    use_delete: boolean;
+    use_active: boolean;
     use_id_photo: number | null;
     photo: File;
     createdAt: Date;

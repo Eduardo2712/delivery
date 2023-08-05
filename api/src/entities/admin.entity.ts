@@ -44,10 +44,17 @@ export class AdminEntity {
 
     @Column({
         nullable: false,
-        default: false,
+        default: true,
         type: "boolean"
     })
-    adm_delete: boolean;
+    adm_status: boolean;
+
+    @Column({
+        nullable: false,
+        default: true,
+        type: "boolean"
+    })
+    adm_active: boolean;
 
     @CreateDateColumn()
     created_at: Date;

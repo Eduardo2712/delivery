@@ -12,3 +12,12 @@ export type AdminCreateRequestType = {
     adm_status: number | string;
     confirm_password: string;
 };
+
+export type AdminUpdateRequestType = {
+    adm_phone: string;
+    adm_name: string;
+    adm_status: number | string;
+    new_password: string;
+    current_password: string;
+    email?: string;
+};

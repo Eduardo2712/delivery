@@ -47,7 +47,7 @@ const Page: NextPage = () => {
         <>
             <p className="text-2xl font-bold">Dashboard</p>
 
-            <CustomBox>
+            <CustomBox loading={loading}>
                 <div className="w-full flex flex-col lg:flex-row gap-5">
                     <div className="bg-gray-700 w-full px-8 rounded-md h-20 flex justify-center flex-col items-center border-b-2 border-b-blue-700">
                         <p className="text-gray-400 font-extrabold text-xl">Admins</p>

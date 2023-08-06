@@ -1,4 +1,4 @@
-import { AdminCreateRequestType, AdminDatatableRequestType } from "@/types/request/admin.type";
+import { AdminCreateRequestType, AdminDatatableRequestType, AdminUpdateRequestType } from "@/types/request/admin.type";
 import axios from "./axios.config";
 import { AxiosPromise } from "axios";
 
@@ -12,4 +12,12 @@ export const remove = (id: number): AxiosPromise<Error> => {
 
 export const create = (data: AdminCreateRequestType): AxiosPromise<Error> => {
     return axios.post(`${process.env.NEXT_PUBLIC_URL_API}/admin`, data);
+};
+
+export const edit = (id: number, data: AdminUpdateRequestType): AxiosPromise<Error> => {
+    return axios.post(`${process.env.NEXT_PUBLIC_URL_API}/admin/${id}`, data);
+};
+
+export const get = <T>(id: number): AxiosPromise<T & Error> => {
+    return axios.get(`${process.env.NEXT_PUBLIC_URL_API}/admin/${id}`);
 };

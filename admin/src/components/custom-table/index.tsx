@@ -121,21 +121,21 @@ const CustomTable = ({ children, request, button_delete = false, button_edit = f
         return (
             <div className="flex gap-2">
                 {button_edit && url && (
-                    <button
-                        type="button"
+                    <Link
+                        href={`${url}/edit/${e.id}`}
                         className="bg-green-600 hover:bg-green-700 rounded px-2 py-2 text-gray-100 h-9 w-9 flex text-center items-center justify-center"
                     >
                         <FaPen />
-                    </button>
+                    </Link>
                 )}
 
                 {button_view && url && (
-                    <button
-                        type="button"
+                    <Link
+                        href={`${url}/view/${e.id}`}
                         className="bg-blue-600 hover:bg-blue-700 rounded px-2 py-2 text-gray-100 h-9 w-9 flex text-center items-center justify-center"
                     >
                         <FaEye />
-                    </button>
+                    </Link>
                 )}
 
                 {button_delete && delete_request && (

@@ -38,7 +38,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 {loading && (
                     <Provider store={store}>
                         {is_public_page && (
-                            <ProtectedRoute>
+                            <>
                                 <Toaster
                                     toastOptions={{
                                         style: {
@@ -48,7 +48,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                                     }}
                                 />
                                 {children}
-                            </ProtectedRoute>
+                            </>
                         )}
 
                         {!is_public_page && (

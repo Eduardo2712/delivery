@@ -37,7 +37,7 @@ export class AdminService {
                 adm_name: ILike(`%${search}%`)
             },
             order: {
-                adm_name: "ASC"
+                id: "desc"
             },
             take: rows_per_page,
             skip: rows_per_page * (page - 1)
@@ -45,7 +45,7 @@ export class AdminService {
     }
 
     async update(id: number, updateAdminDto: UpdateAdminDto) {
-        const admin = await this.adminRepository.findOneOrFail({ where: { id } });
+        const admin = await this.adminRepository.findOneOrFail({ where: { id, adm_active: true } });
 
         this.adminRepository.merge(admin, updateAdminDto);
 
@@ -55,12 +55,18 @@ export class AdminService {
     }
 
     async remove(id: number) {
-        const obj = await this.adminRepository.findOneOrFail({ where: { id } });
+        const obj = await this.adminRepository.findOneOrFail({ where: { id, adm_active: true } });
 
         obj.adm_active = false;
 
         await this.adminRepository.save(obj);
 
         return null;
+    }
+
+    async findOne(id: number) {
+        const obj = await this.adminRepository.findOneOrFail({ where: { id, adm_active: true } });
+
+        return obj;
     }
 }

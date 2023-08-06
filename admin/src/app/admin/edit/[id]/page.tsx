@@ -3,12 +3,12 @@
 import StyleInput from "@/components/style-input";
 import { Form, Formik } from "formik";
 import { FaSpinner } from "react-icons/fa6";
-import { router_base, schemaCreate } from "../utils";
-import { useState } from "react";
-import { AdminCreateRequestType } from "@/types/request/admin.type";
+import { router_base, schemaUpdate } from "../../utils";
+import { useEffect, useState } from "react";
+import { AdminUpdateRequestType } from "@/types/request/admin.type";
 import { maskPhone } from "@/utils/mask";
 import Link from "next/link";
-import { create } from "@/requests/admin.request";
+import { edit, get } from "@/requests/admin.request";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -16,23 +16,54 @@ import CustomBox from "@/components/custom-box";
 import StyleSelect from "@/components/style-select";
 import { listEnableDisable } from "@/utils/other";
 import { NextPage } from "next";
+import LoadingSpinner from "@/components/loading-spinner";
 
-const Page: NextPage = () => {
+type Params = {
+    params: { id: number };
+};
+
+const Page: NextPage<Params> = ({ params }) => {
     const [submitting, setSubmitting] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [data, setData] = useState(null as any);
 
     const router = useRouter();
 
-    const onSubmit = async (values: AdminCreateRequestType) => {
+    useEffect(() => {
+        (async () => {
+            setLoading(true);
+
+            try {
+                const response = await get(params.id);
+
+                if (response.status !== 200) {
+                    return toast.error(response.data.message);
+                }
+
+                setData(response.data);
+            } catch (error: any) {
+                if (axios.isAxiosError(error)) {
+                    return toast.error(error.response?.data?.message ?? "An error has occurred");
+                } else {
+                    return toast.error("An error has occurred");
+                }
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, []);
+
+    const onSubmit = async (values: AdminUpdateRequestType) => {
         setSubmitting(true);
 
         try {
-            const response = await create(values);
+            const response = await edit(params.id, values);
 
             if (response.status !== 201) {
                 return toast.error(response.data.message);
             }
 
-            toast.success("User created successfully");
+            toast.success("User updated successfully");
 
             router.push(router_base);
         } catch (error) {
@@ -46,20 +77,24 @@ const Page: NextPage = () => {
         }
     };
 
-    const initialValues: AdminCreateRequestType = {
-        email: "",
-        password: "",
-        adm_name: "",
-        adm_phone: "",
-        adm_status: "",
-        confirm_password: ""
+    const initialValues: AdminUpdateRequestType = {
+        email: data?.email ?? "",
+        adm_name: data?.adm_name ?? "",
+        adm_phone: data?.adm_phone ?? "",
+        adm_status: data?.adm_status ? 1 : 0,
+        current_password: "",
+        new_password: ""
     };
+
+    if (loading) {
+        return <LoadingSpinner />;
+    }
 
     return (
         <>
-            <p className="text-2xl font-bold">Admin - Create</p>
+            <p className="text-2xl font-bold">Admin - Edit</p>
 
-            <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaCreate} initialValues={initialValues}>
+            <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaUpdate} initialValues={initialValues}>
                 {({ handleChange, handleBlur, values, errors, touched }) => (
                     <Form method="post" noValidate>
                         <CustomBox>
@@ -103,6 +138,7 @@ const Page: NextPage = () => {
                                         type={"email"}
                                         value={values.email}
                                         is_required
+                                        disabled
                                     />
                                 </div>
 
@@ -130,29 +166,27 @@ const Page: NextPage = () => {
 
                                 <div>
                                     <StyleInput
-                                        errors={errors.password}
-                                        touched={touched.password}
+                                        errors={errors.current_password}
+                                        touched={touched.current_password}
                                         handleBlur={handleBlur}
                                         handleChange={handleChange}
-                                        name={"password"}
-                                        title={"Password"}
+                                        name={"current_password"}
+                                        title={"Current password (Fill only if changing)"}
                                         type={"password"}
-                                        value={values.password}
-                                        is_required
+                                        value={values.current_password}
                                     />
                                 </div>
 
                                 <div>
                                     <StyleInput
-                                        errors={errors.confirm_password}
-                                        touched={touched.confirm_password}
+                                        errors={errors.new_password}
+                                        touched={touched.new_password}
                                         handleBlur={handleBlur}
                                         handleChange={handleChange}
-                                        name={"confirm_password"}
-                                        title={"Confirm password"}
+                                        name={"new_password"}
+                                        title={"New password (Fill only if changing)"}
                                         type={"password"}
-                                        value={values.confirm_password}
-                                        is_required
+                                        value={values.new_password}
                                     />
                                 </div>
                             </div>
@@ -171,7 +205,7 @@ const Page: NextPage = () => {
                                     type="submit"
                                     className="flex h-10 items-center justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:w-36"
                                 >
-                                    {!submitting ? "Create" : <FaSpinner className="animate-spin" size={20} />}
+                                    {!submitting ? "Save" : <FaSpinner className="animate-spin" size={20} />}
                                 </button>
                             </div>
                         </CustomBox>

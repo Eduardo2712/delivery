@@ -27,7 +27,6 @@ const StyleSelect = ({ handleChange, handleBlur, name, title, errors, touched, v
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={value}
-                placeholder={title}
             >
                 {emptyOption && <option value={""}></option>}
 

@@ -8,7 +8,7 @@ export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Public()
-    @Post("login")
+    @Post("/login")
     async login(@Body() createAuthDto: CreateAuthDto) {
         try {
             return await this.authService.login(createAuthDto);

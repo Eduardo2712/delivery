@@ -11,9 +11,9 @@ import StyleInput from "@/components/style-input";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { FaSpinner } from "react-icons/fa";
-import { NextPage } from "next";
 import { AuthRequestType } from "@/types/request/auth.type";
 import axios from "axios";
+import { NextPage } from "next";
 
 const Page: NextPage = () => {
     const [submitting, setSubmitting] = useState<boolean>(false);

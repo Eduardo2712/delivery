@@ -5,6 +5,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { AdminEntity } from "src/entities/admin.entity";
 import { ILike, Repository } from "typeorm";
 import { checkUnique } from "src/helpers/service.helpers";
+import { compareSync } from "bcrypt";
 
 @Injectable()
 export class AdminService {
@@ -47,7 +48,17 @@ export class AdminService {
     async update(id: number, updateAdminDto: UpdateAdminDto) {
         const admin = await this.adminRepository.findOneOrFail({ where: { id, adm_active: true } });
 
-        this.adminRepository.merge(admin, updateAdminDto);
+        if (compareSync(updateAdminDto.new_password, admin.password)) {
+            return "New password is the same as the old one";
+        }
+
+        let admin_update: UpdateAdminDto & { password?: string } = { ...updateAdminDto };
+
+        if (updateAdminDto.new_password) {
+            admin_update = { ...admin_update, password: updateAdminDto.new_password };
+        }
+
+        this.adminRepository.merge(admin, admin_update);
 
         await this.adminRepository.save(admin);
 

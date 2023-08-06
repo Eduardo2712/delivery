@@ -7,10 +7,10 @@ import { UpdateAdminDto } from "./dto/update-admin.dto";
 export class AdminController {
     constructor(private readonly adminService: AdminService) {}
 
-    @Post()
-    async create(@Body() createAdminDto: CreateAdminDto) {
+    @Post(":id")
+    async update(@Param("id") id: number, @Body() updateAdminDto: UpdateAdminDto) {
         try {
-            return await this.adminService.create(createAdminDto);
+            return await this.adminService.update(id, updateAdminDto);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 throw new BadRequestException(error.message);
@@ -20,10 +20,10 @@ export class AdminController {
         }
     }
 
-    @Post(":id")
-    async update(@Param("id") id: number, @Body() updateAdminDto: UpdateAdminDto) {
+    @Post()
+    async create(@Body() createAdminDto: CreateAdminDto) {
         try {
-            return await this.adminService.update(id, updateAdminDto);
+            return await this.adminService.create(createAdminDto);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 throw new BadRequestException(error.message);

@@ -171,7 +171,7 @@ const Page: NextPage<Params> = ({ params }) => {
                                         handleBlur={handleBlur}
                                         handleChange={handleChange}
                                         name={"current_password"}
-                                        title={"Current password (Fill only if changing)"}
+                                        title={"Current password (fill only if changing)"}
                                         type={"password"}
                                         value={values.current_password}
                                     />
@@ -184,7 +184,7 @@ const Page: NextPage<Params> = ({ params }) => {
                                         handleBlur={handleBlur}
                                         handleChange={handleChange}
                                         name={"new_password"}
-                                        title={"New password (Fill only if changing)"}
+                                        title={"New password (fill only if changing)"}
                                         type={"password"}
                                         value={values.new_password}
                                     />

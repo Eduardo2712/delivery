@@ -21,7 +21,7 @@ export class CreateAdminDto {
     adm_status: boolean;
 
     @IsNotEmpty()
-    @Length(6, 30, { message: MessagesHelper.PASSWORD_VALID })
+    @Length(6, 30)
     password: string;
 
     @IsNotEmpty()

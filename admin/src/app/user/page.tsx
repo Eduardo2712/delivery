@@ -2,18 +2,18 @@
 
 import CustomBox from "@/components/custom-box";
 import CustomTable from "@/components/custom-table";
-import { getDatatable, remove } from "@/requests/admin.request";
+import { getDatatable, remove } from "@/requests/user.request";
 import { NextPage } from "next";
 import { Column } from "primereact/column";
 
 const Page: NextPage = () => {
     return (
         <>
-            <p className="text-2xl font-bold">Admin</p>
+            <p className="text-2xl font-bold">User</p>
 
             <CustomBox>
                 <div className="w-full">
-                    <CustomTable request={getDatatable} button_edit button_delete url={"/admin"} delete_request={remove}>
+                    <CustomTable request={getDatatable} button_delete button_view url={"/user"} delete_request={remove}>
                         <Column field="id" header="Id" />
                         <Column field="adm_name" header="Name" />
                         <Column field="email" header="Email" />

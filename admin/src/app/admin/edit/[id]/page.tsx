@@ -81,137 +81,135 @@ const Page: NextPage<Params> = ({ params }) => {
         email: data?.email ?? "",
         adm_name: data?.adm_name ?? "",
         adm_phone: data?.adm_phone ?? "",
-        adm_status: data?.adm_status ? 1 : 0,
-        current_password: "",
-        new_password: ""
+        adm_status: data?.adm_status ? "1" : "0",
+        confirm_password: "",
+        password: ""
     };
-
-    if (loading) {
-        return <LoadingSpinner />;
-    }
 
     return (
         <>
             <p className="text-2xl font-bold">Admin - Edit</p>
 
-            <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaUpdate} initialValues={initialValues}>
-                {({ handleChange, handleBlur, values, errors, touched }) => (
-                    <Form method="post" noValidate>
-                        <CustomBox>
-                            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-                                <div>
-                                    <StyleInput
-                                        errors={errors.adm_name}
-                                        touched={touched.adm_name}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                        name={"adm_name"}
-                                        title={"Name"}
-                                        type={"text"}
-                                        value={values.adm_name}
-                                        is_required
-                                    />
-                                </div>
+            <LoadingSpinner loading={loading}>
+                <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaUpdate} initialValues={initialValues}>
+                    {({ handleChange, handleBlur, values, errors, touched }) => (
+                        <Form method="post" noValidate>
+                            <CustomBox>
+                                <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                                    <div>
+                                        <StyleInput
+                                            errors={errors.adm_name}
+                                            touched={touched.adm_name}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            name={"adm_name"}
+                                            title={"Name"}
+                                            type={"text"}
+                                            value={values.adm_name}
+                                            is_required
+                                        />
+                                    </div>
 
-                                <div>
-                                    <StyleInput
-                                        errors={errors.adm_phone}
-                                        touched={touched.adm_phone}
-                                        handleBlur={handleBlur}
-                                        handleChange={(e) => handleChange(maskPhone(e))}
-                                        name={"adm_phone"}
-                                        title={"Phone"}
-                                        type={"text"}
-                                        value={values.adm_phone}
-                                        is_required
-                                    />
-                                </div>
+                                    <div>
+                                        <StyleInput
+                                            errors={errors.adm_phone}
+                                            touched={touched.adm_phone}
+                                            handleBlur={handleBlur}
+                                            handleChange={(e) => handleChange(maskPhone(e))}
+                                            name={"adm_phone"}
+                                            title={"Phone"}
+                                            type={"text"}
+                                            value={values.adm_phone}
+                                            is_required
+                                        />
+                                    </div>
 
-                                <div>
-                                    <StyleInput
-                                        errors={errors.email}
-                                        touched={touched.email}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                        name={"email"}
-                                        title={"Email"}
-                                        type={"email"}
-                                        value={values.email}
-                                        is_required
-                                        disabled
-                                    />
-                                </div>
+                                    <div>
+                                        <StyleInput
+                                            errors={errors.email}
+                                            touched={touched.email}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            name={"email"}
+                                            title={"Email"}
+                                            type={"email"}
+                                            value={values.email}
+                                            is_required
+                                            disabled
+                                        />
+                                    </div>
 
-                                <div>
-                                    <StyleSelect
-                                        errors={errors.adm_status}
-                                        touched={touched.adm_status}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                        name={"adm_status"}
-                                        title={"Status"}
-                                        value={values.adm_status}
-                                        is_required
-                                        emptyOption
+                                    <div>
+                                        <StyleSelect
+                                            errors={errors.adm_status}
+                                            touched={touched.adm_status}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            name={"adm_status"}
+                                            title={"Status"}
+                                            value={values.adm_status}
+                                            is_required
+                                            emptyOption
+                                        >
+                                            {listEnableDisable.map((item) => {
+                                                return (
+                                                    <option key={item.value} value={item.value}>
+                                                        {item.label}
+                                                    </option>
+                                                );
+                                            })}
+                                        </StyleSelect>
+                                    </div>
+
+                                    <div>
+                                        <StyleInput
+                                            errors={errors.password}
+                                            touched={touched.password}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            name={"password"}
+                                            title={"Password (fill only if changing)"}
+                                            type={"password"}
+                                            value={values.password}
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <StyleInput
+                                            errors={errors.confirm_password}
+                                            touched={touched.confirm_password}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            name={"confirm_password"}
+                                            title={"Confirm password (fill only if changing)"}
+                                            type={"password"}
+                                            value={values.confirm_password}
+                                        />
+                                    </div>
+                                </div>
+                            </CustomBox>
+
+                            <CustomBox>
+                                <div className="gap-2 flex flex-col justify-between md:flex-row">
+                                    <Link
+                                        href={router_base}
+                                        className="flex h-10 items-center justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:w-36"
                                     >
-                                        {listEnableDisable.map((item) => {
-                                            return (
-                                                <option key={item.value} value={item.value}>
-                                                    {item.label}
-                                                </option>
-                                            );
-                                        })}
-                                    </StyleSelect>
+                                        {!submitting ? "Return" : <FaSpinner className="animate-spin" size={20} />}
+                                    </Link>
+
+                                    <button
+                                        type="submit"
+                                        className="flex h-10 items-center justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:w-36"
+                                    >
+                                        {!submitting ? "Save" : <FaSpinner className="animate-spin" size={20} />}
+                                    </button>
                                 </div>
-
-                                <div>
-                                    <StyleInput
-                                        errors={errors.current_password}
-                                        touched={touched.current_password}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                        name={"current_password"}
-                                        title={"Current password (fill only if changing)"}
-                                        type={"password"}
-                                        value={values.current_password}
-                                    />
-                                </div>
-
-                                <div>
-                                    <StyleInput
-                                        errors={errors.new_password}
-                                        touched={touched.new_password}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                        name={"new_password"}
-                                        title={"New password (fill only if changing)"}
-                                        type={"password"}
-                                        value={values.new_password}
-                                    />
-                                </div>
-                            </div>
-                        </CustomBox>
-
-                        <CustomBox>
-                            <div className="gap-2 flex flex-col justify-between md:flex-row">
-                                <Link
-                                    href={router_base}
-                                    className="flex h-10 items-center justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:w-36"
-                                >
-                                    {!submitting ? "Return" : <FaSpinner className="animate-spin" size={20} />}
-                                </Link>
-
-                                <button
-                                    type="submit"
-                                    className="flex h-10 items-center justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:w-36"
-                                >
-                                    {!submitting ? "Save" : <FaSpinner className="animate-spin" size={20} />}
-                                </button>
-                            </div>
-                        </CustomBox>
-                    </Form>
-                )}
-            </Formik>
+                            </CustomBox>
+                        </Form>
+                    )}
+                </Formik>
+            </LoadingSpinner>
         </>
     );
 };

@@ -1,6 +1,6 @@
 import { Controller, Post, Body, BadRequestException } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { CreateAuthDto } from "./dto/create-auth.dto";
+import { AuthDto } from "./dto/auth.dto";
 import { Public } from "./decorators/is-public.decorator";
 
 @Controller("admin/auth")
@@ -9,9 +9,9 @@ export class AuthController {
 
     @Public()
     @Post("/login")
-    async login(@Body() createAuthDto: CreateAuthDto) {
+    async login(@Body() authDto: AuthDto) {
         try {
-            return await this.authService.login(createAuthDto);
+            return await this.authService.login(authDto.email, authDto.password);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 throw new BadRequestException(error.message);

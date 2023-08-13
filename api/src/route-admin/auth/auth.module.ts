@@ -16,6 +16,7 @@ import { AdminEntity } from "src/entities/admin.entity";
         AdminModule,
         PassportModule,
         JwtModule.register({
+            global: true,
             privateKey: process.env.JWT_SECRET,
             signOptions: {
                 expiresIn: "30d"

@@ -36,8 +36,7 @@ export class AdminEntity {
 
     @Column({
         nullable: false,
-        type: "varchar",
-        select: false
+        type: "varchar"
     })
     @Exclude()
     password: string;

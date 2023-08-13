@@ -4,7 +4,7 @@ import { AdminStoreType } from "@/types/store/auth.type";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
-import { FaBars, FaGauge, FaPlateWheat, FaRightFromBracket, FaUser, FaUsers } from "react-icons/fa6";
+import { FaBars, FaGauge, FaPlateWheat, FaRightFromBracket, FaUser, FaUsers, FaX } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 
 const Sidebar = ({ children }: { children: ReactNode }) => {
@@ -55,7 +55,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                                 </div>
 
                                 {openMenu && (
-                                    <div className="z-50 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600">
+                                    <div className="z-50 text-base absolute right-2 top-14 list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600">
                                         <div className="px-4 py-3">
                                             <p className="text-sm text-gray-900 dark:text-white">{user?.adm_name}</p>
 
@@ -93,14 +93,14 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                                                 </Link>
                                             </li>
                                             <li>
-                                                <Link
-                                                    href="/"
+                                                <button
+                                                    onClick={logoutSystem}
                                                     className={
-                                                        "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                        "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white w-full text-left"
                                                     }
                                                 >
                                                     Sign out
-                                                </Link>
+                                                </button>
                                             </li>
                                         </ul>
                                     </div>
@@ -111,9 +111,15 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                 </div>
             </nav>
 
-            <aside className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700">
+            <aside
+                className={`fixed top-0 left-0 z-40 w-64 h-screen transition-transform ${
+                    openSidebar ? "-translate-x-full" : ""
+                } bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700`}
+            >
+                <FaX className="text-white text-xl mt-2 ml-3 cursor-pointer sm:hidden" onClick={() => setOpenSidebar((previous) => !previous)} />
+
                 <Link href="/">
-                    <p className="mx-0 text-white font-extrabold italic text-2xl pt-6 text-center">Delivery</p>
+                    <p className="mx-0 text-white font-extrabold italic text-2xl pt-4 text-center">Delivery</p>
                 </Link>
 
                 <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800 pt-14">

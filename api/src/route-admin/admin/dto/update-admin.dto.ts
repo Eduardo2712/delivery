@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MaxLength, Validate, IsBooleanString, IsOptional, IsEmail, Length, ValidateIf } from "class-validator";
+import { IsNotEmpty, IsString, MaxLength, IsBooleanString, IsOptional, IsEmail, Length, ValidateIf, Validate } from "class-validator";
 import { MessagesHelper } from "src/helpers/message.helpers";
 
 export class UpdateAdminDto {
@@ -23,20 +23,16 @@ export class UpdateAdminDto {
     @IsOptional()
     @Length(6, 30)
     @ValidateIf((_, value) => value !== "")
-    current_password?: string;
+    password?: string;
 
     @IsOptional()
     @Length(6, 30)
     @ValidateIf((_, value) => value !== "")
     @Validate(
-        function (value: string, args: any) {
-            const currentPassword = args.object["current_password"];
-            if (!currentPassword || value !== currentPassword) {
-                return true;
-            }
-            return false;
+        function (this: UpdateAdminDto) {
+            return this.password === this.confirm_password;
         },
-        { message: MessagesHelper.CONFIRM_NEW_PASSWORD }
+        { message: MessagesHelper.CONFIRM_PASSWORD }
     )
-    new_password?: string;
+    confirm_password?: string;
 }

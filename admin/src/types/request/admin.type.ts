@@ -6,18 +6,18 @@ export type AdminDatatableRequestType = {
 
 export type AdminCreateRequestType = {
     email: string;
-    password: string;
     adm_phone: string;
     adm_name: string;
-    adm_status: number | string;
+    adm_status: string;
+    password: string;
     confirm_password: string;
 };
 
 export type AdminUpdateRequestType = {
     adm_phone: string;
     adm_name: string;
-    adm_status: number | string;
-    new_password: string;
-    current_password: string;
+    adm_status: string;
+    password?: string;
+    confirm_password?: string;
     email?: string;
 };

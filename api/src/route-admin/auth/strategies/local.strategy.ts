@@ -12,8 +12,8 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         });
     }
 
-    async validate(email: string, password: string): Promise<any> {
-        const admin = await this.authService.validateAdmin(email, password);
+    async validate(email: string, pass: string): Promise<any> {
+        const admin = await this.authService.validateAdmin(email, pass);
 
         if (!admin) {
             throw new UnauthorizedException(MessagesHelper.PASSWORD_OR_EMAIL_INVALID);

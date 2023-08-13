@@ -14,7 +14,7 @@ export class AdminService {
         private readonly adminRepository: Repository<AdminEntity>
     ) {}
 
-    async create(createAdminDto: CreateAdminDto) {
+    async create(createAdminDto: CreateAdminDto): Promise<string | null> {
         const error = await checkUnique(this.adminRepository, { adm_name: createAdminDto.adm_name, adm_active: true }, "email");
 
         if (error) {
@@ -31,7 +31,7 @@ export class AdminService {
         return null;
     }
 
-    async findAll(search: string, rows_per_page: number, page: number) {
+    async findAll(search: string, rows_per_page: number, page: number): Promise<AdminEntity[]> {
         return await this.adminRepository.find({
             where: {
                 adm_active: true,
@@ -45,17 +45,17 @@ export class AdminService {
         });
     }
 
-    async update(id: number, updateAdminDto: UpdateAdminDto) {
+    async update(id: number, updateAdminDto: UpdateAdminDto): Promise<string | null> {
         const admin = await this.adminRepository.findOneOrFail({ where: { id, adm_active: true } });
-
-        if (compareSync(updateAdminDto.new_password, admin.password)) {
-            return "New password is the same as the old one";
-        }
 
         let admin_update: UpdateAdminDto & { password?: string } = { ...updateAdminDto };
 
-        if (updateAdminDto.new_password) {
-            admin_update = { ...admin_update, password: updateAdminDto.new_password };
+        if (updateAdminDto.password && updateAdminDto.confirm_password) {
+            if (compareSync(updateAdminDto.password, admin.password)) {
+                return "New password is the same as the old one";
+            }
+
+            admin_update = { ...admin_update, password: updateAdminDto.password };
         }
 
         this.adminRepository.merge(admin, admin_update);
@@ -65,7 +65,7 @@ export class AdminService {
         return null;
     }
 
-    async remove(id: number) {
+    async remove(id: number): Promise<string | null> {
         const obj = await this.adminRepository.findOneOrFail({ where: { id, adm_active: true } });
 
         obj.adm_active = false;
@@ -75,7 +75,7 @@ export class AdminService {
         return null;
     }
 
-    async findOne(id: number) {
+    async findOne(id: number): Promise<AdminEntity> {
         const obj = await this.adminRepository.findOneOrFail({ where: { id, adm_active: true } });
 
         return obj;

@@ -8,7 +8,7 @@ import { createUser } from "@/requests/user.request";
 import { toast } from "react-hot-toast";
 import StyleInput from "@/components/style-input";
 import { maskCPF, maskPhone } from "@/utils/mask";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 
 const Page = () => {
     const [step, setStep] = useState<number>(1);
@@ -43,7 +43,7 @@ const Page = () => {
         try {
             const response = await createUser(values);
 
-            if (response.status !== 200) {
+            if (response.status !== HttpStatusCode.Ok) {
                 return toast.error(response.data.message);
             }
 

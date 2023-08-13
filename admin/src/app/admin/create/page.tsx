@@ -11,7 +11,7 @@ import Link from "next/link";
 import { create } from "@/requests/admin.request";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import CustomBox from "@/components/custom-box";
 import StyleSelect from "@/components/style-select";
 import { listEnableDisable } from "@/utils/other";
@@ -28,11 +28,11 @@ const Page: NextPage = () => {
         try {
             const response = await create(values);
 
-            if (response.status !== 201) {
+            if (response.status !== HttpStatusCode.Created) {
                 return toast.error(response.data.message);
             }
 
-            toast.success("User created successfully");
+            toast.success("Admin created successfully");
 
             router.push(router_base);
         } catch (error) {

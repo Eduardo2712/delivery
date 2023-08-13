@@ -3,7 +3,7 @@ import { FaSpinner } from "react-icons/fa6";
 
 type Props = {
     loading: boolean;
-    children: ReactNode;
+    children?: ReactNode;
 };
 
 const LoadingSpinner = ({ loading = false, children = <></> }: Props) => {

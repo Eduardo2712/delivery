@@ -1,4 +1,4 @@
-import { Controller, Post, Body, BadRequestException, Get, Query, Delete, Param } from "@nestjs/common";
+import { Controller, Post, Body, BadRequestException, Get, Query, Delete, Param, HttpCode, HttpStatus } from "@nestjs/common";
 import { AdminService } from "./admin.service";
 import { CreateAdminDto } from "./dto/create-admin.dto";
 import { UpdateAdminDto } from "./dto/update-admin.dto";
@@ -8,6 +8,7 @@ export class AdminController {
     constructor(private readonly adminService: AdminService) {}
 
     @Post(":id")
+    @HttpCode(HttpStatus.OK)
     async update(@Param("id") id: number, @Body() updateAdminDto: UpdateAdminDto) {
         try {
             return await this.adminService.update(id, updateAdminDto);
@@ -21,6 +22,7 @@ export class AdminController {
     }
 
     @Post()
+    @HttpCode(HttpStatus.CREATED)
     async create(@Body() createAdminDto: CreateAdminDto) {
         try {
             return await this.adminService.create(createAdminDto);
@@ -34,6 +36,7 @@ export class AdminController {
     }
 
     @Get("/list-all")
+    @HttpCode(HttpStatus.OK)
     async findAll(@Query("search") search?: string, @Query("rows_per_page") rows_per_page = 10, @Query("page") page = 1) {
         try {
             return await this.adminService.findAll(search, rows_per_page, page);
@@ -47,6 +50,7 @@ export class AdminController {
     }
 
     @Get(":id")
+    @HttpCode(HttpStatus.OK)
     async findOne(@Param("id") id: number) {
         try {
             return await this.adminService.findOne(id);
@@ -60,6 +64,7 @@ export class AdminController {
     }
 
     @Delete(":id")
+    @HttpCode(HttpStatus.OK)
     async remove(@Param("id") id: number) {
         try {
             return await this.adminService.remove(id);

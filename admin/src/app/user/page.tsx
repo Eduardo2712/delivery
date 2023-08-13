@@ -15,9 +15,10 @@ const Page: NextPage = () => {
                 <div className="w-full">
                     <CustomTable request={getDatatable} button_delete button_view url={"/user"} delete_request={remove}>
                         <Column field="id" header="Id" />
-                        <Column field="adm_name" header="Name" />
+                        <Column field="use_name" header="Name" />
                         <Column field="email" header="Email" />
-                        <Column field="adm_phone" header="Phone" />
+                        <Column field="use_phone" header="Phone" />
+                        <Column field="use_cpf" header="CPF" />
                     </CustomTable>
                 </div>
             </CustomBox>

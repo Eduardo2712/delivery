@@ -1,11 +1,11 @@
 import useDebounce from "@/hooks/debounce";
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse, HttpStatusCode } from "axios";
 import Link from "next/link";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
-import { useState, ReactNode, useEffect } from "react";
+import { useState, ReactNode, useEffect, ReactElement } from "react";
 import toast from "react-hot-toast";
-import { FaEye, FaPen, FaPlus, FaTrash } from "react-icons/fa6";
+import { FaEye, FaPen, FaTrash } from "react-icons/fa6";
 
 type Props = {
     request: (props: Params) => Promise<AxiosResponse>;
@@ -15,6 +15,7 @@ type Props = {
     button_view?: boolean;
     url?: string;
     delete_request?: (id: number) => Promise<AxiosResponse>;
+    buttons_top?: ReactElement | null;
 };
 
 type Params = {
@@ -27,7 +28,16 @@ type DataItem<T> = {
     [key: string]: T;
 };
 
-const CustomTable = ({ children, request, button_delete = false, button_edit = false, button_view = false, url = "/", delete_request }: Props) => {
+const CustomTable = ({
+    children,
+    request,
+    button_delete = false,
+    button_edit = false,
+    button_view = false,
+    url = "/",
+    delete_request,
+    buttons_top = null
+}: Props) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [params, setParams] = useState<Params>({
@@ -43,7 +53,7 @@ const CustomTable = ({ children, request, button_delete = false, button_edit = f
         try {
             const response = await request({ ...params });
 
-            if (response.status !== 200) {
+            if (response.status !== HttpStatusCode.Ok) {
                 return toast.error(response.data.message);
             }
 
@@ -97,7 +107,7 @@ const CustomTable = ({ children, request, button_delete = false, button_edit = f
         try {
             const response = await delete_request!(id);
 
-            if (response.status !== 200) {
+            if (response.status !== HttpStatusCode.Ok) {
                 return toast.error(response.data.message);
             }
 
@@ -154,12 +164,7 @@ const CustomTable = ({ children, request, button_delete = false, button_edit = f
     return (
         <>
             <div className="flex flex-col gap-1 lg:flex-row">
-                <div className="mb-4 flex items-center justify-start flex-1">
-                    <Link href={`${url}/create`} className="bg-blue-700 flex items-center gap-3 rounded px-3 py-2 text-gray-100 font-semibold">
-                        <FaPlus fontSize={18} className="cursor-pointer" />
-                        New
-                    </Link>
-                </div>
+                {buttons_top}
 
                 <div className="mb-4 flex items-center justify-end flex-1">
                     <input

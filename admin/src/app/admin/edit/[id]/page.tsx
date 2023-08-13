@@ -11,7 +11,7 @@ import Link from "next/link";
 import { edit, get } from "@/requests/admin.request";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import CustomBox from "@/components/custom-box";
 import StyleSelect from "@/components/style-select";
 import { listEnableDisable } from "@/utils/other";
@@ -36,7 +36,7 @@ const Page: NextPage<Params> = ({ params }) => {
             try {
                 const response = await get(params.id);
 
-                if (response.status !== 200) {
+                if (response.status !== HttpStatusCode.Ok) {
                     return toast.error(response.data.message);
                 }
 
@@ -59,7 +59,7 @@ const Page: NextPage<Params> = ({ params }) => {
         try {
             const response = await edit(params.id, values);
 
-            if (response.status !== 201) {
+            if (response.status !== HttpStatusCode.Created) {
                 return toast.error(response.data.message);
             }
 

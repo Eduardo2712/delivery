@@ -23,4 +23,19 @@ export class UserService {
             skip: rows_per_page * (page - 1)
         });
     }
+
+    async remove(id: number): Promise<string | null> {
+        const obj = await this.userRepository.findOneOrFail({
+            where: {
+                id,
+                use_active: true
+            }
+        });
+
+        obj.use_active = false;
+
+        await this.userRepository.save(obj);
+
+        return null;
+    }
 }

@@ -3,7 +3,7 @@
 import CustomBox from "@/components/custom-box";
 import { get } from "@/requests/dashboard.request";
 import { DashboardReturnType } from "@/types/request/dashboard.type";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -26,7 +26,7 @@ const Page: NextPage = () => {
             try {
                 const response = await get();
 
-                if (response.status !== 200) {
+                if (response.status !== HttpStatusCode.Ok) {
                     return toast.error(response.data.message);
                 }
 

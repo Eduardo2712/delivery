@@ -12,7 +12,7 @@ import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { FaSpinner } from "react-icons/fa";
 import { AuthRequestType } from "@/types/request/auth.type";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 import { NextPage } from "next";
 
 const Page: NextPage = () => {
@@ -31,7 +31,7 @@ const Page: NextPage = () => {
                 password: values.password
             });
 
-            if (response.status !== 201) {
+            if (response.status !== HttpStatusCode.Created) {
                 return toast.error(response.data.message);
             }
 

@@ -10,7 +10,7 @@ import { useState } from "react";
 import StyleInput from "@/components/style-input";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
-import axios from "axios";
+import axios, { HttpStatusCode } from "axios";
 
 const Page = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -28,7 +28,7 @@ const Page = () => {
                 password: values.password
             });
 
-            if (response.status !== 200) {
+            if (response.status !== HttpStatusCode.Ok) {
                 return toast.error(response.data.message);
             }
 

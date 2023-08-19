@@ -5,7 +5,7 @@ import { Form, Formik } from "formik";
 import { FaSpinner } from "react-icons/fa6";
 import { router_base, schemaUpdate } from "../../utils";
 import { useEffect, useState } from "react";
-import { AdminUpdateRequestType } from "@/types/request/admin.type";
+import { AdminType, AdminUpdateType } from "@/types/request/admin.type";
 import { maskPhone } from "@/utils/mask";
 import Link from "next/link";
 import { edit, get } from "@/requests/admin.request";
@@ -25,7 +25,7 @@ type Params = {
 const Page: NextPage<Params> = ({ params }) => {
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState(null as any);
+    const [data, setData] = useState<AdminType | null>(null);
 
     const router = useRouter();
 
@@ -53,7 +53,7 @@ const Page: NextPage<Params> = ({ params }) => {
         })();
     }, []);
 
-    const onSubmit = async (values: AdminUpdateRequestType) => {
+    const onSubmit = async (values: AdminUpdateType) => {
         setSubmitting(true);
 
         try {
@@ -77,7 +77,7 @@ const Page: NextPage<Params> = ({ params }) => {
         }
     };
 
-    const initialValues: AdminUpdateRequestType = {
+    const initialValues: AdminUpdateType = {
         email: data?.email ?? "",
         adm_name: data?.adm_name ?? "",
         adm_phone: data?.adm_phone ?? "",

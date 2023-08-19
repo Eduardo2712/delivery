@@ -38,4 +38,15 @@ export class UserService {
 
         return null;
     }
+
+    async findOne(id: number): Promise<UserEntity> {
+        const obj = await this.userRepository.findOneOrFail({
+            where: {
+                id,
+                use_active: true
+            }
+        });
+
+        return obj;
+    }
 }

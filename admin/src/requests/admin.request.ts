@@ -1,8 +1,8 @@
-import { AdminCreateRequestType, AdminDatatableRequestType, AdminUpdateRequestType } from "@/types/request/admin.type";
+import { AdminCreateType, AdminDatatableType, AdminType, AdminUpdateType } from "@/types/request/admin.type";
 import axios from "./axios.config";
 import { AxiosPromise } from "axios";
 
-export const getDatatable = <T>({ search, page, rows_per_page }: AdminDatatableRequestType): AxiosPromise<T[] & Error> => {
+export const getDatatable = ({ search, page, rows_per_page }: AdminDatatableType): AxiosPromise<AdminType[] & Error> => {
     return axios.get(`${process.env.NEXT_PUBLIC_URL_API}/admin/list-all`, { params: { search, page, rows_per_page } });
 };
 
@@ -10,14 +10,14 @@ export const remove = (id: number): AxiosPromise<Error> => {
     return axios.delete(`${process.env.NEXT_PUBLIC_URL_API}/admin/${id}`);
 };
 
-export const create = (data: AdminCreateRequestType): AxiosPromise<Error> => {
+export const create = (data: AdminCreateType): AxiosPromise<Error> => {
     return axios.post(`${process.env.NEXT_PUBLIC_URL_API}/admin`, data);
 };
 
-export const edit = (id: number, data: AdminUpdateRequestType): AxiosPromise<Error> => {
+export const edit = (id: number, data: AdminUpdateType): AxiosPromise<Error> => {
     return axios.post(`${process.env.NEXT_PUBLIC_URL_API}/admin/${id}`, data);
 };
 
-export const get = <T>(id: number): AxiosPromise<T & Error> => {
+export const get = (id: number): AxiosPromise<AdminType & Error> => {
     return axios.get(`${process.env.NEXT_PUBLIC_URL_API}/admin/${id}`);
 };

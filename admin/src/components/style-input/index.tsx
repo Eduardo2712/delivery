@@ -1,11 +1,11 @@
 type Props = {
-    handleChange: (e: React.ChangeEvent<any>) => void;
-    handleBlur: (e: React.FocusEvent<any, Element>) => void;
-    name: string;
+    handleChange?: (e: React.ChangeEvent<any>) => void;
+    handleBlur?: (e: React.FocusEvent<any, Element>) => void;
+    name?: string;
     type?: string;
     title: string;
-    errors: string | undefined;
-    touched: boolean | undefined;
+    errors?: string;
+    touched?: boolean;
     value: string | number | undefined;
     is_required?: boolean;
     max_length?: number;

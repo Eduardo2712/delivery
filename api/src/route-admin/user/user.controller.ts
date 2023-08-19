@@ -32,4 +32,18 @@ export class UserController {
             throw new BadRequestException("Error");
         }
     }
+
+    @Get(":id")
+    @HttpCode(HttpStatus.OK)
+    async findOne(@Param("id") id: number) {
+        try {
+            return await this.userService.findOne(id);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw new BadRequestException(error.message);
+            }
+
+            throw new BadRequestException("Error");
+        }
+    }
 }

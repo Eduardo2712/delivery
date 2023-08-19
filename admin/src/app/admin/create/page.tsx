@@ -5,7 +5,7 @@ import { Form, Formik } from "formik";
 import { FaSpinner } from "react-icons/fa6";
 import { router_base, schemaCreate } from "../utils";
 import { useState } from "react";
-import { AdminCreateRequestType } from "@/types/request/admin.type";
+import { AdminCreateType } from "@/types/request/admin.type";
 import { maskPhone } from "@/utils/mask";
 import Link from "next/link";
 import { create } from "@/requests/admin.request";
@@ -22,7 +22,7 @@ const Page: NextPage = () => {
 
     const router = useRouter();
 
-    const onSubmit = async (values: AdminCreateRequestType) => {
+    const onSubmit = async (values: AdminCreateType) => {
         setSubmitting(true);
 
         try {
@@ -46,7 +46,7 @@ const Page: NextPage = () => {
         }
     };
 
-    const initialValues: AdminCreateRequestType = {
+    const initialValues: AdminCreateType = {
         email: "",
         password: "",
         adm_name: "",

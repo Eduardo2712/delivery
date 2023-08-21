@@ -51,11 +51,15 @@ const Page: NextPage<Params> = ({ params }) => {
                 <CustomBox>
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                         <div>
-                            <StyleInput value={data?.id} disabled title={"ID"} />
+                            <StyleInput value={data?.id} disabled title={"Id"} />
                         </div>
 
                         <div>
                             <StyleInput value={data?.use_name} disabled title={"Name"} />
+                        </div>
+
+                        <div>
+                            <StyleInput value={data?.use_cpf} disabled title={"CPF"} />
                         </div>
 
                         <div>

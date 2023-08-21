@@ -1,7 +1,21 @@
-import { Controller, Post, Body, BadRequestException, Get, Query, Delete, Param, HttpCode, HttpStatus } from "@nestjs/common";
+import {
+    Controller,
+    Post,
+    Body,
+    BadRequestException,
+    Get,
+    Query,
+    Delete,
+    Param,
+    HttpCode,
+    HttpStatus,
+    UseInterceptors,
+    UploadedFile
+} from "@nestjs/common";
 import { AdminService } from "./admin.service";
 import { CreateAdminDto } from "./dto/create-admin.dto";
 import { UpdateAdminDto } from "./dto/update-admin.dto";
+import { FileInterceptor } from "@nestjs/platform-express";
 
 @Controller("admin/admin")
 export class AdminController {
@@ -23,9 +37,10 @@ export class AdminController {
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    async create(@Body() createAdminDto: CreateAdminDto) {
+    @UseInterceptors(FileInterceptor("picture"))
+    async create(@Body() createAdminDto: CreateAdminDto, @UploadedFile() picture?: Express.Multer.File) {
         try {
-            return await this.adminService.create(createAdminDto);
+            return await this.adminService.create(createAdminDto, picture);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 throw new BadRequestException(error.message);

@@ -4,18 +4,21 @@ import { UpdateAdminDto } from "./dto/update-admin.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AdminEntity } from "src/entities/admin.entity";
 import { ILike, Repository } from "typeorm";
-import { checkUnique } from "src/helpers/service.helpers";
 import { compareSync } from "bcrypt";
+import { ServiceHelpers } from "src/helpers/service.helpers";
+import { FileEntity } from "src/entities/file.entity";
 
 @Injectable()
 export class AdminService {
     constructor(
         @InjectRepository(AdminEntity)
-        private readonly adminRepository: Repository<AdminEntity>
+        private readonly adminRepository: Repository<AdminEntity>,
+        @InjectRepository(FileEntity)
+        private readonly fileRepository: Repository<FileEntity>
     ) {}
 
-    async create(createAdminDto: CreateAdminDto): Promise<string | null> {
-        const error = await checkUnique(this.adminRepository, { adm_name: createAdminDto.adm_name, adm_active: true }, "email");
+    async create(createAdminDto: CreateAdminDto, picture: Express.Multer.File): Promise<string | null> {
+        const error = await ServiceHelpers.checkUnique(this.adminRepository, { adm_name: createAdminDto.adm_name, adm_active: true }, "email");
 
         if (error) {
             throw new HttpException(error, HttpStatus.BAD_REQUEST);
@@ -27,6 +30,10 @@ export class AdminService {
         });
 
         await this.adminRepository.save(admin);
+
+        if (picture) {
+            await ServiceHelpers.uploadFile(picture, this.fileRepository);
+        }
 
         return null;
     }

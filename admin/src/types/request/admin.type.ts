@@ -11,6 +11,7 @@ export type AdminCreateType = {
     adm_status: string;
     password: string;
     confirm_password: string;
+    picture?: File;
 };
 
 export type AdminUpdateType = {
@@ -20,6 +21,7 @@ export type AdminUpdateType = {
     password?: string;
     confirm_password?: string;
     email?: string;
+    picture?: File;
 };
 
 export type AdminType = {

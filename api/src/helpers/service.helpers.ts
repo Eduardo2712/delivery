@@ -26,7 +26,10 @@ const uploadFile = async (file: Express.Multer.File, repository: Repository<File
     }
 
     await repository.save({
-        fil_url: data.data.path
+        fil_url: data.data.path,
+        fil_name: `${new Date().getTime()}${file.originalname}`,
+        fil_size: file.size,
+        fil_mimetype: file.mimetype
     });
 
     return data;

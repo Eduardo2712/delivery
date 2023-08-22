@@ -14,6 +14,24 @@ export class FileEntity {
     })
     fil_url: string;
 
+    @Column({
+        nullable: false,
+        type: "varchar"
+    })
+    fil_name: string;
+
+    @Column({
+        nullable: false,
+        type: "integer"
+    })
+    fil_size: number;
+
+    @Column({
+        nullable: false,
+        type: "varchar"
+    })
+    fil_mimetype: string;
+
     @CreateDateColumn()
     created_at: Date;
 

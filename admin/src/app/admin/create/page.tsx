@@ -1,7 +1,7 @@
 "use client";
 
 import StyleInput from "@/components/style-input";
-import { Form, Formik } from "formik";
+import { Form, Formik, FormikErrors } from "formik";
 import { FaSpinner } from "react-icons/fa6";
 import { router_base, schemaCreate } from "../utils";
 import { useState } from "react";
@@ -46,13 +46,44 @@ const Page: NextPage = () => {
         }
     };
 
+    const upload = (
+        files: FileList | null,
+        setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => Promise<void | FormikErrors<AdminCreateType>>
+    ) => {
+        if (!files || files.length === 0) {
+            return;
+        }
+
+        const file = files[0];
+
+        if (file.size > 1000000) {
+            return toast.error("The file is too large");
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = async (e) => {
+            if (e.target?.result) {
+                setFieldValue("picture", {
+                    name: file.name,
+                    size: file.size,
+                    type: file.type,
+                    data: e.target.result
+                });
+            }
+        };
+
+        reader.readAsDataURL(file);
+    };
+
     const initialValues: AdminCreateType = {
         email: "",
         password: "",
         adm_name: "",
         adm_phone: "",
         adm_status: "",
-        confirm_password: ""
+        confirm_password: "",
+        picture: undefined
     };
 
     return (
@@ -60,9 +91,21 @@ const Page: NextPage = () => {
             <p className="text-2xl font-bold">Admin - Create</p>
 
             <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaCreate} initialValues={initialValues}>
-                {({ handleChange, handleBlur, values, errors, touched }) => (
+                {({ handleChange, handleBlur, values, errors, touched, setFieldValue }) => (
                     <Form method="post" noValidate>
                         <CustomBox>
+                            <div>
+                                <div className="flex items-center justify-center">
+                                    <div className="w-full h-full">
+                                        {values.picture && (
+                                            <img src={values.picture.data} alt={values.picture.name} className="w-full h-full object-cover" />
+                                        )}
+                                    </div>
+                                </div>
+
+                                <input type="file" onChange={(e) => upload(e.target.files, setFieldValue)} />
+                            </div>
+
                             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                                 <div>
                                     <StyleInput

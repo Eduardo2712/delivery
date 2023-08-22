@@ -24,16 +24,16 @@ export class AdminService {
             throw new HttpException(error, HttpStatus.BAD_REQUEST);
         }
 
+        if (picture) {
+            await ServiceHelpers.uploadFile(picture, this.fileRepository);
+        }
+
         const admin = this.adminRepository.create({
             ...createAdminDto,
             adm_active: true
         });
 
         await this.adminRepository.save(admin);
-
-        if (picture) {
-            await ServiceHelpers.uploadFile(picture, this.fileRepository);
-        }
 
         return null;
     }

@@ -2,9 +2,9 @@
 
 import StyleInput from "@/components/style-input";
 import { Form, Formik, FormikErrors } from "formik";
-import { FaSpinner } from "react-icons/fa6";
-import { router_base, schemaCreate } from "../utils";
-import { useState } from "react";
+import { FaSpinner, FaTrash, FaUpload } from "react-icons/fa6";
+import { createFormData, router_base, schemaCreate } from "../utils";
+import { useRef, useState } from "react";
 import { AdminCreateType } from "@/types/request/admin.type";
 import { maskPhone } from "@/utils/mask";
 import Link from "next/link";
@@ -22,11 +22,13 @@ const Page: NextPage = () => {
 
     const router = useRouter();
 
+    const refImage = useRef<HTMLInputElement>(null);
+
     const onSubmit = async (values: AdminCreateType) => {
         setSubmitting(true);
 
         try {
-            const response = await create(values);
+            const response = await create(createFormData(values));
 
             if (response.status !== HttpStatusCode.Created) {
                 return toast.error(response.data.message);
@@ -56,24 +58,7 @@ const Page: NextPage = () => {
 
         const file = files[0];
 
-        if (file.size > 1000000) {
-            return toast.error("The file is too large");
-        }
-
-        const reader = new FileReader();
-
-        reader.onload = async (e) => {
-            if (e.target?.result) {
-                setFieldValue("picture", {
-                    name: file.name,
-                    size: file.size,
-                    type: file.type,
-                    data: e.target.result
-                });
-            }
-        };
-
-        reader.readAsDataURL(file);
+        setFieldValue("picture", file);
     };
 
     const initialValues: AdminCreateType = {
@@ -95,15 +80,45 @@ const Page: NextPage = () => {
                     <Form method="post" noValidate>
                         <CustomBox>
                             <div>
-                                <div className="flex items-center justify-center">
-                                    <div className="w-full h-full">
-                                        {values.picture && (
-                                            <img src={values.picture.data} alt={values.picture.name} className="w-full h-full object-cover" />
-                                        )}
-                                    </div>
+                                <div className="flex items-center justify-center flex-col">
+                                    {values.picture && (
+                                        <>
+                                            <a className="flex justify-center" href={URL.createObjectURL(values.picture)} target="_blank">
+                                                <img
+                                                    src={URL.createObjectURL(values.picture)}
+                                                    alt={values.picture.name}
+                                                    className="max-w-md h-full object-cover w-full"
+                                                />
+                                            </a>
+
+                                            <button
+                                                className="bg-red-600 text-white rounded px-3 py-2 w-full max-w-md flex justify-center items-center gap-3"
+                                                type="button"
+                                                onClick={() => setFieldValue("picture", undefined)}
+                                            >
+                                                <FaTrash /> Remove
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
 
-                                <input type="file" onChange={(e) => upload(e.target.files, setFieldValue)} />
+                                <input
+                                    ref={refImage}
+                                    className="hidden"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => upload(e.target.files, setFieldValue)}
+                                />
+
+                                {!values.picture && (
+                                    <button
+                                        type="button"
+                                        className="flex justify-center items-center gap-3 rounded px-3 py-2 text-gray-100 font-semibold bg-blue-600"
+                                        onClick={() => refImage.current?.click()}
+                                    >
+                                        <FaUpload /> Upload picture
+                                    </button>
+                                )}
                             </div>
 
                             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">

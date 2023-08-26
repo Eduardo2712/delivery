@@ -24,13 +24,20 @@ export class AdminService {
             throw new HttpException(error, HttpStatus.BAD_REQUEST);
         }
 
+        let id_picture: number | HttpException | null = null;
+
         if (picture) {
-            await ServiceHelpers.uploadFile(picture, this.fileRepository);
+            id_picture = await ServiceHelpers.uploadFile(picture, this.fileRepository);
+
+            if (id_picture instanceof HttpException) {
+                throw id_picture;
+            }
         }
 
         const admin = this.adminRepository.create({
             ...createAdminDto,
-            adm_active: true
+            adm_active: true,
+            adm_id_picture: id_picture instanceof HttpException ? null : id_picture
         });
 
         await this.adminRepository.save(admin);

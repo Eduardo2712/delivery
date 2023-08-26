@@ -1,3 +1,4 @@
+import { AdminCreateType } from "@/types/request/admin.type";
 import * as Yup from "yup";
 
 export const schemaCreate = Yup.object().shape({
@@ -24,5 +25,15 @@ export const schemaUpdate = Yup.object().shape({
     adm_phone: Yup.string().min(14, "Must contain at least 14 characters!").required("Fill in this field!"),
     adm_status: Yup.number().required("Fill in this field!")
 });
+
+export const createFormData = (values: AdminCreateType) => {
+    const form_data = new FormData();
+
+    for (const [key, value] of Object.entries(values)) {
+        form_data.append(key, value);
+    }
+
+    return form_data;
+};
 
 export const router_base = "/admin";

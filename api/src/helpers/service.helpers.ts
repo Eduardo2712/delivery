@@ -1,3 +1,4 @@
+import { HttpException, HttpStatus } from "@nestjs/common";
 import { createClient } from "@supabase/supabase-js";
 import { FileEntity } from "src/entities/file.entity";
 import { Repository, FindOptionsWhere } from "typeorm";
@@ -22,17 +23,17 @@ const uploadFile = async (file: Express.Multer.File, repository: Repository<File
     });
 
     if (data.error) {
-        return data.error;
+        return new HttpException(data.error, HttpStatus.BAD_REQUEST);
     }
 
-    await repository.save({
+    const new_file = await repository.save({
         fil_url: data.data.path,
         fil_name: `${new Date().getTime()}${file.originalname}`,
         fil_size: file.size,
         fil_mimetype: file.mimetype
     });
 
-    return data;
+    return new_file.id;
 };
 
 export const ServiceHelpers = {

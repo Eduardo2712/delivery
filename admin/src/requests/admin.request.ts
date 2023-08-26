@@ -10,7 +10,7 @@ export const remove = (id: number): AxiosPromise<Error> => {
     return axios.delete(`${process.env.NEXT_PUBLIC_URL_API}/admin/${id}`);
 };
 
-export const create = (data: AdminCreateType): AxiosPromise<Error> => {
+export const create = (data: FormData): AxiosPromise<Error> => {
     return axios.post(`${process.env.NEXT_PUBLIC_URL_API}/admin`, data);
 };
 

@@ -22,17 +22,5 @@ export type AdminUpdateType = {
     confirm_password?: string;
     email?: string;
     picture?: File;
-};
-
-export type AdminType = {
-    id: number;
-    email: string;
-    adm_phone: string;
-    password?: string | null;
-    adm_name: string;
-    adm_status: boolean;
-    adm_active: boolean;
-    created_at: Date;
-    updated_at: Date;
-    adm_id_picture?: number | null;
+    new_picture: boolean;
 };

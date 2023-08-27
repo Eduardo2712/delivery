@@ -1,16 +1,17 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ProductFileEntity } from "./product-file.entity";
+import { ServiceHelpers } from "src/helpers/service.helpers";
 
 @Entity({
     name: "files"
 })
-export class FileEntity {
+export class FileEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
     @Column({
         nullable: false,
-        type: "varchar"
+        type: "text"
     })
     fil_url: string;
 
@@ -41,4 +42,16 @@ export class FileEntity {
     @OneToMany(() => ProductFileEntity, (productFile) => productFile.file)
     @JoinColumn({ name: "prl_id_file" })
     files: ProductFileEntity[];
+
+    get fileUrl(): Promise<string> {
+        return this.getUrl();
+    }
+
+    private async getUrl(): Promise<string> {
+        try {
+            return await ServiceHelpers.urlFile(this.fil_url);
+        } catch (error) {
+            return "";
+        }
+    }
 }

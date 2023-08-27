@@ -18,25 +18,48 @@ const uploadFile = async (file: Express.Multer.File, repository: Repository<File
         }
     });
 
-    const data = await bucket.storage.from(process.env.BUCKET_NAME).upload(file.originalname, file.buffer, {
+    const name_file = `${new Date().getTime()}${file.originalname}`;
+
+    const data = await bucket.storage.from(process.env.BUCKET_NAME).upload(name_file, file.buffer, {
         upsert: true
     });
 
     if (data.error) {
-        return new HttpException(data.error, HttpStatus.BAD_REQUEST);
+        throw new HttpException(data.error, HttpStatus.BAD_REQUEST);
     }
 
-    const new_file = await repository.save({
-        fil_url: data.data.path,
-        fil_name: `${new Date().getTime()}${file.originalname}`,
-        fil_size: file.size,
-        fil_mimetype: file.mimetype
+    if (data.data) {
+        const new_file = await repository.save({
+            fil_url: data.data.path,
+            fil_name: name_file,
+            fil_size: file.size,
+            fil_mimetype: file.mimetype
+        });
+
+        return new_file.id;
+    }
+
+    return null;
+};
+
+const urlFile = async (path: string) => {
+    const bucket = createClient(process.env.BUCKET_URL, process.env.BUCKET_KEY, {
+        auth: {
+            persistSession: false
+        }
     });
 
-    return new_file.id;
+    const { data, error } = await bucket.storage.from(process.env.BUCKET_NAME).createSignedUrl(path, 10000);
+
+    if (error) {
+        throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
+
+    return data.signedUrl;
 };
 
 export const ServiceHelpers = {
     checkUnique,
-    uploadFile
+    uploadFile,
+    urlFile
 };

@@ -1,6 +1,7 @@
-import { AdminCreateType, AdminDatatableType, AdminType, AdminUpdateType } from "@/types/request/admin.type";
+import { AdminDatatableType } from "@/types/request/admin.type";
 import axios from "./axios.config";
 import { AxiosPromise } from "axios";
+import { AdminType } from "@/types/entity/entity.type";
 
 export const getDatatable = ({ search, page, rows_per_page }: AdminDatatableType): AxiosPromise<AdminType[] & Error> => {
     return axios.get(`${process.env.NEXT_PUBLIC_URL_API}/admin/list-all`, { params: { search, page, rows_per_page } });
@@ -14,7 +15,7 @@ export const create = (data: FormData): AxiosPromise<Error> => {
     return axios.post(`${process.env.NEXT_PUBLIC_URL_API}/admin`, data);
 };
 
-export const edit = (id: number, data: AdminUpdateType): AxiosPromise<Error> => {
+export const edit = (id: number, data: FormData): AxiosPromise<Error> => {
     return axios.post(`${process.env.NEXT_PUBLIC_URL_API}/admin/${id}`, data);
 };
 

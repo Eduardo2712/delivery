@@ -1,4 +1,3 @@
-import { AdminCreateType } from "@/types/request/admin.type";
 import * as Yup from "yup";
 
 export const schemaCreate = Yup.object().shape({
@@ -9,7 +8,8 @@ export const schemaCreate = Yup.object().shape({
         .oneOf([Yup.ref("password"), ""], "Passwords must match!"),
     adm_name: Yup.string().required("Fill in this field!"),
     adm_phone: Yup.string().min(14, "Must contain at least 14 characters!").required("Fill in this field!"),
-    adm_status: Yup.number().required("Fill in this field!")
+    adm_status: Yup.number().required("Fill in this field!"),
+    picture: Yup.mixed().required("Fill in this field!")
 });
 
 export const schemaUpdate = Yup.object().shape({
@@ -23,10 +23,17 @@ export const schemaUpdate = Yup.object().shape({
     }),
     adm_name: Yup.string().required("Fill in this field!"),
     adm_phone: Yup.string().min(14, "Must contain at least 14 characters!").required("Fill in this field!"),
-    adm_status: Yup.number().required("Fill in this field!")
+    adm_status: Yup.number().required("Fill in this field!"),
+    picture: Yup.mixed().when(["new_picture"], (new_picture, schema) => {
+        if (new_picture && new_picture.length > 0) {
+            return schema.required("Fill in this field!");
+        }
+
+        return schema;
+    })
 });
 
-export const createFormData = (values: AdminCreateType) => {
+export const createFormData = <T extends Record<string, any>>(values: T): FormData => {
     const form_data = new FormData();
 
     for (const [key, value] of Object.entries(values)) {

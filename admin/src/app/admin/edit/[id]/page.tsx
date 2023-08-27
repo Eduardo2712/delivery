@@ -2,10 +2,10 @@
 
 import StyleInput from "@/components/style-input";
 import { Form, Formik } from "formik";
-import { FaSpinner } from "react-icons/fa6";
-import { router_base, schemaUpdate } from "../../utils";
+import { FaSpinner, FaTrash } from "react-icons/fa6";
+import { createFormData, router_base, schemaUpdate } from "../../utils";
 import { useEffect, useState } from "react";
-import { AdminType, AdminUpdateType } from "@/types/request/admin.type";
+import { AdminUpdateType } from "@/types/request/admin.type";
 import { maskPhone } from "@/utils/mask";
 import Link from "next/link";
 import { edit, get } from "@/requests/admin.request";
@@ -17,6 +17,8 @@ import StyleSelect from "@/components/style-select";
 import { listEnableDisable } from "@/utils/other";
 import { NextPage } from "next";
 import LoadingSpinner from "@/components/loading-spinner";
+import { AdminType } from "@/types/entity/entity.type";
+import FileUpload from "@/components/file-upload";
 
 type Params = {
     params: { id: number };
@@ -57,7 +59,7 @@ const Page: NextPage<Params> = ({ params }) => {
         setSubmitting(true);
 
         try {
-            const response = await edit(params.id, values);
+            const response = await edit(params.id, createFormData(values));
 
             if (response.status !== HttpStatusCode.Created) {
                 return toast.error(response.data.message);
@@ -83,7 +85,9 @@ const Page: NextPage<Params> = ({ params }) => {
         adm_phone: data?.adm_phone ?? "",
         adm_status: data?.adm_status ? "1" : "0",
         confirm_password: "",
-        password: ""
+        password: "",
+        picture: undefined,
+        new_picture: false
     };
 
     return (
@@ -92,8 +96,38 @@ const Page: NextPage<Params> = ({ params }) => {
 
             <LoadingSpinner loading={loading}>
                 <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaUpdate} initialValues={initialValues}>
-                    {({ handleChange, handleBlur, values, errors, touched }) => (
+                    {({ handleChange, handleBlur, values, errors, touched, setFieldValue }) => (
                         <Form method="post" noValidate>
+                            {!values.new_picture && data?.picture && (
+                                <CustomBox>
+                                    <div className="flex items-center justify-center flex-col">
+                                        <a className="flex justify-center" href={data.picture.fil_url} target="_blank">
+                                            <img src={data.picture.fil_url} alt={"Picture admin"} className="max-w-md h-full object-cover w-full" />
+                                        </a>
+
+                                        <button
+                                            className="bg-red-600 text-white rounded px-3 py-2 w-full max-w-md flex justify-center items-center gap-3"
+                                            type="button"
+                                            onClick={() => {
+                                                setFieldValue("picture", undefined);
+                                                setFieldValue("new_picture", true);
+                                            }}
+                                        >
+                                            <FaTrash /> Remove
+                                        </button>
+                                    </div>
+                                </CustomBox>
+                            )}
+
+                            {values.new_picture && (
+                                <FileUpload
+                                    picture={values.picture}
+                                    setFieldValue={setFieldValue}
+                                    errors={errors.picture}
+                                    touched={touched.picture}
+                                />
+                            )}
+
                             <CustomBox>
                                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                                     <div>

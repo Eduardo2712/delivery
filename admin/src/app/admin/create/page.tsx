@@ -1,10 +1,10 @@
 "use client";
 
 import StyleInput from "@/components/style-input";
-import { Form, Formik, FormikErrors } from "formik";
-import { FaSpinner, FaTrash, FaUpload } from "react-icons/fa6";
+import { Form, Formik } from "formik";
+import { FaSpinner } from "react-icons/fa6";
 import { createFormData, router_base, schemaCreate } from "../utils";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { AdminCreateType } from "@/types/request/admin.type";
 import { maskPhone } from "@/utils/mask";
 import Link from "next/link";
@@ -16,13 +16,12 @@ import CustomBox from "@/components/custom-box";
 import StyleSelect from "@/components/style-select";
 import { listEnableDisable } from "@/utils/other";
 import { NextPage } from "next";
+import FileUpload from "@/components/file-upload";
 
 const Page: NextPage = () => {
     const [submitting, setSubmitting] = useState<boolean>(false);
 
     const router = useRouter();
-
-    const refImage = useRef<HTMLInputElement>(null);
 
     const onSubmit = async (values: AdminCreateType) => {
         setSubmitting(true);
@@ -48,19 +47,6 @@ const Page: NextPage = () => {
         }
     };
 
-    const upload = (
-        files: FileList | null,
-        setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => Promise<void | FormikErrors<AdminCreateType>>
-    ) => {
-        if (!files || files.length === 0) {
-            return;
-        }
-
-        const file = files[0];
-
-        setFieldValue("picture", file);
-    };
-
     const initialValues: AdminCreateType = {
         email: "",
         password: "",
@@ -78,49 +64,9 @@ const Page: NextPage = () => {
             <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaCreate} initialValues={initialValues}>
                 {({ handleChange, handleBlur, values, errors, touched, setFieldValue }) => (
                     <Form method="post" noValidate>
+                        <FileUpload picture={values.picture} setFieldValue={setFieldValue} errors={errors.picture} touched={touched.picture} />
+
                         <CustomBox>
-                            <div>
-                                <div className="flex items-center justify-center flex-col">
-                                    {values.picture && (
-                                        <>
-                                            <a className="flex justify-center" href={URL.createObjectURL(values.picture)} target="_blank">
-                                                <img
-                                                    src={URL.createObjectURL(values.picture)}
-                                                    alt={values.picture.name}
-                                                    className="max-w-md h-full object-cover w-full"
-                                                />
-                                            </a>
-
-                                            <button
-                                                className="bg-red-600 text-white rounded px-3 py-2 w-full max-w-md flex justify-center items-center gap-3"
-                                                type="button"
-                                                onClick={() => setFieldValue("picture", undefined)}
-                                            >
-                                                <FaTrash /> Remove
-                                            </button>
-                                        </>
-                                    )}
-                                </div>
-
-                                <input
-                                    ref={refImage}
-                                    className="hidden"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={(e) => upload(e.target.files, setFieldValue)}
-                                />
-
-                                {!values.picture && (
-                                    <button
-                                        type="button"
-                                        className="flex justify-center items-center gap-3 rounded px-3 py-2 text-gray-100 font-semibold bg-blue-600"
-                                        onClick={() => refImage.current?.click()}
-                                    >
-                                        <FaUpload /> Upload picture
-                                    </button>
-                                )}
-                            </div>
-
                             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                                 <div>
                                     <StyleInput

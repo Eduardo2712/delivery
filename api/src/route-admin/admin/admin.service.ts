@@ -24,20 +24,16 @@ export class AdminService {
             throw new HttpException(error, HttpStatus.BAD_REQUEST);
         }
 
-        let id_picture: number | HttpException | null = null;
+        let id_picture: number | null = null;
 
         if (picture) {
             id_picture = await ServiceHelpers.uploadFile(picture, this.fileRepository);
-
-            if (id_picture instanceof HttpException) {
-                throw id_picture;
-            }
         }
 
         const admin = this.adminRepository.create({
             ...createAdminDto,
             adm_active: true,
-            adm_id_picture: id_picture instanceof HttpException ? null : id_picture
+            adm_id_picture: id_picture
         });
 
         await this.adminRepository.save(admin);
@@ -62,7 +58,7 @@ export class AdminService {
     async update(id: number, updateAdminDto: UpdateAdminDto): Promise<string | null> {
         const admin = await this.adminRepository.findOneOrFail({ where: { id, adm_active: true } });
 
-        let admin_update: UpdateAdminDto & { password?: string } = { ...updateAdminDto };
+        let admin_update: UpdateAdminDto = updateAdminDto;
 
         if (updateAdminDto.password && updateAdminDto.confirm_password) {
             if (compareSync(updateAdminDto.password, admin.password)) {
@@ -90,7 +86,11 @@ export class AdminService {
     }
 
     async findOne(id: number): Promise<AdminEntity> {
-        const obj = await this.adminRepository.findOneOrFail({ where: { id, adm_active: true } });
+        const obj = await this.adminRepository.findOneOrFail({ where: { id, adm_active: true }, relations: { picture: true } });
+
+        if (obj.adm_id_picture) {
+            obj.picture.fil_url = await obj.picture.fileUrl;
+        }
 
         return obj;
     }

@@ -23,9 +23,10 @@ export class AdminController {
 
     @Post(":id")
     @HttpCode(HttpStatus.OK)
-    async update(@Param("id") id: number, @Body() updateAdminDto: UpdateAdminDto) {
+    @UseInterceptors(FileInterceptor("picture"))
+    async update(@Param("id") id: number, @Body() updateAdminDto: UpdateAdminDto, @UploadedFile() picture?: Express.Multer.File) {
         try {
-            return await this.adminService.update(id, updateAdminDto);
+            return await this.adminService.update(id, updateAdminDto, picture);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 throw new BadRequestException(error.message);

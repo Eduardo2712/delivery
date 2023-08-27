@@ -55,17 +55,23 @@ export class AdminService {
         });
     }
 
-    async update(id: number, updateAdminDto: UpdateAdminDto): Promise<string | null> {
+    async update(id: number, updateAdminDto: UpdateAdminDto, picture: Express.Multer.File): Promise<string | null> {
         const admin = await this.adminRepository.findOneOrFail({ where: { id, adm_active: true } });
 
         let admin_update: UpdateAdminDto = updateAdminDto;
 
         if (updateAdminDto.password && updateAdminDto.confirm_password) {
             if (compareSync(updateAdminDto.password, admin.password)) {
-                return "New password is the same as the old one";
+                throw new HttpException("New password cannot be same as old password", HttpStatus.BAD_REQUEST);
             }
 
             admin_update = { ...admin_update, password: updateAdminDto.password };
+        }
+
+        let id_picture: number | null = null;
+
+        if (updateAdminDto.new_picture && picture) {
+            id_picture = await ServiceHelpers.uploadFile(picture, this.fileRepository);
         }
 
         this.adminRepository.merge(admin, admin_update);

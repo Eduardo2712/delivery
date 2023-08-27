@@ -18,6 +18,10 @@ export class UpdateAdminDto {
 
     @IsNotEmpty()
     @IsBooleanString()
+    new_picture: boolean;
+
+    @IsNotEmpty()
+    @IsBooleanString()
     adm_status: boolean;
 
     @IsOptional()

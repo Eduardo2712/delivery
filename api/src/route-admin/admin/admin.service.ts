@@ -4,7 +4,7 @@ import { UpdateAdminDto } from "./dto/update-admin.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AdminEntity } from "src/entities/admin.entity";
 import { ILike, Repository } from "typeorm";
-import { compareSync } from "bcrypt";
+import { compareSync, hashSync } from "bcrypt";
 import { ServiceHelpers } from "src/helpers/service.helpers";
 import { FileEntity } from "src/entities/file.entity";
 
@@ -33,7 +33,8 @@ export class AdminService {
         const admin = this.adminRepository.create({
             ...createAdminDto,
             adm_active: true,
-            adm_id_picture: id_picture
+            adm_id_picture: id_picture,
+            password: hashSync(createAdminDto.password, 10)
         });
 
         await this.adminRepository.save(admin);
@@ -55,17 +56,13 @@ export class AdminService {
         });
     }
 
-    async update(id: number, updateAdminDto: UpdateAdminDto, picture: Express.Multer.File): Promise<string | null> {
+    async update(id: number, updateAdminDto: UpdateAdminDto, picture?: Express.Multer.File): Promise<string | null> {
         const admin = await this.adminRepository.findOneOrFail({ where: { id, adm_active: true } });
-
-        let admin_update: UpdateAdminDto = updateAdminDto;
 
         if (updateAdminDto.password && updateAdminDto.confirm_password) {
             if (compareSync(updateAdminDto.password, admin.password)) {
                 throw new HttpException("New password cannot be same as old password", HttpStatus.BAD_REQUEST);
             }
-
-            admin_update = { ...admin_update, password: updateAdminDto.password };
         }
 
         let id_picture: number | null = null;
@@ -74,7 +71,11 @@ export class AdminService {
             id_picture = await ServiceHelpers.uploadFile(picture, this.fileRepository);
         }
 
-        this.adminRepository.merge(admin, admin_update);
+        this.adminRepository.merge(admin, {
+            ...updateAdminDto,
+            adm_id_picture: id_picture || admin.adm_id_picture,
+            password: updateAdminDto.password ? hashSync(updateAdminDto.password, 10) : admin.password
+        });
 
         await this.adminRepository.save(admin);
 

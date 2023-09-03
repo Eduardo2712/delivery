@@ -8,8 +8,9 @@ import StyleInput from "@/components/style-input";
 import axios, { HttpStatusCode } from "axios";
 import toast from "react-hot-toast";
 import { get } from "@/requests/user.request";
-import { UserType } from "@/types/request/user.type";
 import { format, parseISO } from "date-fns";
+import { UserGetType } from "@/types/request/user.type";
+import { DataTable } from "primereact/datatable";
 
 type Params = {
     params: { id: number };
@@ -17,7 +18,7 @@ type Params = {
 
 const Page: NextPage<Params> = ({ params }) => {
     const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<UserType | null>(null);
+    const [data, setData] = useState<UserGetType | null>(null);
 
     useEffect(() => {
         (async () => {
@@ -48,6 +49,16 @@ const Page: NextPage<Params> = ({ params }) => {
             <p className="text-2xl font-bold">User - View</p>
 
             <LoadingSpinner loading={loading}>
+                {data?.picture && (
+                    <CustomBox>
+                        <div className="flex items-center justify-center flex-col">
+                            <a className="flex justify-center" href={data.picture.fil_url} target="_blank">
+                                <img src={data.picture.fil_url} alt={"Picture admin"} className="max-w-md h-full object-cover w-full" />
+                            </a>
+                        </div>
+                    </CustomBox>
+                )}
+
                 <CustomBox>
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                         <div>
@@ -94,6 +105,10 @@ const Page: NextPage<Params> = ({ params }) => {
                             />
                         </div>
                     </div>
+                </CustomBox>
+
+                <CustomBox>
+                    <DataTable></DataTable>
                 </CustomBox>
             </LoadingSpinner>
         </>

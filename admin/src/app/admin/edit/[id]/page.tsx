@@ -61,7 +61,7 @@ const Page: NextPage<Params> = ({ params }) => {
         try {
             const response = await edit(params.id, createFormData(values));
 
-            if (response.status !== HttpStatusCode.Created) {
+            if (response.status !== HttpStatusCode.Ok) {
                 return toast.error(response.data.message);
             }
 

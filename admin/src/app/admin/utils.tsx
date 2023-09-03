@@ -24,12 +24,10 @@ export const schemaUpdate = Yup.object().shape({
     adm_name: Yup.string().required("Fill in this field!"),
     adm_phone: Yup.string().min(14, "Must contain at least 14 characters!").required("Fill in this field!"),
     adm_status: Yup.number().required("Fill in this field!"),
-    picture: Yup.mixed().when(["new_picture"], (new_picture, schema) => {
-        if (new_picture && new_picture.length > 0) {
-            return schema.required("Fill in this field!");
-        }
-
-        return schema;
+    picture: Yup.mixed().test("is-picture-required", "Fill in this field!", function () {
+        const newPicture = this.parent.new_picture;
+        const picture = this.parent.picture;
+        return newPicture ? !!picture : true;
     })
 });
 
@@ -37,7 +35,9 @@ export const createFormData = <T extends Record<string, any>>(values: T): FormDa
     const form_data = new FormData();
 
     for (const [key, value] of Object.entries(values)) {
-        form_data.append(key, value);
+        if (key !== "picture" || (key === "picture" && values.picture)) {
+            form_data.append(key, value);
+        }
     }
 
     return form_data;

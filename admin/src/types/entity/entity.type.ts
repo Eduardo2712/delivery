@@ -21,3 +21,36 @@ export type FileType = {
     created_at: Date;
     updated_at: Date;
 };
+
+export type UserType = {
+    id: number;
+    email: string;
+    use_name: string;
+    use_date_birth: Date;
+    use_phone: string;
+    password: string;
+    use_cpf: string;
+    use_active: boolean;
+    use_id_picture?: number | null;
+    created_at: Date;
+    updated_at: Date;
+};
+
+export type OrderType = {
+    id: number;
+    ord_id_user: number;
+    ord_delivey_fee: number;
+    ord_cep: string;
+    ord_street: string;
+    ord_number: string;
+    ord_complement: string;
+    ord_neighborhood: string;
+    ord_city: string;
+    ord_state: string;
+    ord_delivered: boolean;
+    ord_confirmed_payment: boolean;
+    ord_delivery: boolean;
+    ord_active: boolean;
+    created_at: Date;
+    updated_at: Date;
+};

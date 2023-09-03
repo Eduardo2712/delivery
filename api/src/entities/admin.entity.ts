@@ -1,7 +1,5 @@
-import { BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { FileEntity } from "./file.entity";
-import { hashSync } from "bcrypt";
-import { Exclude } from "class-transformer";
 
 @Entity({
     name: "admins"
@@ -36,10 +34,8 @@ export class AdminEntity {
 
     @Column({
         nullable: false,
-        type: "varchar",
-        select: false
+        type: "varchar"
     })
-    @Exclude()
     password: string;
 
     @Column({
@@ -65,9 +61,4 @@ export class AdminEntity {
     @OneToOne(() => FileEntity, { cascade: true, eager: true })
     @JoinColumn({ name: "adm_id_picture" })
     picture: FileEntity;
-
-    @BeforeInsert()
-    hashPassword() {
-        this.password = hashSync(this.password, 10);
-    }
 }

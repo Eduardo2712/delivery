@@ -40,13 +40,15 @@ export class UserService {
     }
 
     async findOne(id: number): Promise<UserEntity> {
-        const obj = await this.userRepository
-            .createQueryBuilder("user")
-            .where("user.id = :id", { id })
-            .andWhere("user.use_active = :active", { active: true })
-            .leftJoinAndSelect("user.picture", "picture")
-            .leftJoinAndSelect("user.orders", "order", "order.ord_active = :active", { active: true })
-            .getOneOrFail();
+        const obj = await this.userRepository.findOneOrFail({
+            relations: {
+                picture: true
+            },
+            where: {
+                id,
+                use_active: true
+            }
+        });
 
         if (obj.picture) {
             obj.picture.fil_url = await obj.picture.fileUrl;

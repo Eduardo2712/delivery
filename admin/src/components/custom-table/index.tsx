@@ -22,6 +22,7 @@ type Params = {
     search: string;
     page: number;
     rows_per_page: number;
+    id_user?: number | null;
 };
 
 type DataItem<T> = {
@@ -43,7 +44,8 @@ const CustomTable = ({
     const [params, setParams] = useState<Params>({
         search: "",
         page: 1,
-        rows_per_page: 10
+        rows_per_page: 10,
+        id_user: null
     });
     const debouncedInputValue = useDebounce(params.search, 500);
 

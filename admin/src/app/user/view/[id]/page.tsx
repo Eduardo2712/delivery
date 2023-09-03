@@ -10,7 +10,9 @@ import toast from "react-hot-toast";
 import { get } from "@/requests/user.request";
 import { format, parseISO } from "date-fns";
 import { UserGetType } from "@/types/request/user.type";
-import { DataTable } from "primereact/datatable";
+import CustomTable from "@/components/custom-table";
+import { Column } from "primereact/column";
+import { getDatatable } from "@/requests/order.request";
 
 type Params = {
     params: { id: number };
@@ -108,7 +110,10 @@ const Page: NextPage<Params> = ({ params }) => {
                 </CustomBox>
 
                 <CustomBox>
-                    <DataTable></DataTable>
+                    <CustomTable request={(e) => getDatatable({ ...e, id_user: data?.id })} button_view url={"/order"}>
+                        <Column field="id" header="Id" />
+                        <Column field="created_at" header="Date" body={(e) => format(parseISO(String(e.created_at)), "dd/MM/yyyy HH:mm:ss")} />
+                    </CustomTable>
                 </CustomBox>
             </LoadingSpinner>
         </>

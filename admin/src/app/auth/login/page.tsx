@@ -35,8 +35,8 @@ const Page: NextPage = () => {
                 return toast.error(response.data.message);
             }
 
-            if (response.data.user && response.data.token) {
-                dispatch(login({ user: response.data.user, token: response.data.token }));
+            if (response.data.admin && response.data.token) {
+                dispatch(login({ user: response.data.admin, token: response.data.token }));
 
                 toast.success("Successfully login");
 

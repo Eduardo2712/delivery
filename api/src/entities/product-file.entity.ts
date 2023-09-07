@@ -1,4 +1,4 @@
-import { CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { FileEntity } from "./file.entity";
 import { ProductEntity } from "./product.entity";
 
@@ -8,6 +8,18 @@ import { ProductEntity } from "./product.entity";
 export class ProductFileEntity {
     @PrimaryGeneratedColumn()
     id: number;
+
+    @Column({
+        nullable: false,
+        type: "int"
+    })
+    prl_id_file: number;
+
+    @Column({
+        nullable: false,
+        type: "int"
+    })
+    prl_id_product: number;
 
     @CreateDateColumn()
     created_at: Date;

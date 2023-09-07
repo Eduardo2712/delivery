@@ -51,6 +51,10 @@ export class AuthService {
             throw new UnauthorizedException();
         }
 
+        if (admin.adm_id_picture) {
+            admin.picture.fil_url = await admin.picture.fileUrl;
+        }
+
         const payload = { sub: admin.id, email: admin.email };
 
         const result = { ...admin, password: undefined };

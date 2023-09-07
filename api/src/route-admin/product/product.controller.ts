@@ -16,6 +16,7 @@ import { ProductService } from "./product.service";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ConstHelper } from "src/helpers/const.helper";
 import { UpdateProductDto } from "./dto/update-product.dto";
+import { CreateProductDto } from "./dto/create-product.dto";
 
 @Controller("admin/product")
 export class ProductController {
@@ -39,6 +40,32 @@ export class ProductController {
     ) {
         try {
             return await this.productService.update(id, updateProductDto, files);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw new BadRequestException(error.message);
+            }
+
+            throw new BadRequestException("Error");
+        }
+    }
+
+    @Post("/")
+    @HttpCode(HttpStatus.CREATED)
+    @UseInterceptors(FileInterceptor("files"))
+    async create(
+        @Body() createProductDto: CreateProductDto,
+        @UploadedFile(
+            new ParseFilePipe({
+                validators: [
+                    new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE }),
+                    new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ })
+                ]
+            })
+        )
+        files?: Express.Multer.File[]
+    ) {
+        try {
+            return await this.productService.create(createProductDto, files);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 throw new BadRequestException(error.message);

@@ -11,6 +11,12 @@ export class UserEntity {
 
     @Column({
         nullable: false,
+        type: "int"
+    })
+    use_id_picture: number;
+
+    @Column({
+        nullable: false,
         type: "varchar"
     })
     use_name: string;

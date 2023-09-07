@@ -11,6 +11,12 @@ export class OrderEntity {
 
     @Column({
         nullable: false,
+        type: "int"
+    })
+    ord_id_user: number;
+
+    @Column({
+        nullable: false,
         type: "decimal",
         precision: 10,
         scale: 2

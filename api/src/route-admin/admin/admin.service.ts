@@ -5,7 +5,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { AdminEntity } from "src/entities/admin.entity";
 import { ILike, Repository } from "typeorm";
 import { compareSync, hashSync } from "bcrypt";
-import { ServiceHelpers } from "src/helpers/service.helpers";
+import { ServiceHelpers } from "src/helpers/service.helper";
 import { FileEntity } from "src/entities/file.entity";
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ProductFileEntity } from "./product-file.entity";
-import { ServiceHelpers } from "src/helpers/service.helpers";
+import { ServiceHelpers } from "src/helpers/service.helper";
 
 @Entity({
     name: "files"

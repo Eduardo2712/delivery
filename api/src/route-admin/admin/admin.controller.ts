@@ -10,12 +10,16 @@ import {
     HttpCode,
     HttpStatus,
     UseInterceptors,
-    UploadedFile
+    UploadedFile,
+    ParseFilePipe,
+    MaxFileSizeValidator,
+    FileTypeValidator
 } from "@nestjs/common";
 import { AdminService } from "./admin.service";
 import { CreateAdminDto } from "./dto/create-admin.dto";
 import { UpdateAdminDto } from "./dto/update-admin.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
+import { ConstHelper } from "src/helpers/const.helper";
 
 @Controller("admin/admin")
 export class AdminController {
@@ -24,7 +28,19 @@ export class AdminController {
     @Post(":id")
     @HttpCode(HttpStatus.OK)
     @UseInterceptors(FileInterceptor("picture"))
-    async update(@Param("id") id: number, @Body() updateAdminDto: UpdateAdminDto, @UploadedFile() picture?: Express.Multer.File) {
+    async update(
+        @Param("id") id: number,
+        @Body() updateAdminDto: UpdateAdminDto,
+        @UploadedFile(
+            new ParseFilePipe({
+                validators: [
+                    new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE }),
+                    new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ })
+                ]
+            })
+        )
+        picture?: Express.Multer.File
+    ) {
         try {
             return await this.adminService.update(id, updateAdminDto, picture);
         } catch (error: unknown) {
@@ -39,7 +55,18 @@ export class AdminController {
     @Post()
     @HttpCode(HttpStatus.CREATED)
     @UseInterceptors(FileInterceptor("picture"))
-    async create(@Body() createAdminDto: CreateAdminDto, @UploadedFile() picture?: Express.Multer.File) {
+    async create(
+        @Body() createAdminDto: CreateAdminDto,
+        @UploadedFile(
+            new ParseFilePipe({
+                validators: [
+                    new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE }),
+                    new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ })
+                ]
+            })
+        )
+        picture?: Express.Multer.File
+    ) {
         try {
             return await this.adminService.create(createAdminDto, picture);
         } catch (error: unknown) {

@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, MaxLength, IsBooleanString, IsOptional, IsEmail, Length, ValidateIf, Validate } from "class-validator";
-import { Messages } from "src/helpers/message.helpers";
+import { Messages } from "src/helpers/message.helper";
 
 export class UpdateAdminDto {
     @IsNotEmpty()

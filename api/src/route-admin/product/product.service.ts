@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FileEntity } from "src/entities/file.entity";
 import { ProductEntity } from "src/entities/product.entity";
-import { DataSource, Repository } from "typeorm";
+import { DataSource, ILike, Repository } from "typeorm";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { ProductFileEntity } from "src/entities/product-file.entity";
 import { CreateProductDto } from "./dto/create-product.dto";
@@ -65,5 +65,49 @@ export class ProductService {
         } finally {
             await query_runner.release();
         }
+    }
+
+    async findOne(id: number): Promise<ProductEntity | null> {
+        const obj = await this.productRepository.findOneOrFail({
+            where: { id, pro_active: true },
+            relations: {
+                files: {
+                    file: true
+                },
+                histories: true
+            }
+        });
+
+        if (obj.files.length > 0) {
+            for (const file of obj.files) {
+                file.file.fil_url = await file.file.fileUrl;
+            }
+        }
+
+        return obj;
+    }
+
+    async findAll(search: string, rows_per_page: number, page: number): Promise<ProductEntity[]> {
+        return await this.productRepository.find({
+            where: {
+                pro_active: true,
+                pro_name: ILike(`%${search}%`)
+            },
+            order: {
+                id: "desc"
+            },
+            take: rows_per_page,
+            skip: rows_per_page * (page - 1)
+        });
+    }
+
+    async remove(id: number): Promise<string | null> {
+        const obj = await this.productRepository.findOneOrFail({ where: { id, pro_active: true } });
+
+        obj.pro_active = false;
+
+        await this.productRepository.save(obj);
+
+        return null;
     }
 }

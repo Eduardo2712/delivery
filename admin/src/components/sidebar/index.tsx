@@ -47,7 +47,10 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                                         onClick={() => setOpenMenu((previous) => !previous)}
                                     >
                                         {user?.picture ? (
-                                            <img className="w-8 h-8 rounded-full" src={user.picture.fil_url} alt="user photo" />
+                                            <div
+                                                className="bg-cover bg-no-repeat bg-center w-7 h-w-7 rounded-full"
+                                                style={{ backgroundImage: `url(${user.picture.fil_url})` }}
+                                            />
                                         ) : (
                                             <FaUser className="text-white" size={16} />
                                         )}

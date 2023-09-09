@@ -2,6 +2,7 @@ import {
     BadRequestException,
     Body,
     Controller,
+    Delete,
     FileTypeValidator,
     Get,
     HttpCode,
@@ -10,6 +11,7 @@ import {
     Param,
     ParseFilePipe,
     Post,
+    Query,
     UploadedFile,
     UseInterceptors
 } from "@nestjs/common";
@@ -67,6 +69,48 @@ export class ProductController {
     ) {
         try {
             return await this.productService.create(createProductDto, files);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw new BadRequestException(error.message);
+            }
+
+            throw new BadRequestException("Error");
+        }
+    }
+
+    @Get("/list-all")
+    @HttpCode(HttpStatus.OK)
+    async findAll(@Query("search") search?: string, @Query("rows_per_page") rows_per_page = 10, @Query("page") page = 1) {
+        try {
+            return await this.productService.findAll(search, rows_per_page, page);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw new BadRequestException(error.message);
+            }
+
+            throw new BadRequestException("Error");
+        }
+    }
+
+    @Get(":id")
+    @HttpCode(HttpStatus.OK)
+    async findOne(@Param("id") id: number) {
+        try {
+            return await this.productService.findOne(id);
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                throw new BadRequestException(error.message);
+            }
+
+            throw new BadRequestException("Error");
+        }
+    }
+
+    @Delete(":id")
+    @HttpCode(HttpStatus.OK)
+    async remove(@Param("id") id: number) {
+        try {
+            return await this.productService.remove(id);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 throw new BadRequestException(error.message);

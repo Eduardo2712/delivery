@@ -54,3 +54,14 @@ export type OrderType = {
     created_at: Date;
     updated_at: Date;
 };
+
+export type ProductType = {
+    id: number;
+    pro_id_type: number;
+    pro_name: string;
+    pro_description: string;
+    pro_price: number;
+    pro_active: boolean;
+    created_at: Date;
+    updated_at: Date;
+};

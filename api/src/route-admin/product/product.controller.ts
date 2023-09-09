@@ -3,6 +3,7 @@ import {
     Body,
     Controller,
     FileTypeValidator,
+    Get,
     HttpCode,
     HttpStatus,
     MaxFileSizeValidator,

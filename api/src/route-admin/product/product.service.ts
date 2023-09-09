@@ -30,7 +30,7 @@ export class ProductService {
         return null;
     }
 
-    async create(createProductDto: CreateProductDto, files?: Express.Multer.File[]): Promise<string | null> {
+    async create(createProductDto: CreateProductDto, files?: Express.Multer.File[]): Promise<string | void> {
         const query_runner = this.dataSource.createQueryRunner();
 
         await query_runner.connect();
@@ -64,8 +64,6 @@ export class ProductService {
             throw new BadRequestException("Error");
         } finally {
             await query_runner.release();
-
-            return null;
         }
     }
 }

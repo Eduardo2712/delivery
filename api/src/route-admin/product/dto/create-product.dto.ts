@@ -17,8 +17,4 @@ export class CreateProductDto {
     })
     @MaxLength(13)
     pro_price: number;
-
-    @IsNotEmpty()
-    @IsNumber()
-    pro_id_type: number;
 }

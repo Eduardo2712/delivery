@@ -4,13 +4,15 @@ import { useRef } from "react";
 import { FormikErrors } from "formik";
 
 type Props<T> = {
-    picture: File | undefined;
+    picture?: File;
+    pictures?: File[];
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => Promise<void | FormikErrors<T>>;
     errors?: string;
     touched?: boolean;
+    multiple?: boolean;
 };
 
-const FileUpload = <T extends any>({ picture, setFieldValue, errors, touched }: Props<T>) => {
+const FileUpload = <T,>({ picture, pictures, setFieldValue, errors, touched, multiple = false }: Props<T>) => {
     const refImage = useRef<HTMLInputElement>(null);
 
     const upload = (
@@ -21,9 +23,19 @@ const FileUpload = <T extends any>({ picture, setFieldValue, errors, touched }: 
             return;
         }
 
-        const file = files[0];
+        if (!multiple) {
+            const file = files[0];
 
-        setFieldValue("picture", file);
+            setFieldValue("picture", file);
+        } else {
+            const file_array = pictures ?? [];
+
+            for (let i = 0; i < files.length; i++) {
+                file_array.push(files[i]);
+            }
+
+            setFieldValue("pictures", file_array);
+        }
     };
 
     return (

@@ -7,3 +7,10 @@ export const listEnableDisable = [
     { value: "1", label: "Enable" },
     { value: "0", label: "Disable" }
 ];
+
+export const formatBRL = (value: number) => {
+    return new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+    }).format(value);
+};

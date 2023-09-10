@@ -5,22 +5,16 @@ export type ProductDatatableType = {
 };
 
 export type ProductCreateType = {
-    email: string;
-    adm_phone: string;
-    adm_name: string;
-    adm_status: string;
-    password: string;
-    confirm_password: string;
-    picture?: File;
+    pro_name: string;
+    pro_description: string;
+    pro_price: number | string;
+    pictures?: File[];
 };
 
 export type ProductUpdateType = {
-    adm_phone: string;
-    adm_name: string;
-    adm_status: string;
-    password?: string;
-    confirm_password?: string;
-    email?: string;
-    picture?: File;
-    new_picture: boolean;
+    pro_name: string;
+    pro_description: string;
+    pro_price: number | string;
+    pictures?: File[];
+    pictures_delete?: File[];
 };

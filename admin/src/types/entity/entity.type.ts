@@ -57,7 +57,6 @@ export type OrderType = {
 
 export type ProductType = {
     id: number;
-    pro_id_type: number;
     pro_name: string;
     pro_description: string;
     pro_price: number;

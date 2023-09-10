@@ -32,12 +32,6 @@ export class ProductEntity {
 
     @Column({
         nullable: false,
-        type: "integer"
-    })
-    pro_id_type: number;
-
-    @Column({
-        nullable: false,
         default: true,
         type: "boolean"
     })

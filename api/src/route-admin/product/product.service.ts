@@ -20,7 +20,7 @@ export class ProductService {
         private dataSource: DataSource
     ) {}
 
-    async update(id: number, updateProductDto: UpdateProductDto, files?: Express.Multer.File[]): Promise<string | null> {
+    async update(id: number, updateProductDto: UpdateProductDto, pictures?: Express.Multer.File[]): Promise<string | null> {
         const product = await this.productRepository.findOneOrFail({ where: { id, pro_active: true } });
 
         this.productRepository.merge(product, updateProductDto);
@@ -30,7 +30,7 @@ export class ProductService {
         return null;
     }
 
-    async create(createProductDto: CreateProductDto, files?: Express.Multer.File[]): Promise<string | void> {
+    async create(createProductDto: CreateProductDto, pictures?: Express.Multer.File[]): Promise<string | void> {
         const query_runner = this.dataSource.createQueryRunner();
 
         await query_runner.connect();
@@ -41,8 +41,8 @@ export class ProductService {
 
             await this.productRepository.save(product);
 
-            if (files) {
-                for (const file of files) {
+            if (pictures) {
+                for (const file of pictures) {
                     const id = await ServiceHelpers.uploadFile(file, this.fileRepository);
 
                     await this.productFileRepository.save({

@@ -56,7 +56,7 @@ export class AdminService {
         });
     }
 
-    async update(id: number, updateAdminDto: UpdateAdminDto, picture?: Express.Multer.File): Promise<string | null> {
+    async update(id: number, updateAdminDto: UpdateAdminDto, picture: Express.Multer.File): Promise<string | null> {
         const admin = await this.adminRepository.findOneOrFail({ where: { id, adm_active: true } });
 
         if (updateAdminDto.password && updateAdminDto.confirm_password) {

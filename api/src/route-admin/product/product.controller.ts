@@ -12,11 +12,11 @@ import {
     ParseFilePipe,
     Post,
     Query,
-    UploadedFile,
+    UploadedFiles,
     UseInterceptors
 } from "@nestjs/common";
 import { ProductService } from "./product.service";
-import { FileInterceptor } from "@nestjs/platform-express";
+import { FilesInterceptor } from "@nestjs/platform-express";
 import { ConstHelper } from "src/helpers/const.helper";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { CreateProductDto } from "./dto/create-product.dto";
@@ -27,11 +27,11 @@ export class ProductController {
 
     @Post(":id")
     @HttpCode(HttpStatus.OK)
-    @UseInterceptors(FileInterceptor("files"))
+    @UseInterceptors(FilesInterceptor("pictures", 5))
     async update(
         @Param("id") id: number,
         @Body() updateProductDto: UpdateProductDto,
-        @UploadedFile(
+        @UploadedFiles(
             new ParseFilePipe({
                 validators: [
                     new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE }),
@@ -39,10 +39,10 @@ export class ProductController {
                 ]
             })
         )
-        files?: Express.Multer.File[]
+        pictures: Array<Express.Multer.File>
     ) {
         try {
-            return await this.productService.update(id, updateProductDto, files);
+            return await this.productService.update(id, updateProductDto, pictures);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 throw new BadRequestException(error.message);
@@ -54,10 +54,10 @@ export class ProductController {
 
     @Post("/")
     @HttpCode(HttpStatus.CREATED)
-    @UseInterceptors(FileInterceptor("files"))
+    @UseInterceptors(FilesInterceptor("pictures", 5))
     async create(
         @Body() createProductDto: CreateProductDto,
-        @UploadedFile(
+        @UploadedFiles(
             new ParseFilePipe({
                 validators: [
                     new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE }),
@@ -65,10 +65,10 @@ export class ProductController {
                 ]
             })
         )
-        files?: Express.Multer.File[]
+        pictures: Array<Express.Multer.File>
     ) {
         try {
-            return await this.productService.create(createProductDto, files);
+            return await this.productService.create(createProductDto, pictures);
         } catch (error: unknown) {
             if (error instanceof Error) {
                 throw new BadRequestException(error.message);

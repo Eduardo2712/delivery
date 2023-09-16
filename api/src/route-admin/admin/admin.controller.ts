@@ -39,7 +39,7 @@ export class AdminController {
                 ]
             })
         )
-        picture?: Express.Multer.File
+        picture: Express.Multer.File
     ) {
         try {
             return await this.adminService.update(id, updateAdminDto, picture);
@@ -65,7 +65,7 @@ export class AdminController {
                 ]
             })
         )
-        picture?: Express.Multer.File
+        picture: Express.Multer.File
     ) {
         try {
             return await this.adminService.create(createAdminDto, picture);

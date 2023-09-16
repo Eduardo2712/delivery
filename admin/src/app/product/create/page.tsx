@@ -59,7 +59,13 @@ const Page: NextPage = () => {
             <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaCreate} initialValues={initialValues}>
                 {({ handleChange, handleBlur, values, errors, touched, setFieldValue }) => (
                     <Form method="post" noValidate>
-                        <FileUpload pictures={values.pictures} setFieldValue={setFieldValue} errors={errors.pictures} touched={touched.pictures} />
+                        <FileUpload
+                            multiple
+                            pictures={values.pictures}
+                            setFieldValue={setFieldValue}
+                            errors={errors.pictures}
+                            touched={touched.pictures}
+                        />
 
                         <CustomBox>
                             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
@@ -82,7 +88,7 @@ const Page: NextPage = () => {
                                         errors={errors.pro_price}
                                         touched={touched.pro_price}
                                         handleBlur={handleBlur}
-                                        handleChange={(e) => handleChange(maskMoney(e).target.value)}
+                                        handleChange={(e) => handleChange(maskMoney(e))}
                                         name={"pro_price"}
                                         title={"Price (R$)"}
                                         type={"text"}

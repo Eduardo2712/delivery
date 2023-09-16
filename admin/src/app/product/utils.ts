@@ -1,3 +1,4 @@
+import { formatNumber } from "@/utils/other";
 import * as Yup from "yup";
 
 export const schemaCreate = Yup.object().shape({
@@ -21,7 +22,7 @@ export const createFormData = <T extends Record<string, any>>(values: T): FormDa
             let value_form_data = value;
 
             if (key === "pro_price") {
-                value_form_data = value.toString().replace(",", ".").replace(".", "");
+                value_form_data = formatNumber(value);
             }
 
             form_data.append(key, value_form_data);
@@ -30,7 +31,7 @@ export const createFormData = <T extends Record<string, any>>(values: T): FormDa
 
     if (values.pictures) {
         for (let i = 0; i < values.pictures.length; i++) {
-            form_data.append(`pictures[${i}]`, values.pictures[i]);
+            form_data.append(`pictures`, values.pictures[i]);
         }
     }
 

@@ -33,10 +33,7 @@ export class ProductController {
         @Body() updateProductDto: UpdateProductDto,
         @UploadedFiles(
             new ParseFilePipe({
-                validators: [
-                    new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE }),
-                    new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ })
-                ]
+                validators: [new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE })]
             })
         )
         pictures: Array<Express.Multer.File>
@@ -59,10 +56,7 @@ export class ProductController {
         @Body() createProductDto: CreateProductDto,
         @UploadedFiles(
             new ParseFilePipe({
-                validators: [
-                    new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE }),
-                    new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ })
-                ]
+                validators: [new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE })]
             })
         )
         pictures: Array<Express.Multer.File>

@@ -6,7 +6,7 @@ type Props = {
     title: string;
     errors?: string;
     touched?: boolean;
-    value: string | number | undefined | null;
+    value: string | number | readonly string[] | undefined;
     is_required?: boolean;
     max_length?: number;
     disabled?: boolean;

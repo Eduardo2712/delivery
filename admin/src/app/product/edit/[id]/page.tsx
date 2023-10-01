@@ -2,23 +2,23 @@
 
 import StyleInput from "@/components/style-input";
 import { Form, Formik } from "formik";
-import { FaSpinner, FaTrash } from "react-icons/fa6";
-import { createFormData, router_base, schemaUpdate } from "../../utils";
+import { FaSpinner } from "react-icons/fa6";
+import { createFormData, router_base, schemaCreate } from "../../utils";
 import { useEffect, useState } from "react";
-import { AdminUpdateType } from "@/types/request/admin.type";
-import { maskPhone } from "@/utils/mask";
+import { ProductUpdateType } from "@/types/request/product.type";
 import Link from "next/link";
-import { edit, get } from "@/requests/admin.request";
+import { edit, get } from "@/requests/product.request";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import axios, { HttpStatusCode } from "axios";
 import CustomBox from "@/components/custom-box";
-import StyleSelect from "@/components/style-select";
-import { listEnableDisable } from "@/utils/other";
 import { NextPage } from "next";
-import LoadingSpinner from "@/components/loading-spinner";
-import { AdminType } from "@/types/entity/entity.type";
+import { maskMoney } from "@/utils/mask";
 import FileUpload from "@/components/file-upload";
+import { listEnableDisable } from "@/utils/other";
+import StyleSelect from "@/components/style-select";
+import { ProductType } from "@/types/entity/entity.type";
+import LoadingSpinner from "@/components/loading-spinner";
 
 type Params = {
     params: { id: number };
@@ -27,7 +27,7 @@ type Params = {
 const Page: NextPage<Params> = ({ params: { id } }) => {
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<AdminType | null>(null);
+    const [data, setData] = useState<ProductType | null>(null);
 
     const router = useRouter();
 
@@ -55,17 +55,17 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
         })();
     }, []);
 
-    const onSubmit = async (values: AdminUpdateType) => {
+    const onSubmit = async (values: ProductUpdateType) => {
         setSubmitting(true);
 
         try {
             const response = await edit(id, createFormData(values));
 
-            if (response.status !== HttpStatusCode.Ok) {
+            if (response.status !== HttpStatusCode.Created) {
                 return toast.error(response.data.message);
             }
 
-            toast.success("User updated successfully");
+            toast.success("Product created successfully");
 
             router.push(router_base);
         } catch (error) {
@@ -79,109 +79,71 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
         }
     };
 
-    const initialValues: AdminUpdateType = {
-        email: data?.email ?? "",
-        adm_name: data?.adm_name ?? "",
-        adm_phone: data?.adm_phone ?? "",
-        adm_status: data?.adm_status ? "1" : "0",
-        confirm_password: "",
-        password: "",
-        picture: undefined,
-        new_picture: false
+    const initialValues: ProductUpdateType = {
+        pro_description: data?.pro_description ?? "",
+        pro_name: data?.pro_name ?? "",
+        pro_price: data?.pro_price ?? "",
+        pro_status: data?.pro_status ? "1" : "0",
+        pictures: []
     };
 
     return (
         <>
-            <p className="text-2xl font-bold">Admin - Edit</p>
+            <p className="text-2xl font-bold">Product - Update</p>
 
             <LoadingSpinner loading={loading}>
-                <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaUpdate} initialValues={initialValues}>
+                <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaCreate} initialValues={initialValues}>
                     {({ handleChange, handleBlur, values, errors, touched, setFieldValue }) => (
                         <Form method="post" noValidate>
-                            {!values.new_picture && data?.picture && (
-                                <CustomBox>
-                                    <div className="flex items-center justify-center flex-col">
-                                        <a className="flex justify-center" href={data.picture.fil_url} target="_blank">
-                                            <img src={data.picture.fil_url} alt={"Picture admin"} className="max-w-md h-full object-cover w-full" />
-                                        </a>
-
-                                        <button
-                                            className="bg-red-600 text-white rounded px-3 py-2 w-full max-w-md flex justify-center items-center gap-3"
-                                            type="button"
-                                            onClick={() => {
-                                                setFieldValue("picture", undefined);
-                                                setFieldValue("new_picture", true);
-                                            }}
-                                        >
-                                            <FaTrash /> Remove
-                                        </button>
-                                    </div>
-                                </CustomBox>
-                            )}
-
-                            {values.new_picture && (
-                                <FileUpload
-                                    picture={values.picture}
-                                    setFieldValue={setFieldValue}
-                                    errors={errors.picture}
-                                    touched={touched.picture}
-                                />
-                            )}
+                            <FileUpload
+                                multiple
+                                pictures={values.pictures}
+                                setFieldValue={setFieldValue}
+                                errors={errors.pictures}
+                                touched={touched.pictures}
+                            />
 
                             <CustomBox>
                                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                                     <div>
                                         <StyleInput
-                                            errors={errors.adm_name}
-                                            touched={touched.adm_name}
+                                            errors={errors.pro_name}
+                                            touched={touched.pro_name}
                                             handleBlur={handleBlur}
                                             handleChange={handleChange}
-                                            name={"adm_name"}
+                                            name={"pro_name"}
                                             title={"Name"}
                                             type={"text"}
-                                            value={values.adm_name}
+                                            value={values.pro_name}
                                             is_required
                                         />
                                     </div>
 
                                     <div>
                                         <StyleInput
-                                            errors={errors.adm_phone}
-                                            touched={touched.adm_phone}
+                                            errors={errors.pro_price}
+                                            touched={touched.pro_price}
                                             handleBlur={handleBlur}
-                                            handleChange={(e) => handleChange(maskPhone(e))}
-                                            name={"adm_phone"}
-                                            title={"Phone"}
+                                            handleChange={(e) => handleChange(maskMoney(e))}
+                                            name={"pro_price"}
+                                            title={"Price (R$)"}
                                             type={"text"}
-                                            value={values.adm_phone}
+                                            value={values.pro_price}
                                             is_required
                                         />
                                     </div>
+                                </div>
 
-                                    <div>
-                                        <StyleInput
-                                            errors={errors.email}
-                                            touched={touched.email}
-                                            handleBlur={handleBlur}
-                                            handleChange={handleChange}
-                                            name={"email"}
-                                            title={"Email"}
-                                            type={"email"}
-                                            value={values.email}
-                                            is_required
-                                            disabled
-                                        />
-                                    </div>
-
+                                <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                                     <div>
                                         <StyleSelect
-                                            errors={errors.adm_status}
-                                            touched={touched.adm_status}
+                                            errors={errors.pro_status}
+                                            touched={touched.pro_status}
                                             handleBlur={handleBlur}
                                             handleChange={handleChange}
-                                            name={"adm_status"}
+                                            name={"pro_status"}
                                             title={"Status"}
-                                            value={values.adm_status}
+                                            value={values.pro_status}
                                             is_required
                                             emptyOption
                                         >
@@ -194,30 +156,21 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                             })}
                                         </StyleSelect>
                                     </div>
+                                </div>
 
+                                <div className="grid grid-cols-1 gap-4 lg:grid-cols-1">
                                     <div>
                                         <StyleInput
-                                            errors={errors.password}
-                                            touched={touched.password}
+                                            errors={errors.pro_description}
+                                            touched={touched.pro_description}
                                             handleBlur={handleBlur}
                                             handleChange={handleChange}
-                                            name={"password"}
-                                            title={"Password (fill only if changing)"}
-                                            type={"password"}
-                                            value={values.password}
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <StyleInput
-                                            errors={errors.confirm_password}
-                                            touched={touched.confirm_password}
-                                            handleBlur={handleBlur}
-                                            handleChange={handleChange}
-                                            name={"confirm_password"}
-                                            title={"Confirm password (fill only if changing)"}
-                                            type={"password"}
-                                            value={values.confirm_password}
+                                            name={"pro_description"}
+                                            title={"Description"}
+                                            type={"text"}
+                                            value={values.pro_description}
+                                            is_required
+                                            multiple
                                         />
                                     </div>
                                 </div>
@@ -236,7 +189,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                         type="submit"
                                         className="flex h-10 items-center justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:w-36"
                                     >
-                                        {!submitting ? "Save" : <FaSpinner className="animate-spin" size={20} />}
+                                        {!submitting ? "Create" : <FaSpinner className="animate-spin" size={20} />}
                                     </button>
                                 </div>
                             </CustomBox>

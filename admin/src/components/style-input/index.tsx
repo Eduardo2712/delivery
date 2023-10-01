@@ -18,7 +18,7 @@ const StyleInput = ({
     handleBlur,
     name,
     type = "text",
-    title,
+    title = "",
     errors,
     touched,
     value,

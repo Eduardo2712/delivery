@@ -32,6 +32,13 @@ export class ProductEntity {
 
     @Column({
         nullable: false,
+        type: "boolean",
+        default: true
+    })
+    pro_status: boolean;
+
+    @Column({
+        nullable: false,
         default: true,
         type: "boolean"
     })

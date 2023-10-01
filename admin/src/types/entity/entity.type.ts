@@ -61,6 +61,7 @@ export type ProductType = {
     pro_description: string;
     pro_price: number;
     pro_active: boolean;
+    pro_status: boolean;
     created_at: Date;
     updated_at: Date;
 };

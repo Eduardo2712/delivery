@@ -4,6 +4,7 @@ import * as Yup from "yup";
 export const schemaCreate = Yup.object().shape({
     pro_name: Yup.string().required("Fill in this field!"),
     pro_description: Yup.string().required("Fill in this field!"),
+    pro_status: Yup.string().required("Fill in this field!"),
     pro_price: Yup.string().required("Fill in this field!"),
     pictures: Yup.array().min(1, "You must upload at least 1 picture!").required("Fill in this field!")
 });
@@ -11,7 +12,8 @@ export const schemaCreate = Yup.object().shape({
 export const schemaUpdate = Yup.object().shape({
     pro_name: Yup.string().required("Fill in this field!"),
     pro_description: Yup.string().required("Fill in this field!"),
-    pro_price: Yup.string().required("Fill in this field!")
+    pro_price: Yup.string().required("Fill in this field!"),
+    pro_status: Yup.string().required("Fill in this field!")
 });
 
 export const createFormData = <T extends Record<string, any>>(values: T): FormData => {

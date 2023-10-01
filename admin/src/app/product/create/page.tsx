@@ -15,6 +15,8 @@ import CustomBox from "@/components/custom-box";
 import { NextPage } from "next";
 import { maskMoney } from "@/utils/mask";
 import FileUpload from "@/components/file-upload";
+import StyleSelect from "@/components/style-select";
+import { listEnableDisable } from "@/utils/other";
 
 const Page: NextPage = () => {
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -49,6 +51,7 @@ const Page: NextPage = () => {
         pro_description: "",
         pro_name: "",
         pro_price: "",
+        pro_status: "",
         pictures: []
     };
 
@@ -96,7 +99,33 @@ const Page: NextPage = () => {
                                         is_required
                                     />
                                 </div>
+                            </div>
 
+                            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                                <div>
+                                    <StyleSelect
+                                        errors={errors.pro_status}
+                                        touched={touched.pro_status}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        name={"pro_status"}
+                                        title={"Status"}
+                                        value={values.pro_status}
+                                        is_required
+                                        emptyOption
+                                    >
+                                        {listEnableDisable.map((item) => {
+                                            return (
+                                                <option key={item.value} value={item.value}>
+                                                    {item.label}
+                                                </option>
+                                            );
+                                        })}
+                                    </StyleSelect>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-4 lg:grid-cols-1">
                                 <div>
                                     <StyleInput
                                         errors={errors.pro_description}

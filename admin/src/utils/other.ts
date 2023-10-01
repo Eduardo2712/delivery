@@ -18,7 +18,8 @@ export const formatBRL = (value: number) => {
 export const formatNumber = (value: string) => {
     value = value.replace(/\s/g, "").replace("R$", "");
 
-    value = value.replace(",", ".");
+    value = value.replaceAll(".", "");
+    value = value.replaceAll(",", ".");
 
     return value;
 };

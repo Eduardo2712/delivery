@@ -28,6 +28,7 @@ const Page: NextPage = () => {
                     <CustomTable request={getDatatable} button_edit button_delete url={"/product"} delete_request={remove} buttons_top={buttons_top}>
                         <Column field="id" header="Id" />
                         <Column field="pro_name" header="Name" />
+                        <Column field="pro_status" header="Status" body={(e) => (e.pro_status ? "Enabled" : "Disabled")} />
                         <Column field="pro_price" header="Price" body={(e) => formatBRL(e.pro_price)} />
                     </CustomTable>
                 </div>

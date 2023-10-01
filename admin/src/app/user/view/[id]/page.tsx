@@ -18,7 +18,7 @@ type Params = {
     params: { id: number };
 };
 
-const Page: NextPage<Params> = ({ params }) => {
+const Page: NextPage<Params> = ({ params: { id } }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [data, setData] = useState<UserGetType | null>(null);
 
@@ -27,7 +27,7 @@ const Page: NextPage<Params> = ({ params }) => {
             setLoading(true);
 
             try {
-                const response = await get(params.id);
+                const response = await get(id);
 
                 if (response.status !== HttpStatusCode.Ok) {
                     return toast.error(response.data.message);

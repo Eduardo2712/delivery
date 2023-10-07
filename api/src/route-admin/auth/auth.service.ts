@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { AdminEntity } from "src/entities/admin.entity";
 import { compareSync } from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
@@ -34,7 +34,7 @@ export class AuthService {
     }
 
     async login(email: string, pass: string) {
-        const admin = await this.adminRepository.findOneOrFail({
+        const admin = await this.adminRepository.findOne({
             where: {
                 email,
                 adm_active: true,
@@ -45,10 +45,14 @@ export class AuthService {
             }
         });
 
+        if (!admin) {
+            throw new NotFoundException("Email and/or password invalid!");
+        }
+
         const is_password_valid = compareSync(pass, admin.password);
 
         if (!is_password_valid) {
-            throw new UnauthorizedException();
+            throw new NotFoundException("Email and/or password invalid!");
         }
 
         if (admin.adm_id_picture) {

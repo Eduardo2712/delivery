@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, Get } from "@nestjs/common";
+import { Controller, Get } from "@nestjs/common";
 import { DashboardService } from "./dashboard.service";
 
 @Controller("admin/dashboard")
@@ -7,14 +7,6 @@ export class DashboardController {
 
     @Get()
     async get() {
-        try {
-            return await this.dashboardService.get();
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                throw new BadRequestException(error.message);
-            }
-
-            throw new BadRequestException("Error");
-        }
+        return await this.dashboardService.get();
     }
 }

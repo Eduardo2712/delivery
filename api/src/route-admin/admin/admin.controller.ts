@@ -2,7 +2,6 @@ import {
     Controller,
     Post,
     Body,
-    BadRequestException,
     Get,
     Query,
     Delete,
@@ -41,15 +40,7 @@ export class AdminController {
         )
         picture: Express.Multer.File
     ) {
-        try {
-            return await this.adminService.update(id, updateAdminDto, picture);
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                throw new BadRequestException(error.message);
-            }
-
-            throw new BadRequestException("Error");
-        }
+        return await this.adminService.update(id, updateAdminDto, picture);
     }
 
     @Post()
@@ -67,56 +58,24 @@ export class AdminController {
         )
         picture: Express.Multer.File
     ) {
-        try {
-            return await this.adminService.create(createAdminDto, picture);
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                throw new BadRequestException(error.message);
-            }
-
-            throw new BadRequestException("Error");
-        }
+        return await this.adminService.create(createAdminDto, picture);
     }
 
     @Get("/list-all")
     @HttpCode(HttpStatus.OK)
     async findAll(@Query("search") search?: string, @Query("rows_per_page") rows_per_page = 10, @Query("page") page = 1) {
-        try {
-            return await this.adminService.findAll(search, rows_per_page, page);
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                throw new BadRequestException(error.message);
-            }
-
-            throw new BadRequestException("Error");
-        }
+        return await this.adminService.findAll(search, rows_per_page, page);
     }
 
     @Get(":id")
     @HttpCode(HttpStatus.OK)
     async findOne(@Param("id") id: number) {
-        try {
-            return await this.adminService.findOne(id);
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                throw new BadRequestException(error.message);
-            }
-
-            throw new BadRequestException("Error");
-        }
+        return await this.adminService.findOne(id);
     }
 
     @Delete(":id")
     @HttpCode(HttpStatus.OK)
     async remove(@Param("id") id: number) {
-        try {
-            return await this.adminService.remove(id);
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                throw new BadRequestException(error.message);
-            }
-
-            throw new BadRequestException("Error");
-        }
+        return await this.adminService.remove(id);
     }
 }

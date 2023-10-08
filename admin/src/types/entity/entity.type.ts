@@ -64,4 +64,14 @@ export type ProductType = {
     pro_status: boolean;
     created_at: Date;
     updated_at: Date;
+    files?: ProductFileType[] | null;
+};
+
+export type ProductFileType = {
+    id: number;
+    prl_id_file: number;
+    prl_id_product: number;
+    created_at: Date;
+    updated_at: Date;
+    picture?: FileType | null;
 };

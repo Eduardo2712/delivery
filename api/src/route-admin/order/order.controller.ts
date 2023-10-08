@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, Get, HttpCode, HttpStatus, Query } from "@nestjs/common";
+import { Controller, Get, HttpCode, HttpStatus, Query } from "@nestjs/common";
 import { OrderService } from "./order.service";
 
 @Controller("admin/order")
@@ -13,14 +13,6 @@ export class OrderController {
         @Query("page") page = 1,
         @Query("id_user") id_user?: number
     ) {
-        try {
-            return await this.orderService.findAll(search, rows_per_page, page, id_user);
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                throw new BadRequestException(error.message);
-            }
-
-            throw new BadRequestException("Error");
-        }
+        return await this.orderService.findAll(search, rows_per_page, page, id_user);
     }
 }

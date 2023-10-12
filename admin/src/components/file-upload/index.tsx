@@ -4,24 +4,32 @@ import { useRef } from "react";
 import { FormikErrors } from "formik";
 import toast from "react-hot-toast";
 import { FileType } from "@/types/entity/entity.type";
+import { toastConfirm } from "@/utils/toast";
 
 type Props<T> = {
     picture?: File;
     pictures?: File[];
     setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => Promise<void | FormikErrors<T>>;
-    errors?: string;
-    touched?: boolean;
+    errors: string;
+    touched: boolean;
     multiple?: boolean;
     pictures_old?: Array<{ id: number; [key: string]: any; file?: FileType }> | [];
+    pictures_delete?: number[];
 };
 
-const FileUpload = <T,>({ picture, pictures, setFieldValue, errors, touched, multiple = false, pictures_old = [] }: Props<T>) => {
+const FileUpload = <T,>({
+    picture,
+    pictures = [],
+    setFieldValue,
+    errors,
+    touched,
+    multiple = false,
+    pictures_old = [],
+    pictures_delete = []
+}: Props<T>) => {
     const refImage = useRef<HTMLInputElement>(null);
 
-    const upload = (
-        files: FileList | null,
-        setFieldValue: (field: string, value: any, shouldValidate?: boolean | undefined) => Promise<void | FormikErrors<T>>
-    ) => {
+    const upload = (files: FileList | null) => {
         if (!files || files.length === 0) {
             return;
         }
@@ -43,6 +51,23 @@ const FileUpload = <T,>({ picture, pictures, setFieldValue, errors, touched, mul
 
             setFieldValue("pictures", file_array);
         }
+    };
+
+    const remove = (index: number, id?: number | undefined) => {
+        toastConfirm("Do you really want to remove?", () => {
+            if (id) {
+                setFieldValue("pictures_delete", [...pictures_delete, id]);
+                setFieldValue(
+                    "pictures_old",
+                    pictures_old.filter((_, i) => i !== index)
+                );
+            } else {
+                setFieldValue(
+                    "pictures",
+                    pictures.filter((_, i) => i !== index)
+                );
+            }
+        });
     };
 
     return (
@@ -80,12 +105,7 @@ const FileUpload = <T,>({ picture, pictures, setFieldValue, errors, touched, mul
                                     <button
                                         className="bg-red-600 text-white rounded px-3 py-2 w-96 max-w-md flex justify-center items-center gap-3"
                                         type="button"
-                                        onClick={() =>
-                                            setFieldValue(
-                                                "pictures",
-                                                pictures.filter((_, i) => i !== key)
-                                            )
-                                        }
+                                        onClick={() => remove(key, picture?.id)}
                                     >
                                         <FaTrash /> Remove
                                     </button>
@@ -105,12 +125,7 @@ const FileUpload = <T,>({ picture, pictures, setFieldValue, errors, touched, mul
                                     <button
                                         className="bg-red-600 text-white rounded px-3 py-2 w-96 max-w-md flex justify-center items-center gap-3"
                                         type="button"
-                                        onClick={() =>
-                                            setFieldValue(
-                                                "pictures",
-                                                pictures.filter((_, i) => i !== key)
-                                            )
-                                        }
+                                        onClick={() => remove(key)}
                                     >
                                         <FaTrash /> Remove
                                     </button>
@@ -120,14 +135,7 @@ const FileUpload = <T,>({ picture, pictures, setFieldValue, errors, touched, mul
                     )}
                 </div>
 
-                <input
-                    ref={refImage}
-                    multiple={multiple}
-                    className="hidden"
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => upload(e.target.files, setFieldValue)}
-                />
+                <input ref={refImage} multiple={multiple} className="hidden" type="file" accept="image/*" onChange={(e) => upload(e.target.files)} />
 
                 {!picture && (
                     <button

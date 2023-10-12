@@ -37,6 +37,12 @@ export const createFormData = <T extends Record<string, any>>(values: T): FormDa
         }
     }
 
+    if (values.pictures_delete) {
+        for (let i = 0; i < values.pictures_delete.length; i++) {
+            form_data.append(`pictures_delete`, values.pictures_delete[i]);
+        }
+    }
+
     return form_data;
 };
 

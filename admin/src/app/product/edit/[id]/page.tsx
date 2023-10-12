@@ -59,9 +59,11 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
         setSubmitting(true);
 
         try {
+            delete values.pictures_old;
+
             const response = await edit(id, createFormData(values));
 
-            if (response.status !== HttpStatusCode.Created) {
+            if (response.status !== HttpStatusCode.Ok) {
                 return toast.error(response.data.message);
             }
 
@@ -84,7 +86,9 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
         pro_name: data?.pro_name ?? "",
         pro_price: data?.pro_price ?? "",
         pro_status: data?.pro_status ? "1" : "0",
-        pictures: []
+        pictures: [],
+        pictures_delete: [],
+        pictures_old: data?.files ?? []
     };
 
     return (
@@ -99,9 +103,9 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                 multiple
                                 pictures={values.pictures}
                                 setFieldValue={setFieldValue}
-                                errors={errors.pictures}
-                                touched={touched.pictures}
-                                pictures_old={data?.files ?? []}
+                                errors={errors.pictures ?? ""}
+                                touched={touched.pictures ?? false}
+                                pictures_old={values.pictures_old ?? []}
                             />
 
                             <CustomBox>

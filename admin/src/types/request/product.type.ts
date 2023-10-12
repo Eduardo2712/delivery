@@ -1,3 +1,5 @@
+import { FileType } from "../entity/entity.type";
+
 export type ProductDatatableType = {
     search: string;
     page: number;
@@ -18,5 +20,6 @@ export type ProductUpdateType = {
     pro_price: number | string;
     pro_status: number | string;
     pictures?: File[];
-    pictures_delete?: File[];
+    pictures_old?: Array<{ id: number; [key: string]: any; file?: FileType }> | [];
+    pictures_delete?: number[];
 };

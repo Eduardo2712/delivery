@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FileEntity } from "src/entities/file.entity";
 import { ProductEntity } from "src/entities/product.entity";
-import { DataSource, ILike, Repository } from "typeorm";
+import { DataSource, ILike, In, Repository } from "typeorm";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { ProductFileEntity } from "src/entities/product-file.entity";
 import { CreateProductDto } from "./dto/create-product.dto";
@@ -23,11 +23,46 @@ export class ProductService {
     async update(id: number, updateProductDto: UpdateProductDto, pictures?: Express.Multer.File[]): Promise<string | null> {
         const product = await this.productRepository.findOneOrFail({ where: { id, pro_active: true } });
 
-        this.productRepository.merge(product, updateProductDto);
+        const query_runner = this.dataSource.createQueryRunner();
 
-        await this.productRepository.save(product);
+        await query_runner.connect();
+        await query_runner.startTransaction();
 
-        return null;
+        try {
+            this.productRepository.merge(product, updateProductDto);
+
+            await this.productRepository.save(product);
+
+            if (updateProductDto.pictures_delete?.length > 0) {
+                await this.productFileRepository.delete({
+                    id: In(updateProductDto.pictures_delete)
+                });
+            }
+
+            if (pictures) {
+                for (const file of pictures) {
+                    const id = await ServiceHelpers.uploadFile(file, this.fileRepository);
+
+                    await this.productFileRepository.save({
+                        prl_id_product: product.id,
+                        prl_id_file: id,
+                        prl_active: true
+                    });
+                }
+            }
+
+            return null;
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                await query_runner.rollbackTransaction();
+
+                throw new BadRequestException(error.message);
+            }
+
+            throw new BadRequestException("Error");
+        } finally {
+            await query_runner.release();
+        }
     }
 
     async create(createProductDto: CreateProductDto, pictures?: Express.Multer.File[]): Promise<string | void> {

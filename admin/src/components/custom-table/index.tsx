@@ -1,4 +1,5 @@
 import useDebounce from "@/hooks/debounce";
+import { toastConfirm } from "@/utils/toast";
 import axios, { AxiosResponse, HttpStatusCode } from "axios";
 import Link from "next/link";
 import { Column } from "primereact/column";
@@ -72,37 +73,9 @@ const CustomTable = ({
     };
 
     const confirmDeleteRow = (id: number) => {
-        toast(
-            (t) => (
-                <div className="flex flex-col gap-6">
-                    <p className="text-lg">Do you really want to delete?</p>
-
-                    <div className="flex gap-2">
-                        <button
-                            className="rounded bg-red-600 flex-1 h-8 flex justify-center items-center"
-                            type="button"
-                            onClick={() => toast.dismiss(t.id)}
-                        >
-                            No
-                        </button>
-
-                        <button
-                            className="rounded bg-blue-600 flex-1 h-8 flex justify-center items-center"
-                            type="button"
-                            onClick={() => {
-                                toast.dismiss(t.id);
-                                deleteRow(id);
-                            }}
-                        >
-                            Yes
-                        </button>
-                    </div>
-                </div>
-            ),
-            {
-                duration: Infinity
-            }
-        );
+        toastConfirm("Do you really want to delete?", () => {
+            deleteRow(id);
+        });
     };
 
     const deleteRow = async (id: number) => {

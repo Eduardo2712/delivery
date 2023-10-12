@@ -12,7 +12,7 @@ type Props<T> = {
     errors?: string;
     touched?: boolean;
     multiple?: boolean;
-    pictures_old?: Array<{ id: number } & { [key: string]: T } & { file: FileType }>;
+    pictures_old?: Array<{ id: number; [key: string]: any; file?: FileType }> | [];
 };
 
 const FileUpload = <T,>({ picture, pictures, setFieldValue, errors, touched, multiple = false, pictures_old = [] }: Props<T>) => {
@@ -67,11 +67,11 @@ const FileUpload = <T,>({ picture, pictures, setFieldValue, errors, touched, mul
 
                     {pictures && multiple && (
                         <div className="flex flex-row items-end gap-4 flex-wrap justify-center mb-4">
-                            {pictures_old.map((picture, index) => (
-                                <div className="flex items-center justify-center flex-col" key={index}>
-                                    <a className="flex justify-center" href={picture?.file.fil_url ?? ""} target="_blank">
+                            {pictures_old.map((picture, key) => (
+                                <div className="flex items-center justify-center flex-col" key={picture.id}>
+                                    <a className="flex justify-center" href={picture?.file?.fil_url ?? ""} target="_blank">
                                         <img
-                                            src={picture?.file.fil_url ?? ""}
+                                            src={picture?.file?.fil_url ?? ""}
                                             alt={picture?.file?.fil_name}
                                             className="max-w-md h-full object-cover w-96 rounded-sm"
                                         />
@@ -83,7 +83,7 @@ const FileUpload = <T,>({ picture, pictures, setFieldValue, errors, touched, mul
                                         onClick={() =>
                                             setFieldValue(
                                                 "pictures",
-                                                pictures.filter((_, i) => i !== index)
+                                                pictures.filter((_, i) => i !== key)
                                             )
                                         }
                                     >
@@ -92,8 +92,8 @@ const FileUpload = <T,>({ picture, pictures, setFieldValue, errors, touched, mul
                                 </div>
                             ))}
 
-                            {pictures.map((picture, index) => (
-                                <div className="flex items-center justify-center flex-col" key={index}>
+                            {pictures.map((picture, key) => (
+                                <div className="flex items-center justify-center flex-col" key={key}>
                                     <a className="flex justify-center" href={URL.createObjectURL(picture)} target="_blank">
                                         <img
                                             src={URL.createObjectURL(picture)}
@@ -108,7 +108,7 @@ const FileUpload = <T,>({ picture, pictures, setFieldValue, errors, touched, mul
                                         onClick={() =>
                                             setFieldValue(
                                                 "pictures",
-                                                pictures.filter((_, i) => i !== index)
+                                                pictures.filter((_, i) => i !== key)
                                             )
                                         }
                                     >

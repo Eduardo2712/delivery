@@ -101,7 +101,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                 setFieldValue={setFieldValue}
                                 errors={errors.pictures}
                                 touched={touched.pictures}
-                                pictures_old={data?.pictures ?? []}
+                                pictures_old={data?.files ?? []}
                             />
 
                             <CustomBox>

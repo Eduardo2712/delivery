@@ -34,9 +34,13 @@ export class ProductService {
             await this.productRepository.save(product);
 
             if (updateProductDto.pictures_delete?.length > 0) {
-                await this.productFileRepository.delete({
-                    id: In(updateProductDto.pictures_delete)
-                });
+                for (const id_file of updateProductDto.pictures_delete) {
+                    const aux = await this.productFileRepository.findOneOrFail({ where: { id: id_file }, relations: ["file"] });
+
+                    await ServiceHelpers.removeFile(aux.file.fil_name);
+
+                    await this.productFileRepository.remove(aux);
+                }
             }
 
             if (pictures) {

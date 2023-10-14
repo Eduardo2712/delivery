@@ -3,7 +3,7 @@
 import StyleInput from "@/components/style-input";
 import { Form, Formik } from "formik";
 import { FaSpinner } from "react-icons/fa6";
-import { createFormData, router_base, schemaCreate } from "../../utils";
+import { createFormData, router_base, schemaUpdate } from "../../utils";
 import { useEffect, useState } from "react";
 import { ProductUpdateType } from "@/types/request/product.type";
 import Link from "next/link";
@@ -15,7 +15,7 @@ import CustomBox from "@/components/custom-box";
 import { NextPage } from "next";
 import { maskMoney } from "@/utils/mask";
 import FileUpload from "@/components/file-upload";
-import { listEnableDisable } from "@/utils/other";
+import { formatDecimal, listEnableDisable } from "@/utils/other";
 import StyleSelect from "@/components/style-select";
 import { ProductType } from "@/types/entity/entity.type";
 import LoadingSpinner from "@/components/loading-spinner";
@@ -84,7 +84,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
     const initialValues: ProductUpdateType = {
         pro_description: data?.pro_description ?? "",
         pro_name: data?.pro_name ?? "",
-        pro_price: data?.pro_price ?? "",
+        pro_price: data?.pro_price ? formatDecimal(data.pro_price) : "",
         pro_status: data?.pro_status ? "1" : "0",
         pictures: [],
         pictures_delete: [],
@@ -96,7 +96,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
             <p className="text-2xl font-bold">Product - Update</p>
 
             <LoadingSpinner loading={loading}>
-                <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaCreate} initialValues={initialValues}>
+                <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaUpdate} initialValues={initialValues}>
                     {({ handleChange, handleBlur, values, errors, touched, setFieldValue }) => (
                         <Form method="post" noValidate>
                             <FileUpload

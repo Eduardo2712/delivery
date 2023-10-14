@@ -15,6 +15,10 @@ export const formatBRL = (value: number) => {
     }).format(value);
 };
 
+export const formatDecimal = (value: number) => {
+    return formatBRL(value).replace("R$", "");
+};
+
 export const formatNumber = (value: string) => {
     value = value.replace(/\s/g, "").replace("R$", "");
 

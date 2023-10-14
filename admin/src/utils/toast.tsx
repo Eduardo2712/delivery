@@ -6,9 +6,9 @@ export const toastConfirm = (text: string, functionYes = () => {}) => {
             <div className="flex flex-col gap-6">
                 <p className="text-lg">{text}</p>
 
-                <div className="flex gap-2">
+                <div className="flex gap-2 mt-3">
                     <button
-                        className="rounded bg-red-600 flex-1 h-8 flex justify-center items-center"
+                        className="rounded bg-red-600 flex-1 h-8 flex justify-center items-center p-2"
                         type="button"
                         onClick={() => toast.dismiss(t.id)}
                     >
@@ -16,7 +16,7 @@ export const toastConfirm = (text: string, functionYes = () => {}) => {
                     </button>
 
                     <button
-                        className="rounded bg-blue-600 flex-1 h-8 flex justify-center items-center"
+                        className="rounded bg-blue-600 flex-1 h-8 flex justify-center items-center p-2"
                         type="button"
                         onClick={() => {
                             functionYes();

@@ -45,15 +45,15 @@ const FileUpload = <T,>({
 
             const file_array = pictures ?? [];
 
-            for (let i = 0; i < files.length; i++) {
-                file_array.push(files[i]);
+            for (const element of files) {
+                file_array.push(element);
             }
 
             setFieldValue("pictures", file_array);
         }
     };
 
-    const remove = (index: number, id?: number | undefined) => {
+    const remove = (index: number, id?: number | null) => {
         toastConfirm("Do you really want to remove?", () => {
             if (id) {
                 setFieldValue("pictures_delete", [...pictures_delete, id]);

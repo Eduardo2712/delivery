@@ -52,7 +52,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
 
             <LoadingSpinner loading={loading}>
                 {data?.picture && (
-                    <CustomBox>
+                    <CustomBox text="Picture">
                         <div className="flex items-center justify-center flex-col">
                             <a className="flex justify-center" href={data.picture.fil_url} target="_blank">
                                 <img src={data.picture.fil_url} alt={"Picture admin"} className="max-w-md h-full object-cover w-full" />
@@ -61,7 +61,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                     </CustomBox>
                 )}
 
-                <CustomBox>
+                <CustomBox text="Basic information">
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                         <div>
                             <StyleInput value={data?.id} disabled title={"Id"} />
@@ -109,7 +109,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                     </div>
                 </CustomBox>
 
-                <CustomBox>
+                <CustomBox text="Orders">
                     <CustomTable request={(e) => getDatatable({ ...e, id_user: data?.id })} button_view url={"/order"}>
                         <Column field="id" header="Id" />
                         <Column field="created_at" header="Date" body={(e) => format(parseISO(String(e.created_at)), "dd/MM/yyyy HH:mm:ss")} />

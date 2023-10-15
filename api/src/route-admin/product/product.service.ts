@@ -8,7 +8,6 @@ import { ProductFileEntity } from "src/entities/product-file.entity";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { ServiceHelpers } from "src/helpers/service.helper";
 import { ProductHistoryEntity } from "src/entities/product-history.entity";
-import { Request } from "express";
 import { AdminPayloadType } from "src/types/types";
 
 @Injectable()

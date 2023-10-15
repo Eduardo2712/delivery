@@ -71,7 +71,7 @@ const FileUpload = <T,>({
     };
 
     return (
-        <CustomBox>
+        <CustomBox text="Images">
             <div>
                 <div className="flex items-center justify-center flex-col">
                     {picture && !multiple && (

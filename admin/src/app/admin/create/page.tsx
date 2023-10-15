@@ -64,9 +64,14 @@ const Page: NextPage = () => {
             <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaCreate} initialValues={initialValues}>
                 {({ handleChange, handleBlur, values, errors, touched, setFieldValue }) => (
                     <Form method="post" noValidate>
-                        <FileUpload picture={values.picture} setFieldValue={setFieldValue} errors={errors.picture} touched={touched.picture} />
+                        <FileUpload
+                            picture={values.picture}
+                            setFieldValue={setFieldValue}
+                            errors={errors.picture ?? ""}
+                            touched={touched.picture ?? false}
+                        />
 
-                        <CustomBox>
+                        <CustomBox text="Basic information">
                             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                                 <div>
                                     <StyleInput

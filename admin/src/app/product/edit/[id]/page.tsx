@@ -4,7 +4,7 @@ import StyleInput from "@/components/style-input";
 import { Form, Formik } from "formik";
 import { FaSpinner } from "react-icons/fa6";
 import { createFormData, router_base, schemaUpdate } from "../../utils";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ProductUpdateType } from "@/types/request/product.type";
 import Link from "next/link";
 import { edit, get } from "@/requests/product.request";
@@ -22,6 +22,7 @@ import LoadingSpinner from "@/components/loading-spinner";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { format } from "date-fns";
+import TextEmpty from "@/components/text-empty";
 
 type Params = {
     params: { id: number };
@@ -112,7 +113,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                 pictures_old={values.pictures_old ?? []}
                             />
 
-                            <CustomBox>
+                            <CustomBox text="Basic information">
                                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                                     <div>
                                         <StyleInput
@@ -185,31 +186,34 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                 </div>
                             </CustomBox>
 
-                            <CustomBox>
-                                <div className="w-full">
-                                    <DataTable
-                                        value={data?.histories ?? []}
-                                        className="table-auto w-full"
-                                        showGridlines
-                                        stripedRows
-                                        scrollable={true}
-                                        emptyMessage={"No data"}
-                                        paginator
-                                        loading={loading}
-                                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                        rows={page * 10}
-                                        onPage={(e) => setPage((e.page ?? 1) + 1)}
-                                    >
-                                        <Column field="id" header="Id" />
-                                        <Column field="prh_price" header="Price" body={(e) => formatBRL(e.prh_price ?? 0)} />
-                                        <Column field="admin.adm_name" header="Admin" />
-                                        <Column
-                                            field="prh_date"
-                                            header="Date"
-                                            body={(e) => (e.prh_date ? format(new Date(e.prh_date), "dd/MM/yyyy HH:mm") : "")}
-                                        />
-                                    </DataTable>
-                                </div>
+                            <CustomBox text="Histories">
+                                {data?.histories && data.histories.length > 0 ? (
+                                    <div className="w-full">
+                                        <DataTable
+                                            value={data?.histories ?? []}
+                                            className="table-auto w-full"
+                                            showGridlines
+                                            stripedRows
+                                            scrollable={true}
+                                            emptyMessage={"No data"}
+                                            paginator
+                                            loading={loading}
+                                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                            rows={page * 10}
+                                            onPage={(e) => setPage((e.page ?? 1) + 1)}
+                                        >
+                                            <Column field="prh_price" header="Price" body={(e) => formatBRL(e.prh_price ?? 0)} />
+                                            <Column field="admin.adm_name" header="Admin" />
+                                            <Column
+                                                field="prh_date"
+                                                header="Date"
+                                                body={(e) => (e.prh_date ? format(new Date(e.prh_date), "dd/MM/yyyy HH:mm") : "")}
+                                            />
+                                        </DataTable>
+                                    </div>
+                                ) : (
+                                    <TextEmpty text="No histories" />
+                                )}
                             </CustomBox>
 
                             <CustomBox>

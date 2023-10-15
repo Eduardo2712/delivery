@@ -1,5 +1,7 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { FileEntity } from "./file.entity";
+import { ProductHistoryEntity } from "./product-history.entity";
+import { Exclude } from "class-transformer";
 
 @Entity({
     name: "admins"
@@ -36,6 +38,7 @@ export class AdminEntity {
         nullable: false,
         type: "varchar"
     })
+    @Exclude()
     password: string;
 
     @Column({
@@ -61,4 +64,8 @@ export class AdminEntity {
     @OneToOne(() => FileEntity, { cascade: true, eager: true })
     @JoinColumn({ name: "adm_id_picture" })
     picture: FileEntity;
+
+    @OneToMany(() => ProductHistoryEntity, (product_history) => product_history.admin)
+    @JoinColumn({ name: "prh_id_admin" })
+    product_histories: ProductHistoryEntity[];
 }

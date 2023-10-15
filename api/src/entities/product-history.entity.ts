@@ -1,11 +1,12 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ProductEntity } from "./product.entity";
+import { AdminEntity } from "./admin.entity";
 
 @Entity({
     name: "product_histories"
 })
 export class ProductHistoryEntity {
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn()
     id: number;
 
     @Column({
@@ -13,6 +14,12 @@ export class ProductHistoryEntity {
         type: "int"
     })
     prh_id_product: number;
+
+    @Column({
+        nullable: false,
+        type: "int"
+    })
+    prh_id_admin: number;
 
     @Column({
         nullable: false,
@@ -36,5 +43,10 @@ export class ProductHistoryEntity {
     updated_at: Date;
 
     @ManyToOne(() => ProductEntity, (product) => product.histories)
+    @JoinColumn({ name: "prh_id_product" })
     product: ProductEntity;
+
+    @ManyToOne(() => AdminEntity, (admin) => admin.product_histories)
+    @JoinColumn({ name: "prh_id_admin" })
+    admin: AdminEntity;
 }

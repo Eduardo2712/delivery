@@ -163,6 +163,7 @@ const CustomTable = ({
                 rowsPerPageOptions={[10, 25, 50]}
                 loading={loading}
                 onPage={(e) => setParams({ ...params, rows_per_page: e.rows, page: (e.page ?? 0) + 1 })}
+                currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
             >
                 {children}
 

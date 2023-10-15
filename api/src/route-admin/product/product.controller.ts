@@ -10,6 +10,7 @@ import {
     ParseFilePipe,
     Post,
     Query,
+    Req,
     UploadedFiles,
     UseInterceptors
 } from "@nestjs/common";
@@ -18,6 +19,8 @@ import { FilesInterceptor } from "@nestjs/platform-express";
 import { ConstHelper } from "src/helpers/const.helper";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { CreateProductDto } from "./dto/create-product.dto";
+import { Request } from "express";
+import { AdminPayloadType } from "src/types/types";
 
 @Controller("admin/product")
 export class ProductController {
@@ -31,12 +34,14 @@ export class ProductController {
         @Body() updateProductDto: UpdateProductDto,
         @UploadedFiles(
             new ParseFilePipe({
-                validators: [new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE })]
+                validators: [new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE })],
+                fileIsRequired: false
             })
         )
-        pictures: Array<Express.Multer.File>
+        pictures?: Array<Express.Multer.File> | undefined,
+        @Req() req?: Request
     ) {
-        return await this.productService.update(id, updateProductDto, pictures);
+        return await this.productService.update(id, updateProductDto, pictures, req?.user as AdminPayloadType);
     }
 
     @Post("/")

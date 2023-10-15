@@ -65,6 +65,7 @@ export type ProductType = {
     created_at: Date;
     updated_at: Date;
     files?: ProductFileType[] | null;
+    histories?: ProductHistoryType[] | null;
 };
 
 export type ProductFileType = {
@@ -74,4 +75,13 @@ export type ProductFileType = {
     created_at: Date;
     updated_at: Date;
     picture?: FileType | null;
+};
+
+export type ProductHistoryType = {
+    id: number;
+    prh_id_product: number;
+    prh_price: number;
+    prh_date: Date;
+    created_at: Date;
+    updated_at: Date;
 };

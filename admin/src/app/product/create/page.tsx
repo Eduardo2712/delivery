@@ -66,8 +66,8 @@ const Page: NextPage = () => {
                             multiple
                             pictures={values.pictures}
                             setFieldValue={setFieldValue}
-                            errors={errors.pictures}
-                            touched={touched.pictures}
+                            errors={errors.pictures ?? ""}
+                            touched={touched.pictures ?? false}
                         />
 
                         <CustomBox>
@@ -93,7 +93,7 @@ const Page: NextPage = () => {
                                         handleBlur={handleBlur}
                                         handleChange={(e) => handleChange(maskMoney(e))}
                                         name={"pro_price"}
-                                        title={"Price (R$)"}
+                                        title={"Current price (R$)"}
                                         type={"text"}
                                         value={values.pro_price}
                                         is_required

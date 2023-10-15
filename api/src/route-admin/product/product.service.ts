@@ -2,11 +2,14 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FileEntity } from "src/entities/file.entity";
 import { ProductEntity } from "src/entities/product.entity";
-import { DataSource, ILike, In, Repository } from "typeorm";
+import { DataSource, ILike, Repository } from "typeorm";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { ProductFileEntity } from "src/entities/product-file.entity";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { ServiceHelpers } from "src/helpers/service.helper";
+import { ProductHistoryEntity } from "src/entities/product-history.entity";
+import { Request } from "express";
+import { AdminPayloadType } from "src/types/types";
 
 @Injectable()
 export class ProductService {
@@ -17,10 +20,54 @@ export class ProductService {
         private readonly fileRepository: Repository<FileEntity>,
         @InjectRepository(ProductFileEntity)
         private readonly productFileRepository: Repository<ProductFileEntity>,
+        @InjectRepository(ProductHistoryEntity)
+        private readonly productHistoryRepository: Repository<ProductHistoryEntity>,
         private dataSource: DataSource
     ) {}
 
-    async update(id: number, updateProductDto: UpdateProductDto, pictures?: Express.Multer.File[]): Promise<string | null> {
+    async create(createProductDto: CreateProductDto, pictures?: Express.Multer.File[]): Promise<string | void> {
+        const query_runner = this.dataSource.createQueryRunner();
+
+        await query_runner.connect();
+        await query_runner.startTransaction();
+
+        try {
+            const product = this.productRepository.create({ ...createProductDto, pro_active: true });
+
+            await this.productRepository.save(product);
+
+            if (pictures) {
+                for (const file of pictures) {
+                    const id = await ServiceHelpers.uploadFile(file, this.fileRepository);
+
+                    await this.productFileRepository.save({
+                        prl_id_product: product.id,
+                        prl_id_file: id,
+                        prl_active: true
+                    });
+                }
+            }
+
+            await query_runner.commitTransaction();
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                await query_runner.rollbackTransaction();
+
+                throw new BadRequestException(error.message);
+            }
+
+            throw new BadRequestException("Error");
+        } finally {
+            await query_runner.release();
+        }
+    }
+
+    async update(
+        id: number,
+        updateProductDto: UpdateProductDto,
+        pictures?: Express.Multer.File[] | undefined,
+        user?: AdminPayloadType
+    ): Promise<string | null> {
         const product = await this.productRepository.findOneOrFail({ where: { id, pro_active: true } });
 
         const query_runner = this.dataSource.createQueryRunner();
@@ -29,6 +76,17 @@ export class ProductService {
         await query_runner.startTransaction();
 
         try {
+            if (product.pro_price !== updateProductDto.pro_price) {
+                const aux = this.productHistoryRepository.create({
+                    prh_id_product: product.id,
+                    prh_price: updateProductDto.pro_price,
+                    prh_date: new Date(),
+                    prh_id_admin: user.sub
+                });
+
+                await this.productHistoryRepository.save(aux);
+            }
+
             this.productRepository.merge(product, updateProductDto);
 
             await this.productRepository.save(product);
@@ -69,43 +127,6 @@ export class ProductService {
         }
     }
 
-    async create(createProductDto: CreateProductDto, pictures?: Express.Multer.File[]): Promise<string | void> {
-        const query_runner = this.dataSource.createQueryRunner();
-
-        await query_runner.connect();
-        await query_runner.startTransaction();
-
-        try {
-            const product = this.productRepository.create({ ...createProductDto, pro_active: true });
-
-            await this.productRepository.save(product);
-
-            if (pictures) {
-                for (const file of pictures) {
-                    const id = await ServiceHelpers.uploadFile(file, this.fileRepository);
-
-                    await this.productFileRepository.save({
-                        prl_id_product: product.id,
-                        prl_id_file: id,
-                        prl_active: true
-                    });
-                }
-            }
-
-            await query_runner.commitTransaction();
-        } catch (error: unknown) {
-            if (error instanceof Error) {
-                await query_runner.rollbackTransaction();
-
-                throw new BadRequestException(error.message);
-            }
-
-            throw new BadRequestException("Error");
-        } finally {
-            await query_runner.release();
-        }
-    }
-
     async findOne(id: number): Promise<ProductEntity | null> {
         const obj = await this.productRepository.findOneOrFail({
             where: { id, pro_active: true },
@@ -113,14 +134,18 @@ export class ProductService {
                 files: {
                     file: true
                 },
-                histories: true
+                histories: {
+                    admin: true
+                }
             }
         });
 
-        if (obj.files.length > 0) {
-            for (const file of obj.files) {
-                file.file.fil_url = await file.file.fileUrl;
-            }
+        for (const file of obj.files) {
+            file.file.fil_url = await file.file.fileUrl;
+        }
+
+        for (const history of obj.histories) {
+            history.admin.password = undefined;
         }
 
         return obj;

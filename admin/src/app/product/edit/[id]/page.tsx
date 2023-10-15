@@ -4,7 +4,7 @@ import StyleInput from "@/components/style-input";
 import { Form, Formik } from "formik";
 import { FaSpinner } from "react-icons/fa6";
 import { createFormData, router_base, schemaUpdate } from "../../utils";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ProductUpdateType } from "@/types/request/product.type";
 import Link from "next/link";
 import { edit, get } from "@/requests/product.request";
@@ -15,10 +15,13 @@ import CustomBox from "@/components/custom-box";
 import { NextPage } from "next";
 import { maskMoney } from "@/utils/mask";
 import FileUpload from "@/components/file-upload";
-import { formatDecimal, listEnableDisable } from "@/utils/other";
+import { formatBRL, formatDecimal, listEnableDisable } from "@/utils/other";
 import StyleSelect from "@/components/style-select";
 import { ProductType } from "@/types/entity/entity.type";
 import LoadingSpinner from "@/components/loading-spinner";
+import { Column } from "primereact/column";
+import { DataTable } from "primereact/datatable";
+import { format } from "date-fns";
 
 type Params = {
     params: { id: number };
@@ -28,6 +31,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [data, setData] = useState<ProductType | null>(null);
+    const [page, setPage] = useState<number>(1);
 
     const router = useRouter();
 
@@ -67,7 +71,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                 return toast.error(response.data.message);
             }
 
-            toast.success("Product created successfully");
+            toast.success("Product updated successfully");
 
             router.push(router_base);
         } catch (error) {
@@ -131,7 +135,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                             handleBlur={handleBlur}
                                             handleChange={(e) => handleChange(maskMoney(e))}
                                             name={"pro_price"}
-                                            title={"Price (R$)"}
+                                            title={"Current price (R$)"}
                                             type={"text"}
                                             value={values.pro_price}
                                             is_required
@@ -178,6 +182,33 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                             multiple
                                         />
                                     </div>
+                                </div>
+                            </CustomBox>
+
+                            <CustomBox>
+                                <div className="w-full">
+                                    <DataTable
+                                        value={data?.histories ?? []}
+                                        className="table-auto w-full"
+                                        showGridlines
+                                        stripedRows
+                                        scrollable={true}
+                                        emptyMessage={"No data"}
+                                        paginator
+                                        loading={loading}
+                                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                                        rows={page * 10}
+                                        onPage={(e) => setPage((e.page ?? 1) + 1)}
+                                    >
+                                        <Column field="id" header="Id" />
+                                        <Column field="prh_price" header="Price" body={(e) => formatBRL(e.prh_price ?? 0)} />
+                                        <Column field="admin.adm_name" header="Admin" />
+                                        <Column
+                                            field="prh_date"
+                                            header="Date"
+                                            body={(e) => (e.prh_date ? format(new Date(e.prh_date), "dd/MM/yyyy HH:mm") : "")}
+                                        />
+                                    </DataTable>
                                 </div>
                             </CustomBox>
 

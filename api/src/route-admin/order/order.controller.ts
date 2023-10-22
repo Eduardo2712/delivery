@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus, Query } from "@nestjs/common";
+import { Controller, Get, HttpCode, HttpStatus, Param, Query } from "@nestjs/common";
 import { OrderService } from "./order.service";
 
 @Controller("admin/order")
@@ -14,5 +14,11 @@ export class OrderController {
         @Query("id_user") id_user?: number
     ) {
         return await this.orderService.findAll(search, rows_per_page, page, id_user);
+    }
+
+    @Get("/:id")
+    @HttpCode(HttpStatus.OK)
+    async findOne(@Param("id") id: number) {
+        return await this.orderService.findOne(id);
     }
 }

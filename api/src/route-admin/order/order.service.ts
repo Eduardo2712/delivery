@@ -16,7 +16,7 @@ export class OrderService {
             .leftJoinAndSelect("order.user", "user")
             .where("order.ord_active = :active", { active: true });
 
-        if (search) {
+        if (search && search.trim() !== "") {
             query.andWhere("user.use_name LIKE :name", { name: `%${search}%` });
         }
 
@@ -30,5 +30,13 @@ export class OrderService {
             .skip(rows_per_page * (page - 1));
 
         return await query.getMany();
+    }
+
+    async findOne(id: number): Promise<OrderEntity> {
+        const obj = await this.orderRepository.findOneOrFail({
+            where: { id, ord_active: true }
+        });
+
+        return obj;
     }
 }

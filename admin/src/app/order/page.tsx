@@ -3,7 +3,7 @@
 import CustomBox from "@/components/custom-box";
 import CustomTable from "@/components/custom-table";
 import { getDatatable } from "@/requests/order.request";
-import { formatBRL } from "@/utils/other";
+import { format, parseISO } from "date-fns";
 import { NextPage } from "next";
 import { Column } from "primereact/column";
 
@@ -16,9 +16,8 @@ const Page: NextPage = () => {
                 <div className="w-full">
                     <CustomTable request={getDatatable} button_view url={"/order"}>
                         <Column field="id" header="Id" />
-                        <Column field="pro_name" header="Name" />
-                        <Column field="pro_status" header="Status" body={(e) => (e.pro_status ? "Enabled" : "Disabled")} />
-                        <Column field="pro_price" header="Price" body={(e) => formatBRL(e.pro_price)} />
+                        <Column field="user.use_name" header="User" />
+                        <Column field="created_at" header="Created at" body={(e) => format(parseISO(String(e.created_at)), "dd/MM/yyyy HH:mm:ss")} />
                     </CustomTable>
                 </div>
             </CustomBox>

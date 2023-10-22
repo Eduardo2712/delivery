@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { OrderEntity } from "src/entities/order.entity";
-import { Repository, SelectQueryBuilder } from "typeorm";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class OrderService {
@@ -16,7 +16,7 @@ export class OrderService {
             .leftJoinAndSelect("order.user", "user")
             .where("order.ord_active = :active", { active: true });
 
-        if (search && !id_user) {
+        if (search) {
             query.andWhere("user.use_name LIKE :name", { name: `%${search}%` });
         }
 

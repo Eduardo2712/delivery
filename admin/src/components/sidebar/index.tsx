@@ -4,7 +4,7 @@ import { AdminStoreType } from "@/types/store/auth.type";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
-import { FaBars, FaGauge, FaPlateWheat, FaRightFromBracket, FaUser, FaUsers, FaX } from "react-icons/fa6";
+import { FaBars, FaGauge, FaPlateWheat, FaRightFromBracket, FaUser, FaUsers, FaUtensils, FaX } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import Head from "next/head";
 
@@ -120,7 +120,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                                 <Link
                                     href="/admin"
                                     className={`${
-                                        pathname === "/admin" ? "bg-gray-700" : ""
+                                        pathname.includes("admin") ? "bg-gray-700" : ""
                                     } flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`}
                                 >
                                     <FaUser className="text-white" />
@@ -133,7 +133,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                                 <Link
                                     href="/user"
                                     className={`${
-                                        pathname === "/user" ? "bg-gray-700" : ""
+                                        pathname.includes("user") ? "bg-gray-700" : ""
                                     } flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`}
                                 >
                                     <FaUsers className="text-white" />
@@ -146,12 +146,25 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                                 <Link
                                     href="/product"
                                     className={`${
-                                        pathname === "/product" ? "bg-gray-700" : ""
+                                        pathname.includes("product") ? "bg-gray-700" : ""
                                     } flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`}
                                 >
                                     <FaPlateWheat className="text-white" />
 
                                     <span className="ml-3">Products</span>
+                                </Link>
+                            </li>
+
+                            <li>
+                                <Link
+                                    href="/order"
+                                    className={`${
+                                        pathname.includes("order") ? "bg-gray-700" : ""
+                                    } flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`}
+                                >
+                                    <FaUtensils className="text-white" />
+
+                                    <span className="ml-3">Orders</span>
                                 </Link>
                             </li>
 

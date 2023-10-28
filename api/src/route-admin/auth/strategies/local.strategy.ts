@@ -2,7 +2,6 @@ import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-local";
 import { AuthService } from "../auth.service";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { Messages } from "src/helpers/message.helper";
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -16,7 +15,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         const admin = await this.authService.validateAdmin(email, pass);
 
         if (!admin) {
-            throw new UnauthorizedException(Messages.PASSWORD_OR_EMAIL_INVALID);
+            throw new UnauthorizedException("Email and/or password are invalid");
         }
 
         return admin;

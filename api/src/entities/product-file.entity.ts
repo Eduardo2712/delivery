@@ -31,7 +31,7 @@ export class ProductFileEntity {
     @JoinColumn({ name: "prl_id_file" })
     file: FileEntity;
 
-    @ManyToOne(() => ProductEntity, (product) => product.itens)
+    @ManyToOne(() => ProductEntity, (product) => product.items)
     @JoinColumn({ name: "prl_id_product" })
     product: ProductEntity;
 }

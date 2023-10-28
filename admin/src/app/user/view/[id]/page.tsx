@@ -13,6 +13,7 @@ import { UserGetType } from "@/types/request/user.type";
 import CustomTable from "@/components/custom-table";
 import { Column } from "primereact/column";
 import { getDatatable } from "@/requests/order.request";
+import { formatBRL } from "@/utils/other";
 
 type Params = {
     params: { id: number };
@@ -112,6 +113,8 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                 <CustomBox text="Orders">
                     <CustomTable request={(e) => getDatatable({ ...e, id_user: data?.id })} button_view url={"/order"}>
                         <Column field="id" header="Id" />
+                        <Column field="items_count" header="Quantity of items" />
+                        <Column field="order_value" header="Value" body={(e) => formatBRL(e.order_value)} />
                         <Column field="created_at" header="Date" body={(e) => format(parseISO(String(e.created_at)), "dd/MM/yyyy HH:mm:ss")} />
                     </CustomTable>
                 </CustomBox>

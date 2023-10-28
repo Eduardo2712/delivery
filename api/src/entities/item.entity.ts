@@ -3,7 +3,7 @@ import { ProductEntity } from "./product.entity";
 import { OrderEntity } from "./order.entity";
 
 @Entity({
-    name: "itens"
+    name: "items"
 })
 export class ItemEntity {
     @PrimaryGeneratedColumn()
@@ -42,11 +42,11 @@ export class ItemEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToOne(() => ProductEntity, (product) => product.itens)
+    @ManyToOne(() => ProductEntity, (product) => product.items)
     @JoinColumn({ name: "ite_id_product" })
     product: ProductEntity;
 
-    @ManyToOne(() => OrderEntity, (order) => order.itens)
+    @ManyToOne(() => OrderEntity, (order) => order.items)
     @JoinColumn({ name: "ite_id_order" })
     order: OrderEntity;
 }

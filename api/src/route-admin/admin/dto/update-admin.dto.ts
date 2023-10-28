@@ -1,5 +1,4 @@
 import { IsNotEmpty, IsString, MaxLength, IsBooleanString, IsOptional, IsEmail, Length, ValidateIf, Validate } from "class-validator";
-import { Messages } from "src/helpers/message.helper";
 
 export class UpdateAdminDto {
     @IsNotEmpty()
@@ -36,7 +35,7 @@ export class UpdateAdminDto {
         function (this: UpdateAdminDto) {
             return this.password === this.confirm_password;
         },
-        { message: Messages.CONFIRM_PASSWORD }
+        { message: "Passwords must match" }
     )
     confirm_password?: string;
 }

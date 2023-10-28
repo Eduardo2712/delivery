@@ -6,7 +6,7 @@ import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { useState, ReactNode, useEffect, ReactElement } from "react";
 import toast from "react-hot-toast";
-import { FaEye, FaPen, FaTrash } from "react-icons/fa6";
+import { FaArrowsRotate, FaEye, FaPen, FaTrash } from "react-icons/fa6";
 
 type Props = {
     request: (props: Params) => Promise<AxiosResponse>;
@@ -141,13 +141,17 @@ const CustomTable = ({
             <div className="flex flex-col gap-1 lg:flex-row">
                 {buttons_top}
 
-                <div className="mb-4 flex items-center justify-end flex-1">
+                <div className="mb-4 flex items-center justify-end flex-1 gap-2">
                     <input
-                        className="block w-80 rounded-md border-0 py-1.5 px-2 text-gray-100 shadow-sm ring-1 ring-inset ring-gray-800 placeholder:text-gray-400 focus:ring-blue-800 sm:text-sm sm:leading-6 bg-gray-700"
+                        className="block w-96 rounded-md border-0 py-1.5 px-2 text-gray-100 shadow-sm ring-1 ring-inset ring-gray-800 placeholder:text-gray-400 focus:ring-blue-800 sm:text-sm sm:leading-6 bg-gray-700"
                         placeholder="Search..."
                         value={params.search}
                         onChange={(e) => setParams({ ...params, search: e.target.value })}
                     />
+
+                    <button type="button" className="bg-blue-700 hover:bg-blue-800 rounded px-2 py-2" onClick={fetchData}>
+                        <FaArrowsRotate className={loading ? "animate-spin" : ""} onClick={fetchData} />
+                    </button>
                 </div>
             </div>
 
@@ -164,6 +168,7 @@ const CustomTable = ({
                 loading={loading}
                 onPage={(e) => setParams({ ...params, rows_per_page: e.rows, page: (e.page ?? 0) + 1 })}
                 currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
             >
                 {children}
 

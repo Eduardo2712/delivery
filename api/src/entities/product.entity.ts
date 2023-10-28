@@ -56,7 +56,7 @@ export class ProductEntity {
 
     @OneToMany(() => ItemEntity, (item) => item.product)
     @JoinColumn({ name: "ite_id_product" })
-    itens: ItemEntity[];
+    items: ItemEntity[];
 
     @OneToMany(() => ProductHistoryEntity, (productHistory) => productHistory.product)
     @JoinColumn({ name: "prh_id_product" })

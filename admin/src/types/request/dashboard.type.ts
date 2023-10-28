@@ -4,5 +4,5 @@ export type DashboardReturnType = {
     product_count: number;
     order_count: number;
     value_amount: number;
-    itens_count: number;
+    items_count: number;
 };

@@ -48,20 +48,20 @@ export class DashboardService {
         });
 
         const orders = await this.orderRepository.find({
-            relations: ["itens"]
+            relations: ["items"]
         });
 
         let value_amount = 0;
 
         orders.forEach((order) => {
-            value_amount += order.ord_delivery_fee;
+            value_amount += Number(order.ord_delivery_fee);
 
-            order.itens.forEach((item) => {
-                value_amount += item.ite_price;
+            order.items.forEach((item) => {
+                value_amount += Number(item.ite_price);
             });
         });
 
-        const itens_count = await this.itemRepository.count({
+        const items_count = await this.itemRepository.count({
             where: {
                 ite_active: true
             }
@@ -73,7 +73,7 @@ export class DashboardService {
             product_count,
             order_count,
             value_amount,
-            itens_count
+            items_count
         };
     }
 }

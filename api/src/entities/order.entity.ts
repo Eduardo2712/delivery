@@ -102,5 +102,5 @@ export class OrderEntity {
 
     @OneToMany(() => ItemEntity, (item) => item.order)
     @JoinColumn({ name: "ite_id_order" })
-    itens: ItemEntity[];
+    items: ItemEntity[];
 }

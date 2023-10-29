@@ -1,6 +1,8 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ProductFileEntity } from "./product-file.entity";
 import { ServiceHelpers } from "src/helpers/service.helper";
+import { AdminEntity } from "./admin.entity";
+import { UserEntity } from "./user.entity";
 
 @Entity({
     name: "files"
@@ -39,9 +41,23 @@ export class FileEntity extends BaseEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToMany(() => ProductFileEntity, (productFile) => productFile.file)
+    @OneToMany(() => ProductFileEntity, (productFile) => productFile.file, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "prl_id_file" })
     files: ProductFileEntity[];
+
+    @OneToOne(() => AdminEntity, (admin) => admin.picture, {
+        onDelete: "CASCADE"
+    })
+    @JoinColumn({ name: "adm_id_picture" })
+    admin: AdminEntity;
+
+    @OneToOne(() => UserEntity, (user) => user.picture, {
+        onDelete: "CASCADE"
+    })
+    @JoinColumn({ name: "use_id_picture" })
+    user: UserEntity;
 
     get fileUrl(): Promise<string> {
         return this.getUrl();

@@ -50,15 +50,21 @@ export class ProductEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToMany(() => ProductFileEntity, (productFile) => productFile.product)
+    @OneToMany(() => ProductFileEntity, (productFile) => productFile.product, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "prl_id_product" })
     files: ProductFileEntity[];
 
-    @OneToMany(() => ItemEntity, (item) => item.product)
+    @OneToMany(() => ItemEntity, (item) => item.product, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "ite_id_product" })
     items: ItemEntity[];
 
-    @OneToMany(() => ProductHistoryEntity, (productHistory) => productHistory.product)
+    @OneToMany(() => ProductHistoryEntity, (productHistory) => productHistory.product, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "prh_id_product" })
     histories: ProductHistoryEntity[];
 }

@@ -4,7 +4,7 @@ import CustomBox from "@/components/custom-box";
 import CustomTable from "@/components/custom-table";
 import { getDatatable } from "@/requests/order.request";
 import { formatBRL } from "@/utils/other";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import { NextPage } from "next";
 import { Column } from "primereact/column";
 
@@ -20,7 +20,7 @@ const Page: NextPage = () => {
                         <Column field="user.use_name" header="User" />
                         <Column field="items_count" header="Quantity of items" />
                         <Column field="order_value" header="Value" body={(e) => formatBRL(e.order_value)} />
-                        <Column field="created_at" header="Created at" body={(e) => format(parseISO(String(e.created_at)), "dd/MM/yyyy HH:mm:ss")} />
+                        <Column field="created_at" header="Created at" body={(e) => format(new Date(e.created_at), "dd/MM/yyyy HH:mm:ss")} />
                     </CustomTable>
                 </div>
             </CustomBox>

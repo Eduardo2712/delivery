@@ -61,11 +61,13 @@ export class AdminEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToOne(() => FileEntity, { cascade: true, eager: true })
+    @OneToOne(() => FileEntity, (file) => file.admin)
     @JoinColumn({ name: "adm_id_picture" })
     picture: FileEntity;
 
-    @OneToMany(() => ProductHistoryEntity, (product_history) => product_history.admin)
+    @OneToMany(() => ProductHistoryEntity, (product_history) => product_history.admin, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "prh_id_admin" })
     product_histories: ProductHistoryEntity[];
 }

@@ -1,6 +1,7 @@
 import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn, JoinColumn, Column, OneToMany } from "typeorm";
 import { UserEntity } from "./user.entity";
 import { ItemEntity } from "./item.entity";
+import { OrderStatusEntity } from "./order-status.entity";
 
 @Entity({
     name: "orders"
@@ -96,11 +97,21 @@ export class OrderEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToOne(() => UserEntity, (user) => user.orders)
+    @ManyToOne(() => UserEntity, (user) => user.orders, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "ord_id_user" })
     user: UserEntity;
 
-    @OneToMany(() => ItemEntity, (item) => item.order)
+    @OneToMany(() => ItemEntity, (item) => item.order, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "ite_id_order" })
     items: ItemEntity[];
+
+    @OneToMany(() => OrderStatusEntity, (order_status) => order_status.order_status, {
+        onDelete: "CASCADE"
+    })
+    @JoinColumn({ name: "ors_id_order" })
+    order_status: OrderStatusEntity[];
 }

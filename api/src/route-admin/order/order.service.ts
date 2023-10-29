@@ -1,7 +1,8 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
+import { OrderStatusEntity } from "src/entities/order-status.entity";
 import { OrderEntity } from "src/entities/order.entity";
-import { Repository } from "typeorm";
+import { Repository, SelectQueryBuilder } from "typeorm";
 
 @Injectable()
 export class OrderService {
@@ -19,9 +20,19 @@ export class OrderService {
         const query = this.orderRepository
             .createQueryBuilder("order")
             .where("order.ord_active = :active", { active: true })
-            .leftJoinAndSelect("order.user", "user")
-            .leftJoinAndSelect("order.items", "items")
-            .groupBy("order.id")
+            .leftJoin("order.user", "user")
+            .leftJoin("order.items", "items", "items.ite_active = :active", { active: true })
+            // .leftJoin("order.order_status", "order_status")
+            // .addSelect(
+            //     (qb: SelectQueryBuilder<any>) =>
+            //         qb
+            //             .select("order_status.id")
+            //             .from("order_status", "order_status")
+            //             .where("order_status.ors_active = :active", { active: true })
+            //             .orderBy("order_status.created_at", "DESC")
+            //             .limit(1),
+            //     "order_status"
+            // )
             .select(["order", "user.id", "user.use_name", "items"]);
 
         if (search && search.trim() !== "") {

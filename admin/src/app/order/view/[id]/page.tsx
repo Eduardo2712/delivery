@@ -81,7 +81,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
 
                         <div>
                             <StyleInput
-                                value={data?.use_date_birth ? format(parseISO(String(data.use_date_birth)), "dd/MM/yyyy") : ""}
+                                value={data?.use_date_birth ? format(new Date(data.use_date_birth), "dd/MM/yyyy") : ""}
                                 disabled
                                 title={"Birthday"}
                             />
@@ -93,7 +93,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
 
                         <div>
                             <StyleInput
-                                value={data?.created_at ? format(parseISO(String(data.created_at)), "dd/MM/yyyy HH:mm:ss") : ""}
+                                value={data?.created_at ? format(new Date(data.created_at), "dd/MM/yyyy HH:mm:ss") : ""}
                                 disabled
                                 title={"Created at"}
                             />
@@ -101,7 +101,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
 
                         <div>
                             <StyleInput
-                                value={data?.updated_at ? format(parseISO(String(data.updated_at)), "dd/MM/yyyy HH:mm:ss") : ""}
+                                value={data?.updated_at ? format(new Date(data.updated_at), "dd/MM/yyyy HH:mm:ss") : ""}
                                 disabled
                                 title={"Updated at"}
                             />
@@ -112,7 +112,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                 <CustomBox text="Orders">
                     <CustomTable request={(e) => getDatatable({ ...e, id_user: data?.id })} button_view url={"/order"}>
                         <Column field="id" header="Id" />
-                        <Column field="created_at" header="Date" body={(e) => format(parseISO(String(e.created_at)), "dd/MM/yyyy HH:mm:ss")} />
+                        <Column field="created_at" header="Date" body={(e) => format(new Date(e.created_at), "dd/MM/yyyy HH:mm:ss")} />
                     </CustomTable>
                 </CustomBox>
             </LoadingSpinner>

@@ -27,11 +27,15 @@ export class ProductFileEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToOne(() => FileEntity, (file) => file.files)
+    @ManyToOne(() => FileEntity, (file) => file.files, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "prl_id_file" })
     file: FileEntity;
 
-    @ManyToOne(() => ProductEntity, (product) => product.items)
+    @ManyToOne(() => ProductEntity, (product) => product.items, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "prl_id_product" })
     product: ProductEntity;
 }

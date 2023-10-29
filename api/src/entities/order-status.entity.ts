@@ -1,11 +1,11 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { ProductEntity } from "./product.entity";
 import { OrderEntity } from "./order.entity";
+import { StatusEntity } from "./status.entity";
 
 @Entity({
-    name: "items"
+    name: "order_status"
 })
-export class ItemEntity {
+export class OrderStatusEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -13,28 +13,19 @@ export class ItemEntity {
         nullable: false,
         type: "int"
     })
-    ite_id_product: number;
+    ors_id_status: number;
 
     @Column({
         nullable: false,
         type: "int"
     })
-    ite_id_order: number;
+    ors_id_order: number;
 
     @Column({
         nullable: false,
-        type: "decimal",
-        precision: 10,
-        scale: 2
-    })
-    ite_price: number;
-
-    @Column({
-        nullable: false,
-        default: true,
         type: "boolean"
     })
-    ite_active: boolean;
+    ors_active: boolean;
 
     @CreateDateColumn()
     created_at: Date;
@@ -42,15 +33,15 @@ export class ItemEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToOne(() => ProductEntity, (product) => product.items, {
+    @ManyToOne(() => StatusEntity, (status) => status.status, {
         onDelete: "CASCADE"
     })
-    @JoinColumn({ name: "ite_id_product" })
-    product: ProductEntity;
+    @JoinColumn({ name: "ors_id_status" })
+    status: StatusEntity;
 
-    @ManyToOne(() => OrderEntity, (order) => order.items, {
+    @ManyToOne(() => OrderEntity, (order) => order.order_status, {
         onDelete: "CASCADE"
     })
-    @JoinColumn({ name: "ite_id_order" })
-    order: OrderEntity;
+    @JoinColumn({ name: "ors_id_order" })
+    order_status: OrderEntity;
 }

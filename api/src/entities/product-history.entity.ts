@@ -42,11 +42,15 @@ export class ProductHistoryEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToOne(() => ProductEntity, (product) => product.histories)
+    @ManyToOne(() => ProductEntity, (product) => product.histories, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "prh_id_product" })
     product: ProductEntity;
 
-    @ManyToOne(() => AdminEntity, (admin) => admin.product_histories)
+    @ManyToOne(() => AdminEntity, (admin) => admin.product_histories, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "prh_id_admin" })
     admin: AdminEntity;
 }

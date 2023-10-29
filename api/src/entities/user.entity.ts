@@ -64,7 +64,9 @@ export class UserEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToOne(() => FileEntity, { cascade: true, eager: true })
+    @OneToOne(() => FileEntity, (file) => file.user, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "use_id_picture" })
     picture: FileEntity;
 

@@ -1,8 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { OrderStatusEntity } from "src/entities/order-status.entity";
 import { OrderEntity } from "src/entities/order.entity";
-import { Repository, SelectQueryBuilder } from "typeorm";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class OrderService {
@@ -16,24 +15,15 @@ export class OrderService {
         rows_per_page: number,
         page: number,
         id_user: number
-    ): Promise<Array<OrderEntity & { items_count: number; order_value: number }>> {
+    ): Promise<Array<OrderEntity & { items_count: number; order_value: number; status: string; status_color: string }>> {
         const query = this.orderRepository
             .createQueryBuilder("order")
             .where("order.ord_active = :active", { active: true })
             .leftJoin("order.user", "user")
             .leftJoin("order.items", "items", "items.ite_active = :active", { active: true })
-            // .leftJoin("order.order_status", "order_status")
-            // .addSelect(
-            //     (qb: SelectQueryBuilder<any>) =>
-            //         qb
-            //             .select("order_status.id")
-            //             .from("order_status", "order_status")
-            //             .where("order_status.ors_active = :active", { active: true })
-            //             .orderBy("order_status.created_at", "DESC")
-            //             .limit(1),
-            //     "order_status"
-            // )
-            .select(["order", "user.id", "user.use_name", "items"]);
+            .leftJoin("order.order_status", "order_status", "order_status.ors_active = :active", { active: true })
+            .leftJoin("order_status.status", "status")
+            .select(["order", "user.id", "user.use_name", "items", "order_status", "status"]);
 
         if (search && search.trim() !== "") {
             query.andWhere("user.use_name LIKE :name", { name: `%${search}%` });
@@ -45,6 +35,7 @@ export class OrderService {
 
         query
             .orderBy("order.id", "DESC")
+            .orderBy("order_status.id", "DESC")
             .take(rows_per_page)
             .skip(rows_per_page * (page - 1));
 
@@ -54,7 +45,10 @@ export class OrderService {
             ...order,
             items_count: order.items.length,
             items: undefined,
-            order_value: order.items.reduce((acc, item) => acc + Number(item.ite_price), 0)
+            order_status: undefined,
+            order_value: order.items.reduce((acc, item) => acc + Number(item.ite_price), 0),
+            status: order.order_status?.[0]?.status?.sta_name || "N/A",
+            status_color: order.order_status?.[0]?.status?.sta_color || null
         }));
 
         return obj;

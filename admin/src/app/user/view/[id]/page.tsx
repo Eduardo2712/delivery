@@ -115,6 +115,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                         <Column field="id" header="Id" />
                         <Column field="items_count" header="Quantity of items" />
                         <Column field="order_value" header="Value" body={(e) => formatBRL(e.order_value)} />
+                        <Column field="status" header="Status" body={(e) => <p style={{ color: e.status_color }}>{e.status}</p>} />
                         <Column field="created_at" header="Date" body={(e) => format(new Date(e.created_at), "dd/MM/yyyy HH:mm:ss")} />
                     </CustomTable>
                 </CustomBox>

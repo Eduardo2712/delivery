@@ -23,18 +23,18 @@ export class ItemEntity {
 
     @Column({
         nullable: false,
+        type: "int",
+        default: 1
+    })
+    ite_quantity: number;
+
+    @Column({
+        nullable: false,
         type: "decimal",
         precision: 10,
         scale: 2
     })
     ite_price: number;
-
-    @Column({
-        nullable: false,
-        default: true,
-        type: "boolean"
-    })
-    ite_active: boolean;
 
     @CreateDateColumn()
     created_at: Date;

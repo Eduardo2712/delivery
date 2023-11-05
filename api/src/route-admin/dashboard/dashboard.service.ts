@@ -57,14 +57,16 @@ export class DashboardService {
             value_amount += Number(order.ord_delivery_fee);
 
             order.items.forEach((item) => {
-                value_amount += Number(item.ite_price);
+                value_amount += Number(item.ite_price) * Number(item.ite_quantity);
             });
         });
 
-        const items_count = await this.itemRepository.count({
-            where: {
-                ite_active: true
-            }
+        const items = await this.itemRepository.find();
+
+        let items_count = 0;
+
+        items.forEach((item) => {
+            items_count += Number(item.ite_quantity);
         });
 
         return {

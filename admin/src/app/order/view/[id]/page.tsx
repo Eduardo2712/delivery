@@ -7,12 +7,17 @@ import CustomBox from "@/components/custom-box";
 import StyleInput from "@/components/style-input";
 import axios, { HttpStatusCode } from "axios";
 import toast from "react-hot-toast";
-import { get } from "@/requests/user.request";
-import { format, parseISO } from "date-fns";
-import { UserGetType } from "@/types/request/user.type";
+import { get } from "@/requests/order.request";
+import { format } from "date-fns";
 import CustomTable from "@/components/custom-table";
 import { Column } from "primereact/column";
-import { getDatatable } from "@/requests/order.request";
+import { OrderGetType } from "@/types/request/order.type";
+import Link from "next/link";
+import { router_base } from "../../utils";
+import { formatBRL } from "@/utils/other";
+import { DataTable } from "primereact/datatable";
+import { FaEye } from "react-icons/fa6";
+import { ItemType } from "@/types/entity/entity.type";
 
 type Params = {
     params: { id: number };
@@ -20,7 +25,7 @@ type Params = {
 
 const Page: NextPage<Params> = ({ params: { id } }) => {
     const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<UserGetType | null>(null);
+    const [data, setData] = useState<OrderGetType | null>(null);
 
     useEffect(() => {
         (async () => {
@@ -46,49 +51,36 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
         })();
     }, []);
 
+    const orderValue = () => {
+        return formatBRL(data?.items.reduce((total, item) => total + item.ite_price * item.ite_quantity, 0) ?? 0);
+    };
+
     return (
         <>
-            <p className="text-2xl font-bold">User - View</p>
+            <p className="text-2xl font-bold">Order - View</p>
 
             <LoadingSpinner loading={loading}>
-                {data?.picture && (
-                    <CustomBox text="Picture">
-                        <div className="flex items-center justify-center flex-col">
-                            <a className="flex justify-center" href={data.picture.fil_url} target="_blank">
-                                <img src={data.picture.fil_url} alt={"Picture admin"} className="max-w-md h-full object-cover w-full" />
-                            </a>
-                        </div>
-                    </CustomBox>
-                )}
-
                 <CustomBox text="Basic information">
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                         <div>
-                            <StyleInput value={data?.id} disabled title={"Id"} />
+                            <StyleInput value={data?.id} disabled title={"Number order"} />
                         </div>
 
                         <div>
-                            <StyleInput value={data?.use_name} disabled title={"Name"} />
-                        </div>
-
-                        <div>
-                            <StyleInput value={data?.use_cpf} disabled title={"CPF"} />
-                        </div>
-
-                        <div>
-                            <StyleInput value={data?.email} disabled title={"Email"} />
+                            <StyleInput link={`/user/view/${data?.user.id}`} value={data?.user.use_name} readOnly title={"Client"} />
                         </div>
 
                         <div>
                             <StyleInput
-                                value={data?.use_date_birth ? format(new Date(data.use_date_birth), "dd/MM/yyyy") : ""}
+                                style_input={{ color: data?.order_status[data.order_status.length - 1]?.status?.sta_color ?? "" }}
+                                value={data?.order_status[data.order_status.length - 1]?.status?.sta_name ?? ""}
                                 disabled
-                                title={"Birthday"}
+                                title={"Current status"}
                             />
                         </div>
 
                         <div>
-                            <StyleInput value={data?.use_phone} disabled title={"Phone"} />
+                            <StyleInput value={orderValue()} disabled title={"Value order"} />
                         </div>
 
                         <div>
@@ -109,11 +101,78 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                     </div>
                 </CustomBox>
 
-                <CustomBox text="Orders">
-                    <CustomTable request={(e) => getDatatable({ ...e, id_user: data?.id })} button_view url={"/order"}>
-                        <Column field="id" header="Id" />
-                        <Column field="created_at" header="Date" body={(e) => format(new Date(e.created_at), "dd/MM/yyyy HH:mm:ss")} />
-                    </CustomTable>
+                <CustomBox text="Address order">
+                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                        <div>
+                            <StyleInput value={data?.ord_cep} disabled title={"CEP"} />
+                        </div>
+
+                        <div>
+                            <StyleInput value={data?.ord_street} disabled title={"Street"} />
+                        </div>
+
+                        <div>
+                            <StyleInput value={data?.ord_number} disabled title={"Number"} />
+                        </div>
+
+                        <div>
+                            <StyleInput value={data?.ord_complement} disabled title={"Complement"} />
+                        </div>
+
+                        <div>
+                            <StyleInput value={data?.ord_neighborhood} disabled title={"Neighborhood"} />
+                        </div>
+
+                        <div>
+                            <StyleInput value={data?.ord_city} disabled title={"City"} />
+                        </div>
+
+                        <div>
+                            <StyleInput value={data?.ord_state} disabled title={"State"} />
+                        </div>
+                    </div>
+                </CustomBox>
+
+                <CustomBox text="Items">
+                    <DataTable
+                        value={data?.items ?? []}
+                        className="table-auto w-full"
+                        showGridlines
+                        stripedRows
+                        scrollable
+                        emptyMessage={"No data"}
+                        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+                        paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+                    >
+                        <Column field="product.id" header="ID" />
+                        <Column field="product.pro_name" header="Name" />
+                        <Column field="ite_price" header="Value" body={(e: ItemType) => formatBRL(e.ite_price)} />
+                        <Column field="ite_quantity" header="Quantity" />
+                        <Column
+                            className="w-12 min-w-12"
+                            field="options"
+                            header="Options"
+                            body={(e: ItemType) => (
+                                <Link
+                                    href={`/product/edit/${e?.product.id}`}
+                                    className="bg-blue-600 hover:bg-blue-700 rounded px-2 py-2 text-gray-100 h-9 w-9 flex text-center items-center justify-center"
+                                >
+                                    <FaEye />
+                                </Link>
+                            )}
+                        />
+                    </DataTable>
+                </CustomBox>
+
+                <CustomBox>
+                    <div className="gap-2 flex flex-col justify-between md:flex-row">
+                        <Link
+                            href={router_base}
+                            className="flex h-10 items-center justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:w-36"
+                        >
+                            Return
+                        </Link>
+                    </div>
                 </CustomBox>
             </LoadingSpinner>
         </>

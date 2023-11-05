@@ -20,7 +20,7 @@ export class OrderService {
             .createQueryBuilder("order")
             .where("order.ord_active = :active", { active: true })
             .leftJoin("order.user", "user")
-            .leftJoin("order.items", "items", "items.ite_active = :active", { active: true })
+            .leftJoin("order.items", "items")
             .leftJoin("order.order_status", "order_status", "order_status.ors_active = :active", { active: true })
             .leftJoin("order_status.status", "status")
             .select(["order", "user.id", "user.use_name", "items", "order_status", "status"]);
@@ -55,12 +55,18 @@ export class OrderService {
     }
 
     async findOne(id: number): Promise<OrderEntity> {
-        const obj = await this.orderRepository.findOneOrFail({
-            where: { id, ord_active: true },
-            relations: {
-                user: true
-            }
-        });
+        const obj = await this.orderRepository
+            .createQueryBuilder("order")
+            .where("order.id = :id AND order.ord_active = :active", { id, active: true })
+            .leftJoin("order.items", "items")
+            .leftJoin("items.product", "product")
+            .leftJoin("order.order_status", "order_status", "order_status.ors_active = :active", { active: true })
+            .leftJoin("order_status.status", "status")
+            .leftJoin("order.user", "user")
+            .select(["order", "items", "product", "order_status", "status", "user"])
+            .getOneOrFail();
+
+        obj.user.password = undefined;
 
         return obj;
     }

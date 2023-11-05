@@ -1,3 +1,5 @@
+import { AdminType } from "../entity/entity.type";
+
 export type AdminDatatableType = {
     search: string;
     page: number;
@@ -24,3 +26,5 @@ export type AdminUpdateType = {
     picture?: File;
     new_picture: boolean;
 };
+
+export type AdminGetType = AdminType;

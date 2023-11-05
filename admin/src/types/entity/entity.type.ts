@@ -28,12 +28,14 @@ export type UserType = {
     use_name: string;
     use_date_birth: Date;
     use_phone: string;
-    password: string;
+    password?: string;
     use_cpf: string;
     use_active: boolean;
     use_id_picture?: number | null;
     created_at: Date;
     updated_at: Date;
+    picture: FileType;
+    orders: OrderType[];
 };
 
 export type OrderType = {
@@ -53,6 +55,9 @@ export type OrderType = {
     ord_active: boolean;
     created_at: Date;
     updated_at: Date;
+    user: UserType;
+    order_status: OrderStatusType[];
+    items: ItemType[];
 };
 
 export type ProductType = {
@@ -66,6 +71,17 @@ export type ProductType = {
     updated_at: Date;
     files?: ProductFileType[] | null;
     histories?: ProductHistoryType[] | null;
+};
+
+export type ItemType = {
+    id: number;
+    ite_id_product: number;
+    ite_id_order: number;
+    ite_price: number;
+    ite_quantity: number;
+    created_at: Date;
+    updated_at: Date;
+    product: ProductType;
 };
 
 export type ProductFileType = {
@@ -82,6 +98,24 @@ export type ProductHistoryType = {
     prh_id_product: number;
     prh_price: number;
     prh_date: Date;
+    created_at: Date;
+    updated_at: Date;
+};
+
+export type OrderStatusType = {
+    id: number;
+    ors_id_status: number;
+    ors_id_order: number;
+    ors_id_active: boolean;
+    created_at: Date;
+    updated_at: Date;
+    status: StatusType;
+};
+
+export type StatusType = {
+    id: number;
+    sta_name: string;
+    sta_color: string;
     created_at: Date;
     updated_at: Date;
 };

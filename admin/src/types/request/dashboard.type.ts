@@ -1,4 +1,4 @@
-export type DashboardReturnType = {
+export type DashboardGetType = {
     admin_count: number;
     user_count: number;
     product_count: number;

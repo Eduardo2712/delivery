@@ -2,7 +2,7 @@
 
 import CustomBox from "@/components/custom-box";
 import { get } from "@/requests/dashboard.request";
-import { DashboardReturnType } from "@/types/request/dashboard.type";
+import { DashboardGetType } from "@/types/request/dashboard.type";
 import { formatBRL } from "@/utils/other";
 import axios, { HttpStatusCode } from "axios";
 import { NextPage } from "next";
@@ -11,7 +11,7 @@ import toast from "react-hot-toast";
 
 const Page: NextPage = () => {
     const [loading, setLoading] = useState<boolean>(false);
-    const [data, setData] = useState<DashboardReturnType>({
+    const [data, setData] = useState<DashboardGetType>({
         admin_count: 0,
         user_count: 0,
         items_count: 0,

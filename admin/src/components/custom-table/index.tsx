@@ -160,7 +160,7 @@ const CustomTable = ({
                 className="table-auto w-full"
                 showGridlines
                 stripedRows
-                scrollable={true}
+                scrollable
                 emptyMessage={"No data"}
                 paginator
                 rows={params.rows_per_page}

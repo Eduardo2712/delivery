@@ -11,7 +11,7 @@ export class UserService {
     ) {}
 
     async findAll(search: string, rows_per_page: number, page: number): Promise<UserEntity[]> {
-        return await this.userRepository.find({
+        const users = await this.userRepository.find({
             where: {
                 use_active: true,
                 use_name: ILike(`%${search}%`)
@@ -22,6 +22,12 @@ export class UserService {
             take: rows_per_page,
             skip: rows_per_page * (page - 1)
         });
+
+        users.forEach((user) => {
+            user.password = undefined;
+        });
+
+        return users;
     }
 
     async remove(id: number): Promise<string | null> {
@@ -53,6 +59,8 @@ export class UserService {
         if (obj.picture) {
             obj.picture.fil_url = await obj.picture.fileUrl;
         }
+
+        obj.password = undefined;
 
         return obj;
     }

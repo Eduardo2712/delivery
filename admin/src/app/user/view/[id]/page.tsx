@@ -8,12 +8,15 @@ import StyleInput from "@/components/style-input";
 import axios, { HttpStatusCode } from "axios";
 import toast from "react-hot-toast";
 import { get } from "@/requests/user.request";
-import { format, parseISO } from "date-fns";
+import { format } from "date-fns";
 import { UserGetType } from "@/types/request/user.type";
 import CustomTable from "@/components/custom-table";
 import { Column } from "primereact/column";
 import { getDatatable } from "@/requests/order.request";
 import { formatBRL } from "@/utils/other";
+import Link from "next/link";
+import { router_base } from "../../utils";
+import { FaSpinner } from "react-icons/fa6";
 
 type Params = {
     params: { id: number };
@@ -118,6 +121,17 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                         <Column field="status" header="Status" body={(e) => <p style={{ color: e.status_color }}>{e.status}</p>} />
                         <Column field="created_at" header="Date" body={(e) => format(new Date(e.created_at), "dd/MM/yyyy HH:mm:ss")} />
                     </CustomTable>
+                </CustomBox>
+
+                <CustomBox>
+                    <div className="gap-2 flex flex-col justify-between md:flex-row">
+                        <Link
+                            href={router_base}
+                            className="flex h-10 items-center justify-center rounded-md bg-orange-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:w-36"
+                        >
+                            Return
+                        </Link>
+                    </div>
                 </CustomBox>
             </LoadingSpinner>
         </>

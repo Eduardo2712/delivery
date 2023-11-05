@@ -1,4 +1,4 @@
-import { FileType, OrderType, UserType } from "../entity/entity.type";
+import { UserType } from "../entity/entity.type";
 
 export type UserDatatableType = {
     search: string;
@@ -26,4 +26,4 @@ export type UserUpdateType = {
     use_cpf: string;
 };
 
-export type UserGetType = UserType & { picture: FileType } & { orders: OrderType[] };
+export type UserGetType = UserType;

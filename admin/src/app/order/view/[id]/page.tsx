@@ -9,7 +9,6 @@ import axios, { HttpStatusCode } from "axios";
 import toast from "react-hot-toast";
 import { get } from "@/requests/order.request";
 import { format } from "date-fns";
-import CustomTable from "@/components/custom-table";
 import { Column } from "primereact/column";
 import { OrderGetType } from "@/types/request/order.type";
 import Link from "next/link";
@@ -53,6 +52,17 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
 
     const orderValue = () => {
         return formatBRL(data?.items.reduce((total, item) => total + item.ite_price * item.ite_quantity, 0) ?? 0);
+    };
+
+    const buttons = (item: ItemType) => {
+        return (
+            <Link
+                href={`/product/edit/${item?.product.id}`}
+                className="bg-blue-600 hover:bg-blue-700 rounded px-2 py-2 text-gray-100 h-9 w-9 flex text-center items-center justify-center"
+            >
+                <FaEye />
+            </Link>
+        );
     };
 
     return (
@@ -133,6 +143,14 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                     </div>
                 </CustomBox>
 
+                <CustomBox text="Order details">
+                    <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                        <div>
+                            <StyleInput value={data?.ord_cep} disabled title={"CEP"} />
+                        </div>
+                    </div>
+                </CustomBox>
+
                 <CustomBox text="Items">
                     <DataTable
                         value={data?.items ?? []}
@@ -148,19 +166,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                         <Column field="product.pro_name" header="Name" />
                         <Column field="ite_price" header="Value" body={(e: ItemType) => formatBRL(e.ite_price)} />
                         <Column field="ite_quantity" header="Quantity" />
-                        <Column
-                            className="w-12 min-w-12"
-                            field="options"
-                            header="Options"
-                            body={(e: ItemType) => (
-                                <Link
-                                    href={`/product/edit/${e?.product.id}`}
-                                    className="bg-blue-600 hover:bg-blue-700 rounded px-2 py-2 text-gray-100 h-9 w-9 flex text-center items-center justify-center"
-                                >
-                                    <FaEye />
-                                </Link>
-                            )}
-                        />
+                        <Column className="w-12 min-w-12" field="options" header="Options" body={(e: ItemType) => buttons(e)} />
                     </DataTable>
                 </CustomBox>
 

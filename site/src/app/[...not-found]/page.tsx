@@ -1,10 +1,9 @@
-"use client";
-
+import { NextPage } from "next";
 import { PiSmileyXEyesLight } from "react-icons/pi";
 
-const NotFound = () => {
+const Page: NextPage = () => {
     return (
-        <div className="container mx-auto flex flex-col items-center justify-center h-screen">
+        <div className="mx-auto flex flex-col items-center justify-center">
             <PiSmileyXEyesLight size={150} className="text-gray-50" />
 
             <p className="text-5xl font-semibold text-gray-50">404</p>
@@ -14,4 +13,4 @@ const NotFound = () => {
     );
 };
 
-export default NotFound;
+export default Page;

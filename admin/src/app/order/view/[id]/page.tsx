@@ -146,7 +146,21 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                 <CustomBox text="Order details">
                     <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                         <div>
-                            <StyleInput value={data?.ord_cep} disabled title={"CEP"} />
+                            <StyleInput value={data?.ord_confirmed_payment ? "Yes" : "No"} disabled title={"Confirmed payment"} />
+                        </div>
+
+                        <div>
+                            <StyleInput value={data?.ord_is_delivery ? "Yes" : "No"} disabled title={"Delivery?"} />
+                        </div>
+
+                        {data?.ord_is_delivery && (
+                            <div>
+                                <StyleInput value={formatBRL(data?.ord_delivery_fee ?? 0)} disabled title={"Delivery?"} />
+                            </div>
+                        )}
+
+                        <div>
+                            <StyleInput value={data?.ord_delivered ? "Yes" : "No"} disabled title={"Delivered?"} />
                         </div>
                     </div>
                 </CustomBox>

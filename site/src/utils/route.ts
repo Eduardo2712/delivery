@@ -1,5 +1,6 @@
 export const ROUTES = {
     public: {
+        index: "/",
         login: "/auth/login"
     }
 };

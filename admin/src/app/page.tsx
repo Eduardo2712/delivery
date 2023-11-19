@@ -51,19 +51,19 @@ const Page: NextPage = () => {
             <CustomBox loading={loading}>
                 <div className="w-full flex flex-col lg:flex-row gap-5">
                     <div className="bg-gray-700 w-full px-8 rounded-md h-20 flex justify-center flex-col items-center border-b-2 border-b-blue-700">
-                        <p className="text-gray-400 font-extrabold text-lg mb-2">Admins</p>
+                        <p className="text-gray-400 font-extrabold text-lg mb-1">Admins</p>
 
                         <p className="text-white font-bold text-lg">{data.admin_count}</p>
                     </div>
 
                     <div className="bg-gray-700 w-full px-8 rounded-md h-20 flex justify-center flex-col items-center border-b-2 border-b-blue-700">
-                        <p className="text-gray-400 font-extrabold text-lg mb-2">Users</p>
+                        <p className="text-gray-400 font-extrabold text-lg mb-1">Users</p>
 
                         <p className="text-white font-bold text-lg">{data.user_count}</p>
                     </div>
 
                     <div className="bg-gray-700 w-full px-8 rounded-md h-20 flex justify-center flex-col items-center border-b-2 border-b-blue-700">
-                        <p className="text-gray-400 font-extrabold text-lg mb-2">Products</p>
+                        <p className="text-gray-400 font-extrabold text-lg mb-1">Products</p>
 
                         <p className="text-white font-bold text-lg">{data.product_count}</p>
                     </div>
@@ -71,19 +71,19 @@ const Page: NextPage = () => {
 
                 <div className="w-full flex flex-col lg:flex-row gap-5">
                     <div className="bg-gray-700 w-full px-8 rounded-md h-20 flex justify-center flex-col items-center border-b-2 border-b-blue-700">
-                        <p className="text-gray-400 font-extrabold text-lg mb-2">Orders</p>
+                        <p className="text-gray-400 font-extrabold text-lg mb-1">Orders</p>
 
                         <p className="text-white font-bold text-lg">{data.order_count}</p>
                     </div>
 
                     <div className="bg-gray-700 w-full px-8 rounded-md h-20 flex justify-center flex-col items-center border-b-2 border-b-blue-700">
-                        <p className="text-gray-400 font-extrabold text-lg mb-2">Value on orders</p>
+                        <p className="text-gray-400 font-extrabold text-lg mb-1">Value on orders</p>
 
                         <p className="text-white font-bold text-lg">{formatBRL(data.value_amount)}</p>
                     </div>
 
                     <div className="bg-gray-700 w-full px-8 rounded-md h-20 flex justify-center flex-col items-center border-b-2 border-b-blue-700">
-                        <p className="text-gray-400 font-extrabold text-lg mb-2">Items on orders</p>
+                        <p className="text-gray-400 font-extrabold text-lg mb-1">Items on orders</p>
 
                         <p className="text-white font-bold text-lg">{data.items_count}</p>
                     </div>

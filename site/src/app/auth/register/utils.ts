@@ -11,7 +11,7 @@ export type TypeFormRegister = {
     usa_cep: string;
     usa_street: string;
     usa_number: string;
-    usa_district: string;
+    usa_neighborhood: string;
     usa_complement: string;
     usa_city: string;
     usa_state: string;
@@ -36,7 +36,7 @@ export const schema = (step: number) => {
             usa_cep: Yup.string().required("Fill in this field!"),
             usa_street: Yup.string().required("Fill in this field!"),
             usa_number: Yup.string().required("Fill in this field!"),
-            usa_district: Yup.string().required("Fill in this field!"),
+            usa_neighborhood: Yup.string().required("Fill in this field!"),
             usa_complement: Yup.string(),
             usa_city: Yup.string().required("Fill in this field!"),
             usa_state: Yup.string().required("Fill in this field!")

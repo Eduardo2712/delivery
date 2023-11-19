@@ -43,7 +43,7 @@ const uploadFile = async (file: Express.Multer.File, repository: Repository<File
 };
 
 const urlFile = async (path: string): Promise<string> => {
-    const _10_YEARS = 365 * 24 * 60 * 60 * 1000;
+    const _1_YEAR = 60 * 60 * 24 * 365 * 1000;
 
     const bucket = createClient(process.env.BUCKET_URL, process.env.BUCKET_KEY, {
         auth: {
@@ -51,7 +51,7 @@ const urlFile = async (path: string): Promise<string> => {
         }
     });
 
-    const { data, error } = await bucket.storage.from(process.env.BUCKET_NAME).createSignedUrl(path, _10_YEARS);
+    const { data, error } = await bucket.storage.from(process.env.BUCKET_NAME).createSignedUrl(path, _1_YEAR);
 
     if (error) {
         throw new HttpException(error, HttpStatus.BAD_REQUEST);

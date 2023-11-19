@@ -82,7 +82,7 @@ export class OrderEntity {
         nullable: false,
         type: "boolean"
     })
-    ord_delivery: boolean;
+    ord_is_delivery: boolean;
 
     @Column({
         nullable: false,

@@ -27,7 +27,7 @@ const Page = () => {
         usa_cep: "",
         usa_street: "",
         usa_number: "",
-        usa_district: "",
+        usa_neighborhood: "",
         usa_complement: "",
         usa_city: "",
         usa_state: ""

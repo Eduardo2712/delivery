@@ -51,7 +51,8 @@ export type OrderType = {
     ord_state: string;
     ord_delivered: boolean;
     ord_confirmed_payment: boolean;
-    ord_delivery: boolean;
+    ord_is_delivery: boolean;
+    ord_delivery_fee: number;
     ord_active: boolean;
     created_at: Date;
     updated_at: Date;

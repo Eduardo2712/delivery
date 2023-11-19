@@ -27,9 +27,7 @@ const ProtectedRoute = ({ children }: Props) => {
             if (is_public_page) {
                 return router.push("/");
             }
-        }
-
-        if (!is_user_authenticated) {
+        } else {
             return router.push(ROUTES.public.login);
         }
     }, [router, is_user_authenticated, dispatch, is_public_page]);

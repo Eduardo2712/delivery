@@ -1,24 +1,18 @@
 export type AuthStoreType = {
-    user: AdminStoreType | null;
+    user: UserStoreType | null;
     token: string | null;
 };
 
-export type PictureStoreType = {
+export type UserStoreType = {
     id: number;
-    fil_url: string;
-    created_at: Date;
-    updated_at: Date;
-};
-
-export type AdminStoreType = {
-    id: number;
-    adm_id_picture: number;
-    adm_name: string;
     email: string;
-    adm_phone: string;
-    password: string;
-    adm_active: boolean;
+    use_name: string;
+    use_date_birth: Date;
+    use_phone: string;
+    password?: string | null;
+    use_cpf: string;
+    use_active: boolean;
+    use_id_picture?: number | null;
     created_at: Date;
     updated_at: Date;
-    picture: PictureStoreType;
 };

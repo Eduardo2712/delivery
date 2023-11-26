@@ -77,7 +77,9 @@ export class UserEntity {
     @JoinColumn({ name: "ord_id_user" })
     orders: OrderEntity[];
 
-    @ManyToOne(() => UserAddressEntity, (address) => address.user)
+    @ManyToOne(() => UserAddressEntity, (addresses) => addresses.user, {
+        onDelete: "CASCADE"
+    })
     @JoinColumn({ name: "usa_id_user" })
     addresses: UserAddressEntity[];
 }

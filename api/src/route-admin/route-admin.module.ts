@@ -4,7 +4,7 @@ import { AdminModule } from "./admin/admin.module";
 import { DashboardModule } from "./dashboard/dashboard.module";
 import { UserModule } from "./user/user.module";
 import { OrderModule } from "./order/order.module";
-import { ProductModule } from './product/product.module';
+import { ProductModule } from "./product/product.module";
 
 @Module({
     controllers: [],

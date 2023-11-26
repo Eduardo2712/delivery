@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { ProductEntity } from "./product.entity";
 
 @Entity({
     name: "category"
@@ -19,4 +20,14 @@ export class CategoryEntity {
         default: true
     })
     cat_active: boolean;
+
+    @CreateDateColumn()
+    created_at: Date;
+
+    @UpdateDateColumn()
+    updated_at: Date;
+
+    @OneToMany(() => ProductEntity, (product) => product.category, { onDelete: "CASCADE" })
+    @JoinColumn({ name: "pro_id_category" })
+    products: ProductEntity[];
 }

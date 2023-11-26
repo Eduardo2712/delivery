@@ -30,5 +30,5 @@ export class StatusEntity {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "ors_id_status" })
-    status: OrderStatusEntity;
+    status: OrderStatusEntity[];
 }

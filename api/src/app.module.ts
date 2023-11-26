@@ -7,6 +7,7 @@ import { JwtService } from "@nestjs/jwt";
 import { AuthGuard } from "./route-admin/auth/guard/auth.guard";
 import { RouteAdminModule } from "./route-admin/route-admin.module";
 import { ThrottlerModule, ThrottlerGuard } from "@nestjs/throttler";
+import { RouteSiteModule } from "./route-site/route-site.module";
 
 @Module({
     imports: [
@@ -26,7 +27,8 @@ import { ThrottlerModule, ThrottlerGuard } from "@nestjs/throttler";
         ThrottlerModule.forRoot({
             ttl: 60,
             limit: 20
-        })
+        }),
+        RouteSiteModule
     ],
     providers: [
         JwtService,

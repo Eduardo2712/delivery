@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn, ManyToOne } from "typeorm";
 import { ProductFileEntity } from "./product-file.entity";
 import { ItemEntity } from "./item.entity";
 import { ProductHistoryEntity } from "./product-history.entity";
+import { CategoryEntity } from "./category.entity";
 
 @Entity({
     name: "products"
@@ -9,6 +10,12 @@ import { ProductHistoryEntity } from "./product-history.entity";
 export class ProductEntity {
     @PrimaryGeneratedColumn()
     id: number;
+
+    @Column({
+        nullable: false,
+        type: "int"
+    })
+    pro_id_category: number;
 
     @Column({
         nullable: false,
@@ -50,7 +57,7 @@ export class ProductEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToMany(() => ProductFileEntity, (productFile) => productFile.product, {
+    @OneToMany(() => ProductFileEntity, (product_file) => product_file.product, {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "prl_id_product" })
@@ -62,9 +69,13 @@ export class ProductEntity {
     @JoinColumn({ name: "ite_id_product" })
     items: ItemEntity[];
 
-    @OneToMany(() => ProductHistoryEntity, (productHistory) => productHistory.product, {
+    @OneToMany(() => ProductHistoryEntity, (product_history) => product_history.product, {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "prh_id_product" })
     histories: ProductHistoryEntity[];
+
+    @ManyToOne(() => CategoryEntity, (category) => category.products, { onDelete: "CASCADE" })
+    @JoinColumn({ name: "pro_id_category" })
+    category: CategoryEntity;
 }

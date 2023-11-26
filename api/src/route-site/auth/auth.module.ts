@@ -1,13 +1,13 @@
 import { Module } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthController } from "./auth.controller";
-import { PassportModule } from "@nestjs/passport";
 import { ConfigModule } from "@nestjs/config";
+import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { UserEntity } from "src/entities/user.entity";
 import { LocalStrategy } from "./strategies/local.strategy";
 import { JwtStrategy } from "./strategies/jwt.strategy";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { AdminEntity } from "src/entities/admin.entity";
 
 @Module({
     imports: [
@@ -20,7 +20,7 @@ import { AdminEntity } from "src/entities/admin.entity";
                 expiresIn: "30d"
             }
         }),
-        TypeOrmModule.forFeature([AdminEntity])
+        TypeOrmModule.forFeature([UserEntity])
     ],
     controllers: [AuthController],
     providers: [AuthService, LocalStrategy, JwtStrategy]

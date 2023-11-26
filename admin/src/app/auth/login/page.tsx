@@ -8,7 +8,6 @@ import { auth } from "@/requests/auth.request";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import StyleInput from "@/components/style-input";
-import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { FaSpinner } from "react-icons/fa";
 import { AuthRequestType } from "@/types/request/auth.type";
@@ -105,14 +104,6 @@ const Page: NextPage = () => {
                                         {!submitting ? "Sign in" : <FaSpinner className="animate-spin" size={20} />}
                                     </button>
                                 </div>
-                            </div>
-
-                            <div className="text-center mt-3">
-                                <Link href="/auth/register">
-                                    <span className="text-sm font-semibold leading-6 text-blue-600 hover:text-blue-500">
-                                        {"I forgot the password"}
-                                    </span>
-                                </Link>
                             </div>
                         </div>
                     </div>

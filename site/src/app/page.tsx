@@ -5,6 +5,9 @@ import { useEffect, useState } from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import Header from "@/components/header";
 import CardCategory from "@/components/card-category";
+import { list } from "@/requests/category.request";
+import toast from "react-hot-toast";
+import axios, { HttpStatusCode } from "axios";
 
 const Page: NextPage = () => {
     const [filter, setFilter] = useState({
@@ -12,8 +15,31 @@ const Page: NextPage = () => {
         category: null
     });
     const [categories, setCategories] = useState([]);
+    const [loading, setLoading] = useState<boolean>(false);
 
-    useEffect(() => {}, []);
+    useEffect(() => {
+        (async () => {
+            setLoading(true);
+
+            try {
+                const response = await list();
+
+                if (response.status !== HttpStatusCode.Ok) {
+                    return toast.error(response.data.message);
+                }
+
+                setCategories(response.data);
+            } catch (error: any) {
+                if (axios.isAxiosError(error)) {
+                    return toast.error(error.response?.data?.message ?? "An error has occurred");
+                } else {
+                    return toast.error("An error has occurred");
+                }
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, []);
 
     return (
         <>
@@ -41,7 +67,9 @@ const Page: NextPage = () => {
             </div>
 
             <div className="container mx-auto mt-4">
-                <CardCategory />
+                {categories.map((category) => (
+                    <CardCategory key={category.id} />
+                ))}
             </div>
         </>
     );

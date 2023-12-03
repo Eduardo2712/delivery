@@ -19,6 +19,7 @@ import { CreateAdminDto } from "./dto/create-admin.dto";
 import { UpdateAdminDto } from "./dto/update-admin.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ConstHelper } from "src/helpers/const.helper";
+import { AdminEntity } from "src/entities/admin.entity";
 
 @Controller("admin/admin")
 export class AdminController {
@@ -39,7 +40,7 @@ export class AdminController {
             })
         )
         picture: Express.Multer.File
-    ) {
+    ): Promise<string | null> {
         return await this.adminService.update(id, updateAdminDto, picture);
     }
 
@@ -57,25 +58,25 @@ export class AdminController {
             })
         )
         picture: Express.Multer.File
-    ) {
+    ): Promise<string | null> {
         return await this.adminService.create(createAdminDto, picture);
     }
 
     @Get("/list-all")
     @HttpCode(HttpStatus.OK)
-    async findAll(@Query("search") search?: string, @Query("rows_per_page") rows_per_page = 10, @Query("page") page = 1) {
+    async findAll(@Query("search") search?: string, @Query("rows_per_page") rows_per_page = 10, @Query("page") page = 1): Promise<AdminEntity[]> {
         return await this.adminService.findAll(search, rows_per_page, page);
     }
 
     @Get(":id")
     @HttpCode(HttpStatus.OK)
-    async findOne(@Param("id") id: number) {
+    async findOne(@Param("id") id: number): Promise<AdminEntity> {
         return await this.adminService.findOne(id);
     }
 
     @Delete(":id")
     @HttpCode(HttpStatus.OK)
-    async remove(@Param("id") id: number) {
+    async remove(@Param("id") id: number): Promise<string | null> {
         return await this.adminService.remove(id);
     }
 }

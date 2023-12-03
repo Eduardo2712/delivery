@@ -13,7 +13,7 @@ export class AuthService {
         private readonly jwtService: JwtService
     ) {}
 
-    async validateAdmin(email: string, pass: string) {
+    async validateAdmin(email: string, pass: string): Promise<AdminEntity> {
         const admin = await this.adminRepository.findOneOrFail({
             where: {
                 email,
@@ -33,7 +33,7 @@ export class AuthService {
         return result;
     }
 
-    async login(email: string, pass: string) {
+    async login(email: string, pass: string): Promise<any> {
         const admin = await this.adminRepository.findOne({
             where: {
                 email,

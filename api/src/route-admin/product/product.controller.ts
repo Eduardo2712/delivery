@@ -21,6 +21,7 @@ import { UpdateProductDto } from "./dto/update-product.dto";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { Request } from "express";
 import { AdminPayloadType } from "src/types/types";
+import { ProductEntity } from "src/entities/product.entity";
 
 @Controller("admin/product")
 export class ProductController {
@@ -40,7 +41,7 @@ export class ProductController {
         )
         pictures?: Array<Express.Multer.File> | undefined,
         @Req() req?: Request
-    ) {
+    ): Promise<string | null> {
         return await this.productService.update(id, updateProductDto, pictures, req?.user as AdminPayloadType);
     }
 
@@ -55,25 +56,25 @@ export class ProductController {
             })
         )
         pictures: Array<Express.Multer.File>
-    ) {
+    ): Promise<string | void> {
         return await this.productService.create(createProductDto, pictures);
     }
 
     @Get("/list-all")
     @HttpCode(HttpStatus.OK)
-    async findAll(@Query("search") search?: string, @Query("rows_per_page") rows_per_page = 10, @Query("page") page = 1) {
+    async findAll(@Query("search") search?: string, @Query("rows_per_page") rows_per_page = 10, @Query("page") page = 1): Promise<ProductEntity[]> {
         return await this.productService.findAll(search, rows_per_page, page);
     }
 
     @Get(":id")
     @HttpCode(HttpStatus.OK)
-    async findOne(@Param("id") id: number) {
+    async findOne(@Param("id") id: number): Promise<ProductEntity> {
         return await this.productService.findOne(id);
     }
 
     @Delete(":id")
     @HttpCode(HttpStatus.OK)
-    async remove(@Param("id") id: number) {
+    async remove(@Param("id") id: number): Promise<string | null> {
         return await this.productService.remove(id);
     }
 }

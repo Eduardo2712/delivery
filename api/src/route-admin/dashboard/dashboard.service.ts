@@ -22,7 +22,14 @@ export class DashboardService {
         private readonly itemRepository: Repository<ItemEntity>
     ) {}
 
-    async get() {
+    async get(): Promise<{
+        admin_count: number;
+        user_count: number;
+        product_count: number;
+        order_count: number;
+        value_amount: number;
+        items_count: number;
+    }> {
         const admin_count = await this.adminRepository.count({
             where: {
                 adm_active: true

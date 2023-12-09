@@ -8,13 +8,15 @@ import CardCategory from "@/components/card-category";
 import { list } from "@/requests/category.request";
 import toast from "react-hot-toast";
 import axios, { HttpStatusCode } from "axios";
+import { CategoryType } from "@/types/entity/entity.type";
+import LoadingSpinner from "@/components/loading-spinner";
 
 const Page: NextPage = () => {
-    const [filter, setFilter] = useState({
+    const [filter, setFilter] = useState<{ search: string; category: number | null }>({
         search: "",
         category: null
     });
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState<CategoryType[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -66,11 +68,18 @@ const Page: NextPage = () => {
                 </div>
             </div>
 
-            <div className="container mx-auto mt-4">
-                {categories.map((category) => (
-                    <CardCategory key={category.id} />
-                ))}
-            </div>
+            <LoadingSpinner loading={loading}>
+                <div className="container mx-auto mt-4 flex justify-center gap-6">
+                    {categories.map((category) => (
+                        <CardCategory
+                            key={category.id}
+                            category={category}
+                            filter_category={filter.category}
+                            setFilterCategory={(e) => setFilter((ant) => ({ ...ant, category: e }))}
+                        />
+                    ))}
+                </div>
+            </LoadingSpinner>
         </>
     );
 };

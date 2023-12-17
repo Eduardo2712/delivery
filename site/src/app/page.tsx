@@ -6,17 +6,19 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 import Header from "@/components/header";
 import CardCategory from "@/components/card-category";
 import { list } from "@/requests/category.request";
+import { list as listProducts } from "@/requests/product.request";
 import toast from "react-hot-toast";
 import axios, { HttpStatusCode } from "axios";
-import { CategoryType } from "@/types/entity/entity.type";
+import { CategoryType, ProductType } from "@/types/entity/entity.type";
 import LoadingSpinner from "@/components/loading-spinner";
 
 const Page: NextPage = () => {
-    const [filter, setFilter] = useState<{ search: string; category: number | null }>({
+    const [filter, setFilter] = useState<{ search: string; id_category: number | null }>({
         search: "",
-        category: null
+        id_category: null
     });
     const [categories, setCategories] = useState<CategoryType[]>([]);
+    const [products, setProducts] = useState<ProductType[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
@@ -31,6 +33,28 @@ const Page: NextPage = () => {
                 }
 
                 setCategories(response.data);
+            } catch (error: any) {
+                if (axios.isAxiosError(error)) {
+                    return toast.error(error.response?.data?.message ?? "An error has occurred");
+                } else {
+                    return toast.error("An error has occurred");
+                }
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, []);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const response = await listProducts(filter);
+
+                if (response.status !== HttpStatusCode.Ok) {
+                    return toast.error(response.data.message);
+                }
+
+                setProducts(response.data);
             } catch (error: any) {
                 if (axios.isAxiosError(error)) {
                     return toast.error(error.response?.data?.message ?? "An error has occurred");
@@ -74,11 +98,13 @@ const Page: NextPage = () => {
                         <CardCategory
                             key={category.id}
                             category={category}
-                            filter_category={filter.category}
+                            filter_category={filter.id_category}
                             setFilterCategory={(e) => setFilter((ant) => ({ ...ant, category: e }))}
                         />
                     ))}
                 </div>
+
+                <div className="container mx-auto mt-4 flex justify-center gap-6"></div>
             </LoadingSpinner>
         </>
     );

@@ -12,7 +12,7 @@ import { checkIsPublicRoute } from "@/utils/route";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
     const path = usePathname();
     const is_public_page = checkIsPublicRoute(path);
 

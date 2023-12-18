@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { TypeOrmModule, TypeOrmModuleOptions } from "@nestjs/typeorm";
+import { TypeOrmModule } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
 import { ConfigModule } from "@nestjs/config";
 import { APP_GUARD } from "@nestjs/core";
@@ -8,25 +8,33 @@ import { AuthGuard } from "./route-admin/auth/guard/auth.guard";
 import { RouteAdminModule } from "./route-admin/route-admin.module";
 import { ThrottlerModule, ThrottlerGuard } from "@nestjs/throttler";
 import { RouteSiteModule } from "./route-site/route-site.module";
+import { ConfigService } from "@nestjs/config";
 
 @Module({
     imports: [
-        ConfigModule.forRoot(),
-        TypeOrmModule.forRoot({
-            type: "mysql",
-            host: process.env.DB_HOST,
-            port: parseInt(process.env.DB_PORT),
-            username: process.env.DB_USER,
-            password: process.env.DB_PASS,
-            database: process.env.DB_NAME,
-            entities: ["dist/**/*.entity.js"],
-            synchronize: true,
-            autoLoadEntities: true
-        } as TypeOrmModuleOptions),
+        ConfigModule.forRoot({ isGlobal: true }),
+        TypeOrmModule.forRootAsync({
+            useFactory: (configService: ConfigService) => ({
+                type: "mysql",
+                host: configService.get("DB_HOST"),
+                port: parseInt(configService.get("DB_PORT")),
+                username: configService.get("DB_USER"),
+                password: configService.get("DB_PASS"),
+                database: configService.get("DB_NAME"),
+                entities: ["dist/**/*.entity.js"],
+                synchronize: true,
+                autoLoadEntities: true
+            }),
+            inject: [ConfigService]
+        }),
         RouteAdminModule,
         ThrottlerModule.forRoot({
-            ttl: 60,
-            limit: 20
+            throttlers: [
+                {
+                    ttl: 60,
+                    limit: 10
+                }
+            ]
         }),
         RouteSiteModule
     ],

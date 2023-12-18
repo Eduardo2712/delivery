@@ -15,7 +15,7 @@ import "primereact/resources/themes/lara-dark-indigo/theme.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
     const path = usePathname();
     const is_public_page = checkIsPublicRoute(path);
 

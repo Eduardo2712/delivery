@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import axios, { HttpStatusCode } from "axios";
 import { CategoryType, ProductType } from "@/types/entity/entity.type";
 import LoadingSpinner from "@/components/loading-spinner";
+import CardProduct from "@/components/card-product";
 
 const Page: NextPage = () => {
     const [filter, setFilter] = useState<{ search: string; id_category: number | null }>({
@@ -23,8 +24,6 @@ const Page: NextPage = () => {
 
     useEffect(() => {
         (async () => {
-            setLoading(true);
-
             try {
                 const response = await list();
 
@@ -39,14 +38,14 @@ const Page: NextPage = () => {
                 } else {
                     return toast.error("An error has occurred");
                 }
-            } finally {
-                setLoading(false);
             }
         })();
     }, []);
 
     useEffect(() => {
         (async () => {
+            setLoading(true);
+
             try {
                 const response = await listProducts(filter);
 
@@ -71,10 +70,7 @@ const Page: NextPage = () => {
         <>
             <Header />
 
-            <div
-                className="w-full h-48"
-                style={{ backgroundImage: "url('/images/meal.jpg')", backgroundSize: "cover", backgroundPosition: "center" }}
-            >
+            <div className="w-full h-48 bg-[url('/images/meal.jpg')] bg-cover bg-center bg-no-repeat">
                 <div className="container mx-auto h-screen">
                     <div className="pt-12 flex justify-center items-center gap-3 p-3">
                         <input
@@ -104,7 +100,13 @@ const Page: NextPage = () => {
                     ))}
                 </div>
 
-                <div className="container mx-auto mt-4 flex justify-center gap-6"></div>
+                <div className="container mx-auto mt-8 flex justify-start gap-6">
+                    {products.length > 0 ? (
+                        products.map((product) => <CardProduct key={product.id} product={product} />)
+                    ) : (
+                        <p className="text-gray-50">No products</p>
+                    )}
+                </div>
             </LoadingSpinner>
         </>
     );

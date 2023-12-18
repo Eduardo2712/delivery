@@ -91,7 +91,7 @@ export type ProductFileType = {
     prl_id_product: number;
     created_at: Date;
     updated_at: Date;
-    picture?: FileType | null;
+    file?: FileType | null;
 };
 
 export type ProductHistoryType = {

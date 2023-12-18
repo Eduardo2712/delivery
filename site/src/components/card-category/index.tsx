@@ -35,7 +35,7 @@ const CardCategory = ({
 
     return (
         <div
-            className={`rounded-md bg-white w-20 h-20 cursor-pointer flex flex-col justify-around items-center hover:bg-slate-300 ${
+            className={`rounded-md bg-white w-20 h-16 cursor-pointer flex flex-col justify-around items-center hover:bg-slate-300 ${
                 filter_category === category.id ? "bg-blue-700 hover:bg-blue-700" : ""
             }`}
             onClick={() => setFilterCategory(category.id)}

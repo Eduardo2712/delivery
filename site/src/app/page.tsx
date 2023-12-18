@@ -89,7 +89,7 @@ const Page: NextPage = () => {
             </div>
 
             <LoadingSpinner loading={loading}>
-                <div className="container mx-auto mt-4 flex justify-center gap-6">
+                <div className="container mx-auto mt-4 flex justify-center gap-6 px-4">
                     {categories.map((category) => (
                         <CardCategory
                             key={category.id}
@@ -100,7 +100,7 @@ const Page: NextPage = () => {
                     ))}
                 </div>
 
-                <div className="container mx-auto mt-8 flex justify-start gap-6">
+                <div className="container mx-auto mt-8 grid grid-cols-1 gap-4 px-4 lg:grid-cols-2">
                     {products.length > 0 ? (
                         products.map((product) => <CardProduct key={product.id} product={product} />)
                     ) : (

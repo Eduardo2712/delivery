@@ -1,4 +1,4 @@
-import { IsBooleanString, IsDecimal, IsNotEmpty, IsOptional, IsString, MaxLength } from "class-validator";
+import { IsBooleanString, IsDecimal, IsNotEmpty, IsNumberString, IsOptional, IsString, MaxLength } from "class-validator";
 
 export class UpdateProductDto {
     @IsNotEmpty()
@@ -10,6 +10,15 @@ export class UpdateProductDto {
     @IsString()
     @MaxLength(255)
     pro_description: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @MaxLength(255)
+    pro_ingredients: string;
+
+    @IsNotEmpty()
+    @IsNumberString()
+    pro_number_people: number;
 
     @IsNotEmpty()
     @IsDecimal({

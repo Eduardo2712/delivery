@@ -1,15 +1,13 @@
 import { CategoryType } from "@/types/entity/entity.type";
 import { FaBasketShopping, FaBurger, FaCakeCandles, FaCarrot, FaCookieBite, FaIceCream, FaMugHot, FaPizzaSlice } from "react-icons/fa6";
 
-const CardCategory = ({
-    category,
-    filter_category,
-    setFilterCategory
-}: {
+type Props = {
     category: CategoryType;
     filter_category: number | null;
     setFilterCategory: (id: number) => void;
-}) => {
+};
+
+const CardCategory = ({ category, filter_category, setFilterCategory }: Props) => {
     const iconCategory = () => {
         switch (category.id) {
             case 1:

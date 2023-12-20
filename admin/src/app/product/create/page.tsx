@@ -49,6 +49,8 @@ const Page: NextPage = () => {
 
     const initialValues: ProductCreateType = {
         pro_description: "",
+        pro_ingredients: "",
+        pro_number_people: 1,
         pro_name: "",
         pro_price: "",
         pro_status: "",
@@ -123,6 +125,20 @@ const Page: NextPage = () => {
                                         })}
                                     </StyleSelect>
                                 </div>
+
+                                <div>
+                                    <StyleInput
+                                        errors={errors.pro_number_people}
+                                        touched={touched.pro_number_people}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        name={"pro_number_people"}
+                                        title={"Number of people"}
+                                        type={"number"}
+                                        value={values.pro_number_people}
+                                        is_required
+                                    />
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-1 gap-4 lg:grid-cols-1">
@@ -136,6 +152,23 @@ const Page: NextPage = () => {
                                         title={"Description"}
                                         type={"text"}
                                         value={values.pro_description}
+                                        is_required
+                                        multiple
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 gap-4 lg:grid-cols-1">
+                                <div>
+                                    <StyleInput
+                                        errors={errors.pro_ingredients}
+                                        touched={touched.pro_ingredients}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        name={"pro_ingredients"}
+                                        title={"Ingredients"}
+                                        type={"text"}
+                                        value={values.pro_ingredients}
                                         is_required
                                         multiple
                                     />

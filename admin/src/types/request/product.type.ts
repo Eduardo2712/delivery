@@ -9,6 +9,8 @@ export type ProductDatatableType = {
 export type ProductCreateType = {
     pro_name: string;
     pro_description: string;
+    pro_ingredients: string;
+    pro_number_people: number;
     pro_price: number | string;
     pro_status: number | string;
     pictures?: File[];
@@ -17,6 +19,8 @@ export type ProductCreateType = {
 export type ProductUpdateType = {
     pro_name: string;
     pro_description: string;
+    pro_ingredients: string;
+    pro_number_people: number;
     pro_price: number | string;
     pro_status: number | string;
     pictures?: File[];

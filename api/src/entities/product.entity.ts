@@ -31,6 +31,19 @@ export class ProductEntity {
 
     @Column({
         nullable: false,
+        type: "text"
+    })
+    pro_ingredients: string;
+
+    @Column({
+        nullable: false,
+        type: "int",
+        default: 1
+    })
+    pro_number_people: number;
+
+    @Column({
+        nullable: false,
         type: "decimal",
         precision: 10,
         scale: 2

@@ -4,6 +4,8 @@ import * as Yup from "yup";
 export const schemaCreate = Yup.object().shape({
     pro_name: Yup.string().required("Fill in this field!"),
     pro_description: Yup.string().required("Fill in this field!"),
+    pro_ingredients: Yup.string().required("Fill in this field!"),
+    pro_number_people: Yup.number().min(1, "Must contain at least 1 person!").required("Fill in this field!"),
     pro_status: Yup.string().required("Fill in this field!"),
     pro_price: Yup.string().required("Fill in this field!"),
     pictures: Yup.array().min(1, "You must upload at least 1 picture!").required("Fill in this field!")
@@ -13,6 +15,8 @@ export const schemaUpdate = Yup.object()
     .shape({
         pro_name: Yup.string().required("Fill in this field!"),
         pro_description: Yup.string().required("Fill in this field!"),
+        pro_ingredients: Yup.string().required("Fill in this field!"),
+        pro_number_people: Yup.number().min(1, "Must contain at least 1 person!").required("Fill in this field!"),
         pro_price: Yup.string().required("Fill in this field!"),
         pro_status: Yup.string().required("Fill in this field!"),
         pictures: Yup.array(),

@@ -88,6 +88,8 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
 
     const initialValues: ProductUpdateType = {
         pro_description: data?.pro_description ?? "",
+        pro_ingredients: data?.pro_ingredients ?? "",
+        pro_number_people: data?.pro_number_people ?? 1,
         pro_name: data?.pro_name ?? "",
         pro_price: data?.pro_price ? formatDecimal(data.pro_price) : "",
         pro_status: data?.pro_status ? "1" : "0",
@@ -166,6 +168,20 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                             })}
                                         </StyleSelect>
                                     </div>
+
+                                    <div>
+                                        <StyleInput
+                                            errors={errors.pro_number_people}
+                                            touched={touched.pro_number_people}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            name={"pro_number_people"}
+                                            title={"Number of people"}
+                                            type={"number"}
+                                            value={values.pro_number_people}
+                                            is_required
+                                        />
+                                    </div>
                                 </div>
 
                                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-1">
@@ -179,6 +195,23 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                             title={"Description"}
                                             type={"text"}
                                             value={values.pro_description}
+                                            is_required
+                                            multiple
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 gap-4 lg:grid-cols-1">
+                                    <div>
+                                        <StyleInput
+                                            errors={errors.pro_ingredients}
+                                            touched={touched.pro_ingredients}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            name={"pro_ingredients"}
+                                            title={"Ingredients"}
+                                            type={"text"}
+                                            value={values.pro_ingredients}
                                             is_required
                                             multiple
                                         />

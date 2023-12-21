@@ -11,7 +11,7 @@ type Props = {
 const ReactModal = ({ openModal, setOpenModal, children }: Props) => {
     return (
         <Modal
-            className={"bg-white rounded-md px-5 py-4"}
+            className={"bg-white rounded-md py-4"}
             overlayClassName={"fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-80"}
             isOpen={openModal}
             style={{
@@ -22,7 +22,7 @@ const ReactModal = ({ openModal, setOpenModal, children }: Props) => {
                 }
             }}
         >
-            <div className="flex justify-end mb-4">
+            <div className="flex justify-end mb-4 px-3">
                 <FaXmark onClick={() => setOpenModal(false)} className={"cursor-pointer text-gray-400"} size={24} />
             </div>
 

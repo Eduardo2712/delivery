@@ -66,6 +66,7 @@ export type ProductType = {
     pro_name: string;
     pro_description: string;
     pro_ingredients: string;
+    pro_id_category: number;
     pro_number_people: number;
     pro_price: number;
     pro_active: boolean;
@@ -119,6 +120,14 @@ export type StatusType = {
     id: number;
     sta_name: string;
     sta_color: string;
+    created_at: Date;
+    updated_at: Date;
+};
+
+export type CategoryType = {
+    id: number;
+    cat_name: string;
+    cat_active: boolean;
     created_at: Date;
     updated_at: Date;
 };

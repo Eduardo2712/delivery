@@ -6,7 +6,7 @@ import { OrderEntity } from "src/entities/order.entity";
 export class OrderController {
     constructor(private readonly orderService: OrderService) {}
 
-    @Get("/list-all")
+    @Get("/datatable")
     @HttpCode(HttpStatus.OK)
     async findAll(
         @Query("search") search?: string,

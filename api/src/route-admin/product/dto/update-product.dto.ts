@@ -7,6 +7,10 @@ export class UpdateProductDto {
     pro_name: string;
 
     @IsNotEmpty()
+    @IsNumberString()
+    pro_id_category: number;
+
+    @IsNotEmpty()
     @IsString()
     @MaxLength(255)
     pro_description: string;

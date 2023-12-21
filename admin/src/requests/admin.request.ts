@@ -4,7 +4,7 @@ import { AxiosPromise } from "axios";
 import { AdminType } from "@/types/entity/entity.type";
 
 export const getDatatable = ({ search, page, rows_per_page }: AdminDatatableType): AxiosPromise<AdminType[] & Error> => {
-    return axios.get(`${process.env.NEXT_PUBLIC_URL_API}/admin/list-all`, { params: { search, page, rows_per_page } });
+    return axios.get(`${process.env.NEXT_PUBLIC_URL_API}/admin/datatable`, { params: { search, page, rows_per_page } });
 };
 
 export const remove = (id: number): AxiosPromise<Error> => {

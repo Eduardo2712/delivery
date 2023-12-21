@@ -6,9 +6,10 @@ import { ProductEntity } from "src/entities/product.entity";
 import { FileEntity } from "src/entities/file.entity";
 import { ProductFileEntity } from "src/entities/product-file.entity";
 import { ProductHistoryEntity } from "src/entities/product-history.entity";
+import { CategoryEntity } from "src/entities/category.entity";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([ProductEntity, FileEntity, ProductFileEntity, ProductHistoryEntity])],
+    imports: [TypeOrmModule.forFeature([ProductEntity, FileEntity, ProductFileEntity, ProductHistoryEntity, CategoryEntity])],
     controllers: [ProductController],
     providers: [ProductService],
     exports: [ProductService]

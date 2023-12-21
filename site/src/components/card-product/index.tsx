@@ -51,7 +51,7 @@ const CardProduct = ({ product }: Props) => {
             </div>
 
             <ReactModal openModal={openModal} setOpenModal={setOpenModal}>
-                <div className="flex gap-4">
+                <div className="flex gap-4 px-3">
                     <div className="flex">
                         <button
                             type="button"
@@ -80,10 +80,20 @@ const CardProduct = ({ product }: Props) => {
                         </button>
                     </div>
 
-                    <p className="text-sm text-black font-medium text-center">{product?.pro_name}</p>
+                    <div className="flex flex-1 flex-col">
+                        <p className="text-sm text-black font-medium text-center">{product?.pro_name}</p>
+
+                        <p className="text-sm text-gray-800 mt-2">{product?.pro_ingredients}</p>
+
+                        <p className="text-sm text-black font-semibold mt-3">{`Serves ${product?.pro_number_people} ${
+                            product?.pro_number_people === 1 ? "person" : "people"
+                        }`}</p>
+
+                        <p className="text-sm text-green-600 mt-3">{formatBRL(product?.pro_price)}</p>
+                    </div>
                 </div>
 
-                <div className="flex justify-end gap-4">
+                <div className="flex justify-end gap-4 border-t-2 border-gray-200 mt-3 py-2 px-3">
                     <div className="flex justify-center items-center border-2 border-gray-300 rounded-md">
                         <button
                             type="button"

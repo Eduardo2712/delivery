@@ -9,6 +9,7 @@ import { CreateProductDto } from "./dto/create-product.dto";
 import { ServiceHelpers } from "src/helpers/service.helper";
 import { ProductHistoryEntity } from "src/entities/product-history.entity";
 import { AdminPayloadType } from "src/types/types";
+import { CategoryEntity } from "src/entities/category.entity";
 
 @Injectable()
 export class ProductService {
@@ -21,10 +22,14 @@ export class ProductService {
         private readonly productFileRepository: Repository<ProductFileEntity>,
         @InjectRepository(ProductHistoryEntity)
         private readonly productHistoryRepository: Repository<ProductHistoryEntity>,
+        @InjectRepository(CategoryEntity)
+        private readonly categoryRepository: Repository<CategoryEntity>,
         private dataSource: DataSource
     ) {}
 
     async create(createProductDto: CreateProductDto, pictures?: Express.Multer.File[]): Promise<string | void> {
+        await this.categoryRepository.findOneOrFail({ where: { id: createProductDto.pro_id_category, cat_active: true } });
+
         const query_runner = this.dataSource.createQueryRunner();
 
         await query_runner.connect();
@@ -67,6 +72,8 @@ export class ProductService {
         pictures?: Express.Multer.File[] | undefined,
         user?: AdminPayloadType
     ): Promise<string | null> {
+        await this.categoryRepository.findOneOrFail({ where: { id: updateProductDto.pro_id_category, cat_active: true } });
+
         const product = await this.productRepository.findOneOrFail({ where: { id, pro_active: true } });
 
         const query_runner = this.dataSource.createQueryRunner();

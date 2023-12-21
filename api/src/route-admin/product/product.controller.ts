@@ -60,7 +60,7 @@ export class ProductController {
         return await this.productService.create(createProductDto, pictures);
     }
 
-    @Get("/list-all")
+    @Get("/datatable")
     @HttpCode(HttpStatus.OK)
     async findAll(@Query("search") search?: string, @Query("rows_per_page") rows_per_page = 10, @Query("page") page = 1): Promise<ProductEntity[]> {
         return await this.productService.findAll(search, rows_per_page, page);

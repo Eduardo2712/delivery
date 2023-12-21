@@ -17,12 +17,13 @@ import { maskMoney } from "@/utils/mask";
 import FileUpload from "@/components/file-upload";
 import { formatBRL, formatDecimal, listEnableDisable } from "@/utils/other";
 import StyleSelect from "@/components/style-select";
-import { ProductType } from "@/types/entity/entity.type";
+import { CategoryType, ProductType } from "@/types/entity/entity.type";
 import LoadingSpinner from "@/components/loading-spinner";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { format } from "date-fns";
 import TextEmpty from "@/components/text-empty";
+import { list } from "@/requests/category.request";
 
 type Params = {
     params: { id: number };
@@ -33,6 +34,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [data, setData] = useState<ProductType | null>(null);
     const [page, setPage] = useState<number>(1);
+    const [categories, setCategories] = useState<CategoryType[]>([]);
 
     const router = useRouter();
 
@@ -41,13 +43,18 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
             setLoading(true);
 
             try {
-                const response = await get(id);
+                const [response1, response2] = await Promise.all([get(id), list()]);
 
-                if (response.status !== HttpStatusCode.Ok) {
-                    return toast.error(response.data.message);
+                if (response1.status !== HttpStatusCode.Ok) {
+                    return toast.error(response1.data.message);
                 }
 
-                setData(response.data);
+                if (response2.status !== HttpStatusCode.Ok) {
+                    return toast.error(response2.data.message);
+                }
+
+                setData(response1.data);
+                setCategories(response2.data);
             } catch (error: any) {
                 if (axios.isAxiosError(error)) {
                     return toast.error(error.response?.data?.message ?? "An error has occurred");
@@ -88,6 +95,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
 
     const initialValues: ProductUpdateType = {
         pro_description: data?.pro_description ?? "",
+        pro_id_category: data?.pro_id_category ?? null,
         pro_ingredients: data?.pro_ingredients ?? "",
         pro_number_people: data?.pro_number_people ?? 1,
         pro_name: data?.pro_name ?? "",
@@ -184,6 +192,30 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                     </div>
                                 </div>
 
+                                <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+                                    <div>
+                                        <StyleSelect
+                                            errors={errors.pro_id_category}
+                                            touched={touched.pro_id_category}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            name={"pro_id_category"}
+                                            title={"Category"}
+                                            value={values.pro_id_category}
+                                            is_required
+                                            emptyOption
+                                        >
+                                            {categories.map((item) => {
+                                                return (
+                                                    <option key={item.id} value={item.id}>
+                                                        {item.cat_name}
+                                                    </option>
+                                                );
+                                            })}
+                                        </StyleSelect>
+                                    </div>
+                                </div>
+
                                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-1">
                                     <div>
                                         <StyleInput
@@ -262,7 +294,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                         type="submit"
                                         className="flex h-10 items-center justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 md:w-36"
                                     >
-                                        {!submitting ? "Create" : <FaSpinner className="animate-spin" size={20} />}
+                                        {!submitting ? "Update" : <FaSpinner className="animate-spin" size={20} />}
                                     </button>
                                 </div>
                             </CustomBox>

@@ -7,7 +7,7 @@ type Props = {
     title: string;
     errors: string | undefined;
     touched: boolean | undefined;
-    value: string | number | undefined;
+    value: string | number | undefined | null;
     is_required: boolean;
     children: ReactNode;
     emptyOption?: boolean;
@@ -26,7 +26,7 @@ const StyleSelect = ({ handleChange, handleBlur, name, title, errors, touched, v
                 name={name}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                value={value}
+                value={value ?? ""}
             >
                 {emptyOption && <option value={""}></option>}
 

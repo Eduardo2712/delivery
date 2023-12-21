@@ -6,7 +6,7 @@ import { UserEntity } from "src/entities/user.entity";
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    @Get("/list-all")
+    @Get("/datatable")
     @HttpCode(HttpStatus.OK)
     async findAll(@Query("search") search?: string, @Query("rows_per_page") rows_per_page = 10, @Query("page") page = 1): Promise<UserEntity[]> {
         return await this.userService.findAll(search, rows_per_page, page);

@@ -66,6 +66,7 @@ export type ProductType = {
     pro_name: string;
     pro_description: string;
     pro_ingredients: string;
+    pro_id_category: number;
     pro_number_people: number;
     pro_price: number;
     pro_active: boolean;

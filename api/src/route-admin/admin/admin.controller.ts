@@ -62,7 +62,7 @@ export class AdminController {
         return await this.adminService.create(createAdminDto, picture);
     }
 
-    @Get("/list-all")
+    @Get("/datatable")
     @HttpCode(HttpStatus.OK)
     async findAll(@Query("search") search?: string, @Query("rows_per_page") rows_per_page = 10, @Query("page") page = 1): Promise<AdminEntity[]> {
         return await this.adminService.findAll(search, rows_per_page, page);

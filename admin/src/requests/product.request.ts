@@ -4,7 +4,7 @@ import { AxiosPromise } from "axios";
 import { ProductType } from "@/types/entity/entity.type";
 
 export const getDatatable = ({ search, page, rows_per_page }: ProductDatatableType): AxiosPromise<ProductType[] & Error> => {
-    return axios.get(`${process.env.NEXT_PUBLIC_URL_API}/product/list-all`, { params: { search, page, rows_per_page } });
+    return axios.get(`${process.env.NEXT_PUBLIC_URL_API}/product/datatable`, { params: { search, page, rows_per_page } });
 };
 
 export const remove = (id: number): AxiosPromise<Error> => {

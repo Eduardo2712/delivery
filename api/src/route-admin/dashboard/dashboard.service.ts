@@ -5,7 +5,6 @@ import { Repository } from "typeorm";
 import { UserEntity } from "src/entities/user.entity";
 import { ProductEntity } from "src/entities/product.entity";
 import { OrderEntity } from "src/entities/order.entity";
-import { ItemEntity } from "src/entities/item.entity";
 
 @Injectable()
 export class DashboardService {
@@ -17,9 +16,7 @@ export class DashboardService {
         @InjectRepository(ProductEntity)
         private readonly productRepository: Repository<ProductEntity>,
         @InjectRepository(OrderEntity)
-        private readonly orderRepository: Repository<OrderEntity>,
-        @InjectRepository(ItemEntity)
-        private readonly itemRepository: Repository<ItemEntity>
+        private readonly orderRepository: Repository<OrderEntity>
     ) {}
 
     async get(): Promise<{
@@ -28,7 +25,6 @@ export class DashboardService {
         product_count: number;
         order_count: number;
         value_amount: number;
-        items_count: number;
     }> {
         const admin_count = await this.adminRepository.count({
             where: {
@@ -64,16 +60,8 @@ export class DashboardService {
             value_amount += Number(order.ord_delivery_fee);
 
             order.items.forEach((item) => {
-                value_amount += Number(item.ite_price) * Number(item.ite_quantity);
+                value_amount += Number(item.ite_price);
             });
-        });
-
-        const items = await this.itemRepository.find();
-
-        let items_count = 0;
-
-        items.forEach((item) => {
-            items_count += Number(item.ite_quantity);
         });
 
         return {
@@ -81,8 +69,7 @@ export class DashboardService {
             user_count,
             product_count,
             order_count,
-            value_amount,
-            items_count
+            value_amount
         };
     }
 }

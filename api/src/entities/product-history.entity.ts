@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ProductEntity } from "./product.entity";
 import { AdminEntity } from "./admin.entity";
 
@@ -11,13 +11,13 @@ export class ProductHistoryEntity {
 
     @Column({
         nullable: false,
-        type: "int"
+        type: "unsigned big int"
     })
     prh_id_product: number;
 
     @Column({
         nullable: false,
-        type: "int"
+        type: "unsigned big int"
     })
     prh_id_admin: number;
 

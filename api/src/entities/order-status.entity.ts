@@ -11,13 +11,13 @@ export class OrderStatusEntity {
 
     @Column({
         nullable: false,
-        type: "int"
+        type: "unsigned big int"
     })
     ors_id_status: number;
 
     @Column({
         nullable: false,
-        type: "int"
+        type: "unsigned big int"
     })
     ors_id_order: number;
 

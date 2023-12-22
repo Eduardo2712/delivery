@@ -81,12 +81,6 @@ const Page: NextPage = () => {
 
                         <p className="text-white font-bold text-lg">{formatBRL(data.value_amount)}</p>
                     </div>
-
-                    <div className="bg-gray-700 w-full px-8 rounded-md h-20 flex justify-center flex-col items-center border-b-2 border-b-blue-700">
-                        <p className="text-gray-400 font-extrabold text-lg mb-1">Items on orders</p>
-
-                        <p className="text-white font-bold text-lg">{data.items_count}</p>
-                    </div>
                 </div>
             </CustomBox>
         </>

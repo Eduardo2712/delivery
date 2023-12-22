@@ -51,7 +51,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
     }, []);
 
     const orderValue = () => {
-        return formatBRL(data?.items.reduce((total, item) => total + item.ite_price * item.ite_quantity, 0) ?? 0);
+        return formatBRL(data?.items.reduce((total, item) => total + item.ite_price, 0) ?? 0);
     };
 
     const buttons = (item: ItemType) => {
@@ -179,7 +179,6 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                         <Column field="product.id" header="ID" />
                         <Column field="product.pro_name" header="Name" />
                         <Column field="ite_price" header="Value" body={(e: ItemType) => formatBRL(e.ite_price)} />
-                        <Column field="ite_quantity" header="Quantity" />
                         <Column className="w-12 min-w-12" field="options" header="Options" body={(e: ItemType) => buttons(e)} />
                     </DataTable>
                 </CustomBox>

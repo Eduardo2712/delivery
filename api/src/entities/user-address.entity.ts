@@ -10,7 +10,7 @@ export class UserAddressEntity {
 
     @Column({
         nullable: false,
-        type: "int"
+        type: "unsigned big int"
     })
     usa_id_user: number;
 

@@ -3,6 +3,7 @@ import { ProductFileEntity } from "./product-file.entity";
 import { ServiceHelpers } from "src/helpers/service.helper";
 import { AdminEntity } from "./admin.entity";
 import { UserEntity } from "./user.entity";
+import { ProductExtraEntity } from "./product-extra.entity";
 
 @Entity({
     name: "files"
@@ -41,7 +42,7 @@ export class FileEntity extends BaseEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToMany(() => ProductFileEntity, (productFile) => productFile.file, {
+    @OneToMany(() => ProductFileEntity, (product_file) => product_file.file, {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "prl_id_file" })
@@ -58,6 +59,12 @@ export class FileEntity extends BaseEntity {
     })
     @JoinColumn({ name: "use_id_picture" })
     user: UserEntity;
+
+    @OneToOne(() => ProductExtraEntity, (extra) => extra.file, {
+        onDelete: "CASCADE"
+    })
+    @JoinColumn({ name: "pex_id_file" })
+    extra: ProductExtraEntity;
 
     get fileUrl(): Promise<string> {
         return this.getUrl();

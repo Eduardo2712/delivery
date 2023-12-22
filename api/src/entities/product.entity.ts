@@ -1,8 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn, ManyToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import { ProductFileEntity } from "./product-file.entity";
 import { ItemEntity } from "./item.entity";
 import { ProductHistoryEntity } from "./product-history.entity";
 import { CategoryEntity } from "./category.entity";
+import { ProductRatingEntity } from "./product-rating.entity";
+import { ProductExtraEntity } from "./product-extra.entity";
 
 @Entity({
     name: "products"
@@ -13,7 +15,7 @@ export class ProductEntity {
 
     @Column({
         nullable: false,
-        type: "int"
+        type: "unsigned big int"
     })
     pro_id_category: number;
 
@@ -91,4 +93,16 @@ export class ProductEntity {
     @ManyToOne(() => CategoryEntity, (category) => category.products, { onDelete: "CASCADE" })
     @JoinColumn({ name: "pro_id_category" })
     category: CategoryEntity;
+
+    @OneToMany(() => ProductRatingEntity, (rating) => rating.product, {
+        onDelete: "CASCADE"
+    })
+    @JoinColumn({ name: "prr_id_product" })
+    ratings: ProductRatingEntity[];
+
+    @OneToOne(() => ProductExtraEntity, (extra) => extra.product, {
+        onDelete: "CASCADE"
+    })
+    @JoinColumn({ name: "pex_id_product" })
+    extra: ProductExtraEntity;
 }

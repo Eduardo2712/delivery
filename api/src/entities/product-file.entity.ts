@@ -11,13 +11,13 @@ export class ProductFileEntity {
 
     @Column({
         nullable: false,
-        type: "int"
+        type: "unsigned big int"
     })
     prl_id_file: number;
 
     @Column({
         nullable: false,
-        type: "int"
+        type: "unsigned big int"
     })
     prl_id_product: number;
 

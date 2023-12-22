@@ -104,7 +104,7 @@ const CustomTable = ({
 
     const buttons = (e: DataItem<number>) => {
         return (
-            <div className="flex gap-2">
+            <div className="flex gap-2 justify-center">
                 {button_edit && url && (
                     <Link
                         href={`${url}/edit/${e.id}`}

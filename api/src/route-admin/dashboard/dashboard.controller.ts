@@ -12,7 +12,6 @@ export class DashboardController {
         product_count: number;
         order_count: number;
         value_amount: number;
-        items_count: number;
     }> {
         return await this.dashboardService.get();
     }

@@ -2,6 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 import { OrderEntity } from "./order.entity";
 import { FileEntity } from "./file.entity";
 import { UserAddressEntity } from "./user-address.entity";
+import { ProductRatingEntity } from "./product-rating.entity";
 
 @Entity({
     name: "users"
@@ -12,7 +13,7 @@ export class UserEntity {
 
     @Column({
         nullable: false,
-        type: "int"
+        type: "unsigned big int"
     })
     use_id_picture: number;
 
@@ -82,4 +83,10 @@ export class UserEntity {
     })
     @JoinColumn({ name: "usa_id_user" })
     addresses: UserAddressEntity[];
+
+    @OneToMany(() => ProductRatingEntity, (rating) => rating.user, {
+        onDelete: "CASCADE"
+    })
+    @JoinColumn({ name: "prr_id_user" })
+    ratings: ProductRatingEntity[];
 }

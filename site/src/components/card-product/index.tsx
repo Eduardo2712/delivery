@@ -104,7 +104,7 @@ const CardProduct = ({ product }: Props) => {
                             -
                         </button>
 
-                        <div className="text-2xl text-black p-3">{formModal.count}</div>
+                        <div className="text-xl text-black p-3">{formModal.count}</div>
 
                         <button
                             type="button"
@@ -117,7 +117,7 @@ const CardProduct = ({ product }: Props) => {
 
                     <button
                         type="button"
-                        className="flex items-center justify-between gap-10 text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-md text-sm px-6 text-center"
+                        className="flex items-center justify-between gap-10 text-white bg-red-700 hover:bg-red-800 focus:outline-none font-medium rounded-md text-sm px-6 text-center"
                     >
                         <p className="text-sm text-white">Add</p>
                         <p className="text-sm text-white font-semibold">{formatBRL(value_total)}</p>

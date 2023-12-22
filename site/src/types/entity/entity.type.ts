@@ -82,7 +82,7 @@ export type ItemType = {
     ite_id_product: number;
     ite_id_order: number;
     ite_price: number;
-    ite_quantity: number;
+    ite_comment: string;
     created_at: Date;
     updated_at: Date;
     product: ProductType;

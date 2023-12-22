@@ -12,7 +12,7 @@ export class OrderEntity {
 
     @Column({
         nullable: false,
-        type: "int"
+        type: "unsigned big int"
     })
     ord_id_user: number;
 

@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ProductEntity } from "./product.entity";
 import { OrderEntity } from "./order.entity";
+import { ItemExtraEntity } from "./item-extra.entity";
 
 @Entity({
     name: "items"
@@ -11,22 +12,15 @@ export class ItemEntity {
 
     @Column({
         nullable: false,
-        type: "int"
+        type: "unsigned big int"
     })
     ite_id_product: number;
 
     @Column({
         nullable: false,
-        type: "int"
+        type: "unsigned big int"
     })
     ite_id_order: number;
-
-    @Column({
-        nullable: false,
-        type: "int",
-        default: 1
-    })
-    ite_quantity: number;
 
     @Column({
         nullable: false,
@@ -35,6 +29,12 @@ export class ItemEntity {
         scale: 2
     })
     ite_price: number;
+
+    @Column({
+        nullable: true,
+        type: "text"
+    })
+    ite_comment: string;
 
     @CreateDateColumn()
     created_at: Date;
@@ -53,4 +53,10 @@ export class ItemEntity {
     })
     @JoinColumn({ name: "ite_id_order" })
     order: OrderEntity;
+
+    @OneToOne(() => ItemExtraEntity, (item_extra) => item_extra.item, {
+        onDelete: "CASCADE"
+    })
+    @JoinColumn({ name: "itx_id_extra" })
+    extra: ItemExtraEntity;
 }

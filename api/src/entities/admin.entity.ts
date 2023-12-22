@@ -12,7 +12,7 @@ export class AdminEntity {
 
     @Column({
         nullable: true,
-        type: "int"
+        type: "unsigned big int"
     })
     adm_id_picture: number;
 

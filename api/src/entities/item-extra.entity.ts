@@ -33,14 +33,6 @@ export class ItemExtraEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToOne(() => ItemEntity, (item) => item.extra, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({
-        name: "itx_id_item"
-    })
-    item: ItemEntity;
-
     @OneToOne(() => ProductExtraEntity, (extra) => extra.extra, {
         onDelete: "CASCADE"
     })
@@ -48,4 +40,12 @@ export class ItemExtraEntity {
         name: "itx_id_extra"
     })
     extra: ProductExtraEntity;
+
+    @OneToOne(() => ItemEntity, (item) => item.extra, {
+        onDelete: "CASCADE"
+    })
+    @JoinColumn({
+        name: "itx_id_item"
+    })
+    item: ItemEntity;
 }

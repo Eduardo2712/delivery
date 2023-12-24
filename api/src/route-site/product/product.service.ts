@@ -12,6 +12,9 @@ export class ProductService {
     ) {}
 
     async list(listProductDto: ListProductDto): Promise<ProductEntity[]> {
+        const limit = 10;
+        const skip = (listProductDto.page - 1) * limit;
+
         const products = this.productRepository
             .createQueryBuilder("product")
             .leftJoinAndSelect("product.files", "files")
@@ -27,7 +30,7 @@ export class ProductService {
 
         products.orderBy("product.pro_name", "ASC");
 
-        const aux = await products.getMany();
+        const aux = await products.skip(skip).take(limit).getMany();
 
         for (const product of aux) {
             for (const file of product.files) {

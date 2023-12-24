@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus } from "@nestjs/common";
+import { Controller, Get, HttpCode, HttpStatus, Query } from "@nestjs/common";
 import { ProductService } from "./product.service";
 import { Public } from "../auth/decorators/is-public.decorator";
 import { ProductEntity } from "src/entities/product.entity";
@@ -11,7 +11,7 @@ export class ProductController {
     @Public()
     @Get("/list")
     @HttpCode(HttpStatus.OK)
-    async list(@Body() listProductDto: ListProductDto): Promise<ProductEntity[]> {
+    async list(@Query() listProductDto: ListProductDto): Promise<ProductEntity[]> {
         return await this.productService.list(listProductDto);
     }
 }

@@ -14,9 +14,10 @@ import LoadingSpinner from "@/components/loading-spinner";
 import CardProduct from "@/components/card-product";
 
 const Page: NextPage = () => {
-    const [filter, setFilter] = useState<{ search: string; id_category: number | null }>({
+    const [filter, setFilter] = useState<{ search: string; id_category: number | null; page: number }>({
         search: "",
-        id_category: null
+        id_category: null,
+        page: 1
     });
     const [categories, setCategories] = useState<CategoryType[]>([]);
     const [products, setProducts] = useState<ProductType[]>([]);
@@ -64,7 +65,7 @@ const Page: NextPage = () => {
                 setLoading(false);
             }
         })();
-    }, []);
+    }, [filter]);
 
     return (
         <>

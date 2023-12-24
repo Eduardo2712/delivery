@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, OneToMany } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne } from "typeorm";
 import { UserEntity } from "./user.entity";
 
 @Entity({
@@ -69,7 +69,7 @@ export class UserAddressEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToMany(() => UserEntity, (user) => user.addresses, {
+    @ManyToOne(() => UserEntity, (user) => user.addresses, {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "usa_id_user" })

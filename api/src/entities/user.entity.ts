@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, OneToMany, ManyToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, OneToMany } from "typeorm";
 import { OrderEntity } from "./order.entity";
 import { FileEntity } from "./file.entity";
 import { UserAddressEntity } from "./user-address.entity";
@@ -78,7 +78,7 @@ export class UserEntity {
     @JoinColumn({ name: "ord_id_user" })
     orders: OrderEntity[];
 
-    @ManyToOne(() => UserAddressEntity, (addresses) => addresses.user, {
+    @OneToMany(() => UserAddressEntity, (addresses) => addresses.user, {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "usa_id_user" })

@@ -11,7 +11,10 @@ export class ProductController {
     @Public()
     @Get("/list")
     @HttpCode(HttpStatus.OK)
-    async list(@Query() listProductDto: ListProductDto): Promise<ProductEntity[]> {
+    async list(@Query() listProductDto: ListProductDto): Promise<{
+        data: ProductEntity[];
+        count: number;
+    }> {
         return await this.productService.list(listProductDto);
     }
 }

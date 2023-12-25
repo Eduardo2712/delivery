@@ -11,8 +11,11 @@ export class ProductService {
         private readonly productRepository: Repository<ProductEntity>
     ) {}
 
-    async list(listProductDto: ListProductDto): Promise<ProductEntity[]> {
-        const limit = 10;
+    async list(listProductDto: ListProductDto): Promise<{
+        data: ProductEntity[];
+        count: number;
+    }> {
+        const limit = 20;
         const skip = (listProductDto.page - 1) * limit;
 
         const products = this.productRepository
@@ -30,8 +33,11 @@ export class ProductService {
 
         products.orderBy("product.pro_name", "ASC");
 
-        const aux = await products.skip(skip).take(limit).getMany();
+        const [data, count] = await products.skip(skip).take(limit).getManyAndCount();
 
-        return aux;
+        return {
+            data,
+            count
+        };
     }
 }

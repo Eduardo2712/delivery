@@ -27,28 +27,30 @@ const CardProduct = ({ product }: Props) => {
 
     return (
         <>
-            <div
+            <button
+                type="button"
+                className="rounded-sm bg-white px-4 py-5 flex flex-row items-start h-40 hover:bg-gray-200"
                 onClick={() => setOpenModal(true)}
-                onKeyDown={() => setOpenModal(true)}
-                className="rounded-sm bg-white px-4 py-5 flex flex-row items-start h-40 hover:bg-gray-200 cursor-pointer"
             >
                 <div className="overflow-ellipsis whitespace-nowrap overflow-hidden flex-1 flex flex-col h-full">
                     <div className="overflow-ellipsis whitespace-nowrap overflow-hidden flex-1">
-                        <p className="text-md text-black font-semibold mt-1 overflow-ellipsis whitespace-nowrap overflow-hidden flex-1">
+                        <p className="text-md text-start text-black font-semibold mt-1 overflow-ellipsis whitespace-nowrap overflow-hidden flex-1">
                             {product?.pro_name}
                         </p>
 
-                        <p className="text-sm text-gray-700 mt-3">{product?.pro_description}</p>
+                        <p className="text-sm text-start text-gray-700 mt-3">{product?.pro_description}</p>
                     </div>
 
-                    <p className="text-md text-green-600 overflow-ellipsis whitespace-nowrap overflow-hidden">{formatBRL(product?.pro_price)}</p>
+                    <p className="text-md text-start text-green-600 overflow-ellipsis whitespace-nowrap overflow-hidden">
+                        {formatBRL(product?.pro_price)}
+                    </p>
                 </div>
 
                 <div
                     className="rounded-sm w-44 h-full bg-cover bg-center bg-no-repeat"
                     style={{ backgroundImage: `url(${product?.files?.[0].file?.url ?? ""})` }}
                 />
-            </div>
+            </button>
 
             <ReactModal openModal={openModal} setOpenModal={setOpenModal}>
                 <div className="flex gap-4 px-3">

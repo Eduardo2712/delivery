@@ -32,17 +32,17 @@ const CardCategory = ({ category, filter_category, setFilterCategory }: Props) =
     };
 
     return (
-        <div
-            className={`rounded-md bg-white w-20 h-16 cursor-pointer flex flex-col justify-around items-center hover:bg-slate-300 ${
-                filter_category === category.id ? "bg-blue-700 hover:bg-blue-700" : ""
+        <button
+            type="button"
+            className={`rounded-md w-20 h-16 flex flex-col justify-around items-center ${
+                filter_category === category.id ? "bg-blue-400 hover:bg-blue-500" : "bg-white hover:bg-slate-300"
             }`}
             onClick={() => setFilterCategory(category.id)}
-            onKeyDown={() => setFilterCategory(category.id)}
         >
             {iconCategory()}
 
             <p className="text-black text-sm font-semibold">{category.cat_name}</p>
-        </div>
+        </button>
     );
 };
 

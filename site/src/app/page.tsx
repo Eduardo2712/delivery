@@ -2,7 +2,7 @@
 
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { FaMagnifyingGlass } from "react-icons/fa6";
+import { FaAngleLeft, FaAngleRight, FaAnglesLeft, FaAnglesRight, FaChevronLeft, FaMagnifyingGlass } from "react-icons/fa6";
 import Header from "@/components/header";
 import CardCategory from "@/components/card-category";
 import { list } from "@/requests/category.request";
@@ -20,8 +20,14 @@ const Page: NextPage = () => {
         page: 1
     });
     const [categories, setCategories] = useState<CategoryType[]>([]);
-    const [products, setProducts] = useState<ProductType[]>([]);
+    const [products, setProducts] = useState<{ data: ProductType[]; count: number }>({
+        data: [],
+        count: 0
+    });
     const [loading, setLoading] = useState<boolean>(false);
+
+    const last_page = Math.ceil(products.count / 20);
+    const array_page = Array.from({ length: last_page }, (_, index) => index + 1);
 
     useEffect(() => {
         (async () => {
@@ -96,18 +102,72 @@ const Page: NextPage = () => {
                             key={category.id}
                             category={category}
                             filter_category={filter.id_category}
-                            setFilterCategory={(e) => setFilter((ant) => ({ ...ant, category: e }))}
+                            setFilterCategory={(e) => setFilter((ant) => ({ ...ant, id_category: e }))}
                         />
                     ))}
                 </div>
 
-                <div className="container mx-auto mt-8 grid grid-cols-1 gap-4 px-4 lg:grid-cols-2">
-                    {products.length > 0 ? (
-                        products.map((product) => <CardProduct key={product.id} product={product} />)
-                    ) : (
-                        <p className="text-gray-50">No products</p>
-                    )}
-                </div>
+                {products.data.length > 0 ? (
+                    <>
+                        <div className="container mx-auto mt-8 px-4">
+                            <p className="text-gray-100 text-sm">
+                                Found {products.count} {products.count === 1 ? "product" : "products"}
+                            </p>
+                        </div>
+
+                        <div className="container mx-auto mt-4 grid grid-cols-1 gap-4 px-4 lg:grid-cols-2">
+                            {products.data.map((product) => (
+                                <CardProduct key={product.id} product={product} />
+                            ))}
+                        </div>
+
+                        <div className="flex justify-center items-center gap-3 mt-7">
+                            {filter.page > 1 && (
+                                <FaAnglesLeft
+                                    className="text-gray-400 cursor-pointer"
+                                    size={20}
+                                    onClick={() => setFilter((ant) => ({ ...ant, page: 1 }))}
+                                />
+                            )}
+
+                            {array_page
+                                .filter((page) => page < filter.page && page > filter.page - 3)
+                                .map((page, key) => (
+                                    <p
+                                        key={key}
+                                        className="text-gray-400 text-xl cursor-pointer"
+                                        onClick={() => setFilter((ant) => ({ ...ant, page }))}
+                                    >
+                                        {page}
+                                    </p>
+                                ))}
+
+                            <p className="text-gray-50 text-xl">{filter.page}</p>
+
+                            {array_page
+                                .filter((page) => page > filter.page && page < filter.page + 3)
+                                .map((page, key) => (
+                                    <p
+                                        key={key}
+                                        className="text-gray-400 text-xl cursor-pointer"
+                                        onClick={() => setFilter((ant) => ({ ...ant, page }))}
+                                    >
+                                        {page}
+                                    </p>
+                                ))}
+
+                            {filter.page < last_page && (
+                                <FaAnglesRight
+                                    className="text-gray-400 cursor-pointer"
+                                    size={20}
+                                    onClick={() => setFilter((ant) => ({ ...ant, page: last_page }))}
+                                />
+                            )}
+                        </div>
+                    </>
+                ) : (
+                    <p className="text-gray-50 text-center text-lg mt-14">No products</p>
+                )}
             </LoadingSpinner>
         </>
     );

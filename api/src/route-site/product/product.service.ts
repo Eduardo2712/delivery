@@ -32,12 +32,6 @@ export class ProductService {
 
         const aux = await products.skip(skip).take(limit).getMany();
 
-        for (const product of aux) {
-            for (const file of product.files) {
-                file.file.fil_url = await file.file.fileUrl;
-            }
-        }
-
         return aux;
     }
 }

@@ -7,6 +7,7 @@ import { ILike, Repository } from "typeorm";
 import { compareSync, hashSync } from "bcrypt";
 import { ServiceHelpers } from "src/helpers/service.helper";
 import { FileEntity } from "src/entities/file.entity";
+import { DatatableAdminDto } from "./dto/datatable-admin.dto";
 
 @Injectable()
 export class AdminService {
@@ -42,17 +43,17 @@ export class AdminService {
         return null;
     }
 
-    async findAll(search: string, rows_per_page: number, page: number): Promise<AdminEntity[]> {
+    async findAll(datatableAdminDto: DatatableAdminDto): Promise<AdminEntity[]> {
         return await this.adminRepository.find({
             where: {
                 adm_active: true,
-                adm_name: ILike(`%${search}%`)
+                adm_name: ILike(`%${datatableAdminDto.search}%`)
             },
             order: {
                 id: "desc"
             },
-            take: rows_per_page,
-            skip: rows_per_page * (page - 1)
+            take: datatableAdminDto.rows_per_page,
+            skip: datatableAdminDto.rows_per_page * (datatableAdminDto.page - 1)
         });
     }
 
@@ -94,10 +95,6 @@ export class AdminService {
 
     async findOne(id: number): Promise<AdminEntity> {
         const obj = await this.adminRepository.findOneOrFail({ where: { id, adm_active: true }, relations: { picture: true } });
-
-        if (obj.adm_id_picture) {
-            obj.picture.fil_url = await obj.picture.fileUrl;
-        }
 
         return obj;
     }

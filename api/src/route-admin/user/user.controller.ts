@@ -1,6 +1,7 @@
 import { Controller, Delete, Get, HttpCode, Param, Query, HttpStatus } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { UserEntity } from "src/entities/user.entity";
+import { DatatableUserDto } from "./dto/datatable-user.dto";
 
 @Controller("admin/user")
 export class UserController {
@@ -8,8 +9,8 @@ export class UserController {
 
     @Get("/datatable")
     @HttpCode(HttpStatus.OK)
-    async findAll(@Query("search") search?: string, @Query("rows_per_page") rows_per_page = 10, @Query("page") page = 1): Promise<UserEntity[]> {
-        return await this.userService.findAll(search, rows_per_page, page);
+    async findAll(@Query() datatableUserDto: DatatableUserDto): Promise<UserEntity[]> {
+        return await this.userService.findAll(datatableUserDto);
     }
 
     @Delete(":id")

@@ -15,6 +15,7 @@ export type AdminType = {
 export type FileType = {
     id: number;
     fil_url: string;
+    url?: string;
     fil_name: string;
     fil_size: number;
     fil_mimetype: string;

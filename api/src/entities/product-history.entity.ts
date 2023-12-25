@@ -53,4 +53,8 @@ export class ProductHistoryEntity {
     })
     @JoinColumn({ name: "prh_id_admin" })
     admin: AdminEntity;
+
+    constructor(partial: Partial<ProductHistoryEntity>) {
+        Object.assign(this, partial);
+    }
 }

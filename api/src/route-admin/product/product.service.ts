@@ -10,6 +10,7 @@ import { ServiceHelpers } from "src/helpers/service.helper";
 import { ProductHistoryEntity } from "src/entities/product-history.entity";
 import { AdminPayloadType } from "src/types/types";
 import { CategoryEntity } from "src/entities/category.entity";
+import { DatatableProductDto } from "./dto/datatable-product.dto";
 
 @Injectable()
 export class ProductService {
@@ -146,28 +147,20 @@ export class ProductService {
             }
         });
 
-        for (const file of obj.files) {
-            file.file.fil_url = await file.file.fileUrl;
-        }
-
-        for (const history of obj.histories) {
-            history.admin.password = undefined;
-        }
-
         return obj;
     }
 
-    async findAll(search: string, rows_per_page: number, page: number): Promise<ProductEntity[]> {
+    async findAll(datatableProductDto: DatatableProductDto): Promise<ProductEntity[]> {
         return await this.productRepository.find({
             where: {
                 pro_active: true,
-                pro_name: ILike(`%${search}%`)
+                pro_name: ILike(`%${datatableProductDto.search}%`)
             },
             order: {
                 id: "desc"
             },
-            take: rows_per_page,
-            skip: rows_per_page * (page - 1)
+            take: datatableProductDto.rows_per_page,
+            skip: datatableProductDto.rows_per_page * (datatableProductDto.page - 1)
         });
     }
 

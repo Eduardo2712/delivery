@@ -46,7 +46,7 @@ const CardProduct = ({ product }: Props) => {
 
                 <div
                     className="rounded-sm w-44 h-full bg-cover bg-center bg-no-repeat"
-                    style={{ backgroundImage: `url(${product?.files?.[0].file?.fil_url ?? ""})` }}
+                    style={{ backgroundImage: `url(${product?.files?.[0].file?.url ?? ""})` }}
                 />
             </div>
 
@@ -64,7 +64,7 @@ const CardProduct = ({ product }: Props) => {
 
                         <div
                             className="rounded-sm w-96 h-64 bg-cover bg-center bg-no-repeat"
-                            style={{ backgroundImage: `url(${product?.files?.[numberImage].file?.fil_url ?? ""})` }}
+                            style={{ backgroundImage: `url(${product?.files?.[numberImage].file?.url ?? ""})` }}
                         />
 
                         <button

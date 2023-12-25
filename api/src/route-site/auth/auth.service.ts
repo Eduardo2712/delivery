@@ -53,10 +53,6 @@ export class AuthService {
             throw new NotFoundException("Email and/or password invalid!");
         }
 
-        if (user.use_id_picture) {
-            user.picture.fil_url = await user.picture.fileUrl;
-        }
-
         const payload = { sub: user.id, email: user.email };
 
         const result = { ...user, password: undefined };

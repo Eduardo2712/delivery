@@ -30,4 +30,8 @@ export class CategoryEntity {
     @OneToMany(() => ProductEntity, (product) => product.category, { onDelete: "CASCADE" })
     @JoinColumn({ name: "pro_id_category" })
     products: ProductEntity[];
+
+    constructor(partial: Partial<CategoryEntity>) {
+        Object.assign(this, partial);
+    }
 }

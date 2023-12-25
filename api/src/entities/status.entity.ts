@@ -31,4 +31,8 @@ export class StatusEntity {
     })
     @JoinColumn({ name: "ors_id_status" })
     status: OrderStatusEntity[];
+
+    constructor(partial: Partial<StatusEntity>) {
+        Object.assign(this, partial);
+    }
 }

@@ -22,6 +22,7 @@ import { CreateProductDto } from "./dto/create-product.dto";
 import { Request } from "express";
 import { AdminPayloadType } from "src/types/types";
 import { ProductEntity } from "src/entities/product.entity";
+import { DatatableProductDto } from "./dto/datatable-product.dto";
 
 @Controller("admin/product")
 export class ProductController {
@@ -62,8 +63,8 @@ export class ProductController {
 
     @Get("/datatable")
     @HttpCode(HttpStatus.OK)
-    async findAll(@Query("search") search?: string, @Query("rows_per_page") rows_per_page = 10, @Query("page") page = 1): Promise<ProductEntity[]> {
-        return await this.productService.findAll(search, rows_per_page, page);
+    async findAll(@Query() datatableProductDto: DatatableProductDto): Promise<ProductEntity[]> {
+        return await this.productService.findAll(datatableProductDto);
     }
 
     @Get(":id")

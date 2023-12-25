@@ -58,8 +58,8 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                 {data?.picture && (
                     <CustomBox text="Picture">
                         <div className="flex items-center justify-center flex-col">
-                            <a className="flex justify-center" href={data.picture.fil_url} target="_blank">
-                                <img src={data.picture.fil_url} alt={"Picture admin"} className="max-w-md h-full object-cover w-full" />
+                            <a className="flex justify-center" href={data.picture.url} target="_blank">
+                                <img src={data.picture.url} alt={"Picture admin"} className="max-w-md h-full object-cover w-full" />
                             </a>
                         </div>
                     </CustomBox>

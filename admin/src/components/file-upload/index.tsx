@@ -94,9 +94,9 @@ const FileUpload = <T,>({
                         <div className="flex flex-row items-end gap-4 flex-wrap justify-center mb-4">
                             {pictures_old.map((picture, key) => (
                                 <div className="flex items-center justify-center flex-col" key={picture.id}>
-                                    <a className="flex justify-center" href={picture?.file?.fil_url ?? ""} target="_blank">
+                                    <a className="flex justify-center" href={picture?.file?.url ?? ""} target="_blank">
                                         <img
-                                            src={picture?.file?.fil_url ?? ""}
+                                            src={picture?.file?.url ?? ""}
                                             alt={picture?.file?.fil_name}
                                             className="max-w-md h-full object-cover w-96 rounded-sm"
                                         />

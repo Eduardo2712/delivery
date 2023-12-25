@@ -55,7 +55,7 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                                             {user?.picture ? (
                                                 <div
                                                     className="bg-cover bg-no-repeat bg-center w-7 h-7 rounded-full"
-                                                    style={{ backgroundImage: `url(${user.picture.fil_url})` }}
+                                                    style={{ backgroundImage: `url(${user.picture.url})` }}
                                                 />
                                             ) : (
                                                 <FaUser className="text-white" size={16} />

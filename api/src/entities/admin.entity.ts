@@ -34,11 +34,11 @@ export class AdminEntity {
     })
     adm_phone: string;
 
+    @Exclude()
     @Column({
         nullable: false,
         type: "varchar"
     })
-    @Exclude()
     password: string;
 
     @Column({
@@ -70,4 +70,8 @@ export class AdminEntity {
     })
     @JoinColumn({ name: "prh_id_admin" })
     product_histories: ProductHistoryEntity[];
+
+    constructor(partial: Partial<AdminEntity>) {
+        Object.assign(this, partial);
+    }
 }

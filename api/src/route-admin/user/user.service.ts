@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserEntity } from "src/entities/user.entity";
 import { ILike, Repository } from "typeorm";
+import { DatatableUserDto } from "./dto/datatable-user.dto";
 
 @Injectable()
 export class UserService {
@@ -10,21 +11,17 @@ export class UserService {
         private readonly userRepository: Repository<UserEntity>
     ) {}
 
-    async findAll(search: string, rows_per_page: number, page: number): Promise<UserEntity[]> {
+    async findAll(datatableUserDto: DatatableUserDto): Promise<UserEntity[]> {
         const users = await this.userRepository.find({
             where: {
                 use_active: true,
-                use_name: ILike(`%${search}%`)
+                use_name: ILike(`%${datatableUserDto.search}%`)
             },
             order: {
                 id: "desc"
             },
-            take: rows_per_page,
-            skip: rows_per_page * (page - 1)
-        });
-
-        users.forEach((user) => {
-            user.password = undefined;
+            take: datatableUserDto.rows_per_page,
+            skip: datatableUserDto.rows_per_page * (datatableUserDto.page - 1)
         });
 
         return users;
@@ -55,12 +52,6 @@ export class UserService {
                 use_active: true
             }
         });
-
-        if (obj.picture) {
-            obj.picture.fil_url = await obj.picture.fileUrl;
-        }
-
-        obj.password = undefined;
 
         return obj;
     }

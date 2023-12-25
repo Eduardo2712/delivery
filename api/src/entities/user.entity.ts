@@ -3,6 +3,7 @@ import { OrderEntity } from "./order.entity";
 import { FileEntity } from "./file.entity";
 import { UserAddressEntity } from "./user-address.entity";
 import { ProductRatingEntity } from "./product-rating.entity";
+import { Exclude } from "class-transformer";
 
 @Entity({
     name: "users"
@@ -41,6 +42,7 @@ export class UserEntity {
     })
     use_phone: string;
 
+    @Exclude()
     @Column({
         nullable: false,
         type: "varchar"
@@ -89,4 +91,8 @@ export class UserEntity {
     })
     @JoinColumn({ name: "prr_id_user" })
     ratings: ProductRatingEntity[];
+
+    constructor(partial: Partial<UserEntity>) {
+        Object.assign(this, partial);
+    }
 }

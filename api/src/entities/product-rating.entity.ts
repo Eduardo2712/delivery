@@ -46,4 +46,8 @@ export class ProductRatingEntity {
     @ManyToOne(() => UserEntity, (user) => user.ratings, { onDelete: "CASCADE" })
     @JoinColumn({ name: "prr_id_user" })
     user: UserEntity;
+
+    constructor(partial: Partial<ProductRatingEntity>) {
+        Object.assign(this, partial);
+    }
 }

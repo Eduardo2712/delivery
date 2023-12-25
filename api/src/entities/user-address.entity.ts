@@ -74,4 +74,8 @@ export class UserAddressEntity {
     })
     @JoinColumn({ name: "usa_id_user" })
     user: UserEntity;
+
+    constructor(partial: Partial<UserAddressEntity>) {
+        Object.assign(this, partial);
+    }
 }

@@ -48,4 +48,8 @@ export class ItemExtraEntity {
         name: "itx_id_item"
     })
     item: ItemEntity;
+
+    constructor(partial: Partial<ItemExtraEntity>) {
+        Object.assign(this, partial);
+    }
 }

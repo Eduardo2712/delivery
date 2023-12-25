@@ -20,6 +20,7 @@ import { UpdateAdminDto } from "./dto/update-admin.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { ConstHelper } from "src/helpers/const.helper";
 import { AdminEntity } from "src/entities/admin.entity";
+import { DatatableAdminDto } from "./dto/datatable-admin.dto";
 
 @Controller("admin/admin")
 export class AdminController {
@@ -64,8 +65,8 @@ export class AdminController {
 
     @Get("/datatable")
     @HttpCode(HttpStatus.OK)
-    async findAll(@Query("search") search?: string, @Query("rows_per_page") rows_per_page = 10, @Query("page") page = 1): Promise<AdminEntity[]> {
-        return await this.adminService.findAll(search, rows_per_page, page);
+    async findAll(@Query() datatableAdminDto: DatatableAdminDto): Promise<AdminEntity[]> {
+        return await this.adminService.findAll(datatableAdminDto);
     }
 
     @Get(":id")

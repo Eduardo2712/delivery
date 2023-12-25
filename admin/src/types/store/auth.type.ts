@@ -6,6 +6,7 @@ export type AuthStoreType = {
 export type PictureStoreType = {
     id: number;
     fil_url: string;
+    url?: string;
     created_at: Date;
     updated_at: Date;
 };

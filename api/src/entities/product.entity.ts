@@ -105,4 +105,8 @@ export class ProductEntity {
     })
     @JoinColumn({ name: "pex_id_product" })
     extra: ProductExtraEntity;
+
+    constructor(partial: Partial<ProductEntity>) {
+        Object.assign(this, partial);
+    }
 }

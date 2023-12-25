@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { OrderEntity } from "src/entities/order.entity";
 import { Repository } from "typeorm";
+import { DatatableOrderDto } from "./dto/datatable-order.dto";
 
 @Injectable()
 export class OrderService {
@@ -11,10 +12,7 @@ export class OrderService {
     ) {}
 
     async findAll(
-        search: string,
-        rows_per_page: number,
-        page: number,
-        id_user: number
+        datatableOrderDto: DatatableOrderDto
     ): Promise<Array<OrderEntity & { items_count: number; order_value: number; status: string; status_color: string }>> {
         const query = this.orderRepository
             .createQueryBuilder("order")
@@ -23,21 +21,21 @@ export class OrderService {
             .leftJoin("order.items", "items")
             .leftJoin("order.order_status", "order_status", "order_status.ors_active = :active", { active: true })
             .leftJoin("order_status.status", "status")
-            .select(["order", "user.id", "user.use_name", "items", "order_status", "status"]);
+            .select(["order", "user", "items", "order_status", "status"]);
 
-        if (search && search.trim() !== "") {
-            query.andWhere("user.use_name LIKE :name", { name: `%${search}%` });
+        if (datatableOrderDto.search && datatableOrderDto.search.trim() !== "") {
+            query.andWhere("user.use_name LIKE :name", { name: `%${datatableOrderDto.search}%` });
         }
 
-        if (id_user) {
-            query.andWhere("user.id = :id", { id: id_user });
+        if (datatableOrderDto.id_user) {
+            query.andWhere("user.id = :id", { id: datatableOrderDto.id_user });
         }
 
         query
             .orderBy("order.id", "DESC")
             .orderBy("order_status.id", "DESC")
-            .take(rows_per_page)
-            .skip(rows_per_page * (page - 1));
+            .take(datatableOrderDto.rows_per_page)
+            .skip(datatableOrderDto.rows_per_page * (datatableOrderDto.page - 1));
 
         const result = await query.getMany();
 
@@ -65,8 +63,6 @@ export class OrderService {
             .leftJoin("order.user", "user")
             .select(["order", "items", "product", "order_status", "status", "user"])
             .getOneOrFail();
-
-        obj.user.password = undefined;
 
         return obj;
     }

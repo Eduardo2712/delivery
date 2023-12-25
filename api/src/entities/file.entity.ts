@@ -1,4 +1,15 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+    AfterLoad,
+    BaseEntity,
+    Column,
+    CreateDateColumn,
+    Entity,
+    JoinColumn,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn
+} from "typeorm";
 import { ProductFileEntity } from "./product-file.entity";
 import { ServiceHelpers } from "src/helpers/service.helper";
 import { AdminEntity } from "./admin.entity";
@@ -66,15 +77,15 @@ export class FileEntity extends BaseEntity {
     @JoinColumn({ name: "pex_id_file" })
     extra: ProductExtraEntity;
 
-    get fileUrl(): Promise<string> {
-        return this.getUrl();
+    url: string;
+
+    @AfterLoad()
+    async getUrl() {
+        this.url = await ServiceHelpers.urlFile(this.fil_url);
     }
 
-    private async getUrl(): Promise<string> {
-        try {
-            return await ServiceHelpers.urlFile(this.fil_url);
-        } catch (error) {
-            return "";
-        }
+    constructor(partial: Partial<FileEntity>) {
+        super();
+        Object.assign(this, partial);
     }
 }

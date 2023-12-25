@@ -38,4 +38,8 @@ export class ProductFileEntity {
     })
     @JoinColumn({ name: "prl_id_product" })
     product: ProductEntity;
+
+    constructor(partial: Partial<ProductFileEntity>) {
+        Object.assign(this, partial);
+    }
 }

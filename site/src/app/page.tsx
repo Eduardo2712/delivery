@@ -133,13 +133,14 @@ const Page: NextPage = () => {
                             {array_page
                                 .filter((page) => page < filter.page && page > filter.page - 3)
                                 .map((page, key) => (
-                                    <p
+                                    <button
+                                        type="button"
                                         key={key}
                                         className="text-gray-400 text-xl cursor-pointer"
                                         onClick={() => setFilter((ant) => ({ ...ant, page }))}
                                     >
                                         {page}
-                                    </p>
+                                    </button>
                                 ))}
 
                             <p className="text-gray-50 text-xl">{filter.page}</p>
@@ -147,13 +148,14 @@ const Page: NextPage = () => {
                             {array_page
                                 .filter((page) => page > filter.page && page < filter.page + 3)
                                 .map((page, key) => (
-                                    <p
+                                    <button
+                                        type="button"
                                         key={key}
                                         className="text-gray-400 text-xl cursor-pointer"
                                         onClick={() => setFilter((ant) => ({ ...ant, page }))}
                                     >
                                         {page}
-                                    </p>
+                                    </button>
                                 ))}
 
                             {filter.page < last_page && (

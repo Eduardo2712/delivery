@@ -3,6 +3,7 @@ import { formatBRL } from "@/utils/other";
 import { useState } from "react";
 import ReactModal from "../react-modal";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
+import StyleInput from "../style-input";
 
 type Props = {
     product: ProductType;
@@ -91,7 +92,18 @@ const CardProduct = ({ product }: Props) => {
                             product?.pro_number_people === 1 ? "person" : "people"
                         }`}</p>
 
-                        <p className="text-sm text-green-600 mt-3">{formatBRL(product?.pro_price)}</p>
+                        <div className="flex justify-between items-center mt-3">
+                            <p className="text-sm text-green-600">{formatBRL(product?.pro_price)}</p>
+                        </div>
+
+                        <div className="h-40 overflow-y-auto">
+                            <textarea
+                                className="mt-4 block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-400 sm:text-sm sm:leading-6 resize-none"
+                                placeholder="Any commentary?"
+                                value={formModal.comentary}
+                                onChange={(e) => setFormModal((ant) => ({ ...ant, comentary: e.target.value }))}
+                            />
+                        </div>
                     </div>
                 </div>
 

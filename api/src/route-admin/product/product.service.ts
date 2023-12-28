@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, Scope } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FileEntity } from "src/entities/file.entity";
 import { ProductEntity } from "src/entities/product.entity";
@@ -10,9 +10,10 @@ import { ServiceHelpers } from "src/helpers/service.helper";
 import { ProductHistoryEntity } from "src/entities/product-history.entity";
 import { CategoryEntity } from "src/entities/category.entity";
 import { DatatableProductDto } from "./dto/datatable-product.dto";
-import { AdminStorage } from "src/storages/admin.storage";
+import { REQUEST } from "@nestjs/core";
+import { Request } from "express";
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export class ProductService {
     constructor(
         @InjectRepository(ProductEntity)
@@ -25,6 +26,7 @@ export class ProductService {
         private readonly productHistoryRepository: Repository<ProductHistoryEntity>,
         @InjectRepository(CategoryEntity)
         private readonly categoryRepository: Repository<CategoryEntity>,
+        @Inject(REQUEST) private readonly request: Request,
         private dataSource: DataSource
     ) {}
 
@@ -77,15 +79,13 @@ export class ProductService {
         await query_runner.connect();
         await query_runner.startTransaction();
 
-        console.log(AdminStorage.get());
-
         try {
             if (product.pro_price !== updateProductDto.pro_price) {
                 const aux = this.productHistoryRepository.create({
                     prh_id_product: product.id,
                     prh_price: updateProductDto.pro_price,
                     prh_date: new Date(),
-                    prh_id_admin: AdminStorage.get().id
+                    prh_id_admin: this.request.user["sub"]
                 });
 
                 await this.productHistoryRepository.save(aux);

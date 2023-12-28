@@ -1,13 +1,12 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { APP_GUARD } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
 import { AuthGuard } from "./route-admin/auth/guard/auth.guard";
 import { RouteAdminModule } from "./route-admin/route-admin.module";
 import { ThrottlerModule, ThrottlerGuard } from "@nestjs/throttler";
 import { RouteSiteModule } from "./route-site/route-site.module";
-import { ConfigService } from "@nestjs/config";
 
 @Module({
     imports: [

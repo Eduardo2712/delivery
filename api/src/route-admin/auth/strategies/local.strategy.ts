@@ -2,7 +2,6 @@ import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-local";
 import { AuthService } from "../auth.service";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { AdminStorage } from "src/storages/admin.storage";
 import { AdminEntity } from "src/entities/admin.entity";
 
 @Injectable()
@@ -19,9 +18,6 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         if (!admin) {
             throw new UnauthorizedException("Email and/or password are invalid");
         }
-
-        console.log("admin", admin);
-        AdminStorage.set(admin);
 
         return admin;
     }

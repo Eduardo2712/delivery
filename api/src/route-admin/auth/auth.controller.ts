@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from "@nestjs/common";
+import { Controller, Post, Body, HttpCode, HttpStatus } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./dto/auth.dto";
 import { Public } from "./decorators/is-public.decorator";
@@ -10,6 +10,7 @@ export class AuthController {
 
     @Public()
     @Post("/login")
+    @HttpCode(HttpStatus.OK)
     async login(@Body() authDto: AuthDto): Promise<{
         token: string;
         admin: AdminEntity;

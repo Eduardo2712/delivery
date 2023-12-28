@@ -29,7 +29,7 @@ const Page: NextPage = () => {
         try {
             const response = await create(createFormData(values));
 
-            if (response.status !== HttpStatusCode.Created) {
+            if (response.status !== HttpStatusCode.Ok) {
                 return toast.error(response.data.message);
             }
 

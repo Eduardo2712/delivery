@@ -30,7 +30,7 @@ const Page: NextPage = () => {
                 password: values.password
             });
 
-            if (response.status !== HttpStatusCode.Created) {
+            if (response.status !== HttpStatusCode.Ok) {
                 return toast.error(response.data.message);
             }
 

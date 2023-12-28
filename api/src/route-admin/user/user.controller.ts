@@ -3,7 +3,7 @@ import { UserService } from "./user.service";
 import { UserEntity } from "src/entities/user.entity";
 import { DatatableUserDto } from "./dto/datatable-user.dto";
 
-@Controller("admin/user")
+@Controller()
 export class UserController {
     constructor(private readonly userService: UserService) {}
 

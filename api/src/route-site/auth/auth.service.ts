@@ -14,20 +14,20 @@ export class AuthService {
     ) {}
 
     async validateUser(email: string, pass: string) {
-        const user = await this.userRepository.findOneOrFail({
-            where: {
-                email,
-                use_active: true
-            }
-        });
+        // const user = await this.userRepository.findOneOrFail({
+        //     where: {
+        //         email,
+        //         use_active: true
+        //     }
+        // });
 
-        const is_password_valid = compareSync(pass, user.password);
+        // const is_password_valid = compareSync(pass, user.password);
 
-        if (!is_password_valid) {
-            return null;
-        }
+        // if (!is_password_valid) {
+        //     return null;
+        // }
 
-        return user;
+        return null;
     }
 
     async login(email: string, pass: string) {

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { AdminEntity } from "src/entities/admin.entity";
 import { compareSync } from "bcrypt";
 import { JwtService } from "@nestjs/jwt";
@@ -13,56 +13,34 @@ export class AuthService {
         private readonly jwtService: JwtService
     ) {}
 
-    async validateAdmin(email: string, pass: string): Promise<AdminEntity> {
-        const admin = await this.adminRepository.findOneOrFail({
-            where: {
-                email,
-                adm_active: true,
-                adm_status: true
-            }
-        });
-
-        const is_password_valid = compareSync(pass, admin.password);
-
-        if (!is_password_valid) {
-            return null;
-        }
-
-        return admin;
-    }
-
-    async login(
-        email: string,
-        pass: string
-    ): Promise<{
-        token: string;
-        admin: AdminEntity;
-    }> {
+    async validateAdmin(email: string, password: string): Promise<AdminEntity> {
         const admin = await this.adminRepository.findOne({
             where: {
                 email,
                 adm_active: true,
                 adm_status: true
             },
-            relations: {
-                picture: true
-            }
+            relations: ["picture"]
         });
 
-        if (!admin) {
-            throw new NotFoundException("Email and/or password invalid!");
+        if (admin && compareSync(password, admin.password)) {
+            return admin;
         }
 
-        const is_password_valid = compareSync(pass, admin.password);
+        return null;
+    }
 
-        if (!is_password_valid) {
-            throw new NotFoundException("Email and/or password invalid!");
-        }
-
-        const payload = { sub: admin.id, email: admin.email };
+    async login(admin: AdminEntity): Promise<{
+        token: string;
+        admin: AdminEntity;
+    }> {
+        const payload = {
+            sub: admin.id,
+            email: admin.email
+        };
 
         return {
-            token: await this.jwtService.signAsync(payload),
+            token: this.jwtService.sign(payload),
             admin
         };
     }

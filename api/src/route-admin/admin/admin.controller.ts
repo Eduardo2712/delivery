@@ -22,7 +22,11 @@ import { ConstHelper } from "src/helpers/const.helper";
 import { AdminEntity } from "src/entities/admin.entity";
 import { DatatableAdminDto } from "./dto/datatable-admin.dto";
 
-@Controller("admin/admin")
+const FileConfig = new ParseFilePipe({
+    validators: [new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE }), new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ })]
+});
+
+@Controller()
 export class AdminController {
     constructor(private readonly adminService: AdminService) {}
 
@@ -32,14 +36,7 @@ export class AdminController {
     async update(
         @Param("id") id: number,
         @Body() updateAdminDto: UpdateAdminDto,
-        @UploadedFile(
-            new ParseFilePipe({
-                validators: [
-                    new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE }),
-                    new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ })
-                ]
-            })
-        )
+        @UploadedFile(FileConfig)
         picture: Express.Multer.File
     ): Promise<string | null> {
         return await this.adminService.update(id, updateAdminDto, picture);
@@ -50,14 +47,7 @@ export class AdminController {
     @UseInterceptors(FileInterceptor("picture"))
     async create(
         @Body() createAdminDto: CreateAdminDto,
-        @UploadedFile(
-            new ParseFilePipe({
-                validators: [
-                    new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE }),
-                    new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ })
-                ]
-            })
-        )
+        @UploadedFile(FileConfig)
         picture: Express.Multer.File
     ): Promise<string | null> {
         return await this.adminService.create(createAdminDto, picture);

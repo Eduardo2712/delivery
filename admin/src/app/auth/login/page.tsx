@@ -31,7 +31,7 @@ const Page: NextPage = () => {
             });
 
             if (response.status !== HttpStatusCode.Ok) {
-                return toast.error(response.data.message);
+                return toast.error(response.data?.message);
             }
 
             if (response.data.admin && response.data.token) {

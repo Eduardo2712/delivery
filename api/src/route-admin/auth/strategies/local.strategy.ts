@@ -8,12 +8,13 @@ import { AdminEntity } from "src/entities/admin.entity";
 export class LocalStrategy extends PassportStrategy(Strategy) {
     constructor(private readonly authService: AuthService) {
         super({
-            usernameField: "email"
+            usernameField: "email",
+            passwordField: "password"
         });
     }
 
-    async validate(email: string, pass: string): Promise<AdminEntity> {
-        const admin = await this.authService.validateAdmin(email, pass);
+    async validate(email: string, password: string): Promise<AdminEntity> {
+        const admin = await this.authService.validateAdmin(email, password);
 
         if (!admin) {
             throw new UnauthorizedException("Email and/or password are invalid");

@@ -3,7 +3,7 @@ import { OrderService } from "./order.service";
 import { OrderEntity } from "src/entities/order.entity";
 import { DatatableOrderDto } from "./dto/datatable-order.dto";
 
-@Controller("admin/order")
+@Controller()
 export class OrderController {
     constructor(private readonly orderService: OrderService) {}
 

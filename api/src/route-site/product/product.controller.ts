@@ -4,7 +4,7 @@ import { Public } from "../auth/decorators/is-public.decorator";
 import { ProductEntity } from "src/entities/product.entity";
 import { ListProductDto } from "./dto/list-product.dto";
 
-@Controller("site/product")
+@Controller()
 export class ProductController {
     constructor(private readonly productService: ProductService) {}
 

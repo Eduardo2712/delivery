@@ -21,7 +21,7 @@ import { CreateProductDto } from "./dto/create-product.dto";
 import { ProductEntity } from "src/entities/product.entity";
 import { DatatableProductDto } from "./dto/datatable-product.dto";
 
-@Controller("admin/product")
+@Controller()
 export class ProductController {
     constructor(private readonly productService: ProductService) {}
 

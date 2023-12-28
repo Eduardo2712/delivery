@@ -3,7 +3,7 @@ import { CategoryService } from "./category.service";
 import { CategoryEntity } from "src/entities/category.entity";
 import { Public } from "../auth/decorators/is-public.decorator";
 
-@Controller("site/category")
+@Controller()
 export class CategoryController {
     constructor(private readonly categoryService: CategoryService) {}
 

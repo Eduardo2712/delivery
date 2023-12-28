@@ -14,10 +14,9 @@ import { AdminEntity } from "src/entities/admin.entity";
         ConfigModule.forRoot(),
         PassportModule,
         JwtModule.register({
-            global: true,
-            privateKey: process.env.JWT_SECRET,
+            secret: process.env.JWT_SECRET,
             signOptions: {
-                expiresIn: "30d"
+                expiresIn: "3600s"
             }
         }),
         TypeOrmModule.forFeature([AdminEntity])

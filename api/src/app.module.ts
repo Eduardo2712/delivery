@@ -1,12 +1,10 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule, ConfigService } from "@nestjs/config";
-import { APP_GUARD } from "@nestjs/core";
-import { JwtService } from "@nestjs/jwt";
-import { AuthGuard } from "./route-admin/auth/guard/auth.guard";
-import { RouteAdminModule } from "./route-admin/route-admin.module";
+import { APP_GUARD, RouterModule } from "@nestjs/core";
 import { ThrottlerModule, ThrottlerGuard } from "@nestjs/throttler";
-import { RouteSiteModule } from "./route-site/route-site.module";
+import { RouteAdmin } from "./route-admin/route-admin.route";
+import { RouteAdminModule } from "./route-admin/route-admin.module";
 
 @Module({
     imports: [
@@ -26,6 +24,7 @@ import { RouteSiteModule } from "./route-site/route-site.module";
             inject: [ConfigService]
         }),
         RouteAdminModule,
+        RouterModule.register([...RouteAdmin]),
         ThrottlerModule.forRoot({
             throttlers: [
                 {
@@ -33,15 +32,9 @@ import { RouteSiteModule } from "./route-site/route-site.module";
                     limit: 10
                 }
             ]
-        }),
-        RouteSiteModule
+        })
     ],
     providers: [
-        JwtService,
-        {
-            provide: APP_GUARD,
-            useClass: AuthGuard
-        },
         {
             provide: APP_GUARD,
             useClass: ThrottlerGuard

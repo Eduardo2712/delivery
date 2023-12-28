@@ -28,12 +28,16 @@ export class AuthService {
             return null;
         }
 
-        const result = { ...admin, password: undefined };
-
-        return result;
+        return admin;
     }
 
-    async login(email: string, pass: string): Promise<any> {
+    async login(
+        email: string,
+        pass: string
+    ): Promise<{
+        token: string;
+        admin: AdminEntity;
+    }> {
         const admin = await this.adminRepository.findOne({
             where: {
                 email,

@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { FileEntity } from "./file.entity";
 import { ProductEntity } from "./product.entity";
 import { ItemExtraEntity } from "./item-extra.entity";
@@ -60,7 +60,7 @@ export class ProductExtraEntity {
     @JoinColumn({ name: "pex_id_file" })
     file: FileEntity;
 
-    @OneToOne(() => ProductEntity, (product) => product.extra, {
+    @ManyToOne(() => ProductEntity, (product) => product.extras, {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "pex_id_product" })

@@ -10,7 +10,6 @@ import {
     ParseFilePipe,
     Post,
     Query,
-    Req,
     UploadedFiles,
     UseInterceptors
 } from "@nestjs/common";
@@ -19,8 +18,6 @@ import { FilesInterceptor } from "@nestjs/platform-express";
 import { ConstHelper } from "src/helpers/const.helper";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { CreateProductDto } from "./dto/create-product.dto";
-import { Request } from "express";
-import { AdminPayloadType } from "src/types/types";
 import { ProductEntity } from "src/entities/product.entity";
 import { DatatableProductDto } from "./dto/datatable-product.dto";
 
@@ -40,10 +37,9 @@ export class ProductController {
                 fileIsRequired: false
             })
         )
-        pictures?: Array<Express.Multer.File> | undefined,
-        @Req() req?: Request
+        pictures?: Array<Express.Multer.File> | undefined
     ): Promise<string | null> {
-        return await this.productService.update(id, updateProductDto, pictures, req?.user as AdminPayloadType);
+        return await this.productService.update(id, updateProductDto, pictures);
     }
 
     @Post("/")

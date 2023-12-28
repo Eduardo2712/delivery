@@ -2,7 +2,7 @@
 
 import { NextPage } from "next";
 import { useEffect, useState } from "react";
-import { FaAngleLeft, FaAngleRight, FaAnglesLeft, FaAnglesRight, FaChevronLeft, FaMagnifyingGlass } from "react-icons/fa6";
+import { FaAnglesLeft, FaAnglesRight, FaMagnifyingGlass } from "react-icons/fa6";
 import Header from "@/components/header";
 import CardCategory from "@/components/card-category";
 import { list } from "@/requests/category.request";

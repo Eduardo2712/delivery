@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn, ManyToOne, OneToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn, ManyToOne } from "typeorm";
 import { ProductFileEntity } from "./product-file.entity";
 import { ItemEntity } from "./item.entity";
 import { ProductHistoryEntity } from "./product-history.entity";
@@ -66,6 +66,8 @@ export class ProductEntity {
     })
     pro_active: boolean;
 
+    avg_rating: number;
+
     @CreateDateColumn()
     created_at: Date;
 
@@ -100,11 +102,11 @@ export class ProductEntity {
     @JoinColumn({ name: "prr_id_product" })
     ratings: ProductRatingEntity[];
 
-    @OneToOne(() => ProductExtraEntity, (extra) => extra.product, {
+    @OneToMany(() => ProductExtraEntity, (extra) => extra.product, {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "pex_id_product" })
-    extra: ProductExtraEntity;
+    extras: ProductExtraEntity[];
 
     constructor(partial: Partial<ProductEntity>) {
         Object.assign(this, partial);

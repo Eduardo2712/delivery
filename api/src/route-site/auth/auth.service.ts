@@ -27,9 +27,7 @@ export class AuthService {
             return null;
         }
 
-        const result = { ...user, password: undefined };
-
-        return result;
+        return user;
     }
 
     async login(email: string, pass: string) {
@@ -55,11 +53,9 @@ export class AuthService {
 
         const payload = { sub: user.id, email: user.email };
 
-        const result = { ...user, password: undefined };
-
         return {
             token: await this.jwtService.signAsync(payload),
-            user: result
+            user
         };
     }
 }

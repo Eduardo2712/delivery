@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { DataSource } from "typeorm";
 import { ConfigModule } from "@nestjs/config";
 import { APP_GUARD } from "@nestjs/core";
 import { JwtService } from "@nestjs/jwt";
@@ -50,6 +49,4 @@ import { ConfigService } from "@nestjs/config";
         }
     ]
 })
-export class AppModule {
-    constructor(private dataSource: DataSource) {}
-}
+export class AppModule {}

@@ -8,9 +8,9 @@ import { ProductFileEntity } from "src/entities/product-file.entity";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { ServiceHelpers } from "src/helpers/service.helper";
 import { ProductHistoryEntity } from "src/entities/product-history.entity";
-import { AdminPayloadType } from "src/types/types";
 import { CategoryEntity } from "src/entities/category.entity";
 import { DatatableProductDto } from "./dto/datatable-product.dto";
+import { AdminStorage } from "src/storages/admin.storage";
 
 @Injectable()
 export class ProductService {
@@ -67,12 +67,7 @@ export class ProductService {
         }
     }
 
-    async update(
-        id: number,
-        updateProductDto: UpdateProductDto,
-        pictures?: Express.Multer.File[] | undefined,
-        user?: AdminPayloadType
-    ): Promise<string | null> {
+    async update(id: number, updateProductDto: UpdateProductDto, pictures?: Express.Multer.File[] | undefined): Promise<string | null> {
         await this.categoryRepository.findOneOrFail({ where: { id: updateProductDto.pro_id_category, cat_active: true } });
 
         const product = await this.productRepository.findOneOrFail({ where: { id, pro_active: true } });
@@ -82,13 +77,15 @@ export class ProductService {
         await query_runner.connect();
         await query_runner.startTransaction();
 
+        console.log(AdminStorage.get());
+
         try {
             if (product.pro_price !== updateProductDto.pro_price) {
                 const aux = this.productHistoryRepository.create({
                     prh_id_product: product.id,
                     prh_price: updateProductDto.pro_price,
                     prh_date: new Date(),
-                    prh_id_admin: user.sub
+                    prh_id_admin: AdminStorage.get().id
                 });
 
                 await this.productHistoryRepository.save(aux);

@@ -5,6 +5,8 @@ import { APP_GUARD, RouterModule } from "@nestjs/core";
 import { ThrottlerModule, ThrottlerGuard } from "@nestjs/throttler";
 import { RouteAdmin } from "./route-admin/route-admin.route";
 import { RouteAdminModule } from "./route-admin/route-admin.module";
+import { RouteSite } from "./route-site/route-site.route";
+import { RouteSiteModule } from "./route-site/route-site.module";
 
 @Module({
     imports: [
@@ -24,7 +26,8 @@ import { RouteAdminModule } from "./route-admin/route-admin.module";
             inject: [ConfigService]
         }),
         RouteAdminModule,
-        RouterModule.register([...RouteAdmin]),
+        RouteSiteModule,
+        RouterModule.register([...RouteAdmin, ...RouteSite]),
         ThrottlerModule.forRoot({
             throttlers: [
                 {

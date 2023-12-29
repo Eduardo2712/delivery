@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { compareSync } from "bcrypt";
@@ -13,48 +13,33 @@ export class AuthService {
         private readonly jwtService: JwtService
     ) {}
 
-    async validateUser(email: string, pass: string) {
-        // const user = await this.userRepository.findOneOrFail({
-        //     where: {
-        //         email,
-        //         use_active: true
-        //     }
-        // });
-
-        // const is_password_valid = compareSync(pass, user.password);
-
-        // if (!is_password_valid) {
-        //     return null;
-        // }
-
-        return null;
-    }
-
-    async login(email: string, pass: string) {
-        const user = await this.userRepository.findOne({
+    async validateUser(email: string, password: string): Promise<UserEntity> {
+        const user = await this.userRepository.findOneOrFail({
             where: {
                 email,
                 use_active: true
             },
-            relations: {
-                picture: true
-            }
+            relations: ["picture"]
         });
 
-        if (!user) {
-            throw new NotFoundException("Email and/or password invalid!");
+        if (user && compareSync(password, user.password)) {
+            return user;
         }
 
-        const is_password_valid = compareSync(pass, user.password);
+        return null;
+    }
 
-        if (!is_password_valid) {
-            throw new NotFoundException("Email and/or password invalid!");
-        }
-
-        const payload = { sub: user.id, email: user.email };
+    async login(user: UserEntity): Promise<{
+        token: string;
+        user: UserEntity;
+    }> {
+        const payload = {
+            sub: user.id,
+            email: user.email
+        };
 
         return {
-            token: await this.jwtService.signAsync(payload),
+            token: this.jwtService.sign(payload),
             user
         };
     }

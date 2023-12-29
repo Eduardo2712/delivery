@@ -16,7 +16,7 @@ import { AdminEntity } from "src/entities/admin.entity";
         JwtModule.register({
             secret: process.env.JWT_SECRET,
             signOptions: {
-                expiresIn: "3600s"
+                expiresIn: "30d"
             }
         }),
         TypeOrmModule.forFeature([AdminEntity])

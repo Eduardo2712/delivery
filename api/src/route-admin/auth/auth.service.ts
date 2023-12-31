@@ -32,6 +32,7 @@ export class AuthService {
 
     async login(admin: AdminEntity): Promise<{
         token: string;
+        refresh_token: string;
         admin: AdminEntity;
     }> {
         const payload = {
@@ -41,7 +42,23 @@ export class AuthService {
 
         return {
             token: this.jwtService.sign(payload),
+            refresh_token: this.jwtService.sign(payload, {
+                expiresIn: "7d"
+            }),
             admin
+        };
+    }
+
+    async refreshToken(admin: AdminEntity): Promise<{
+        token: string;
+    }> {
+        const payload = {
+            sub: admin.id,
+            email: admin.email
+        };
+
+        return {
+            token: this.jwtService.sign(payload)
         };
     }
 }

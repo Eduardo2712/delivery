@@ -65,7 +65,6 @@ export type OrderType = {
 export type ProductType = {
     id: number;
     pro_name: string;
-    pro_description: string;
     pro_ingredients: string;
     pro_id_category: number;
     pro_number_people: number;
@@ -91,7 +90,6 @@ export type ItemType = {
 
 export type ProductFileType = {
     id: number;
-    prl_id_file: number;
     prl_id_product: number;
     created_at: Date;
     updated_at: Date;

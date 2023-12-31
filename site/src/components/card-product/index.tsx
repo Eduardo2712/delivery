@@ -2,8 +2,6 @@ import { ProductType } from "@/types/entity/entity.type";
 import { formatBRL } from "@/utils/other";
 import { useState } from "react";
 import ReactModal from "../react-modal";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
-import StyleInput from "../style-input";
 
 type Props = {
     product: ProductType;
@@ -22,7 +20,6 @@ const CardProduct = ({ product }: Props) => {
         comentary: "",
         additional: []
     });
-    const [numberImage, setNumberImage] = useState<number>(0);
 
     const value_total = formModal.count * product?.pro_price;
 
@@ -39,7 +36,7 @@ const CardProduct = ({ product }: Props) => {
                             {product?.pro_name}
                         </p>
 
-                        <p className="text-sm text-start text-gray-700 mt-3">{product?.pro_description}</p>
+                        <p className="text-sm text-start text-gray-700 mt-3">{product?.pro_ingredients}</p>
                     </div>
 
                     <p className="text-md text-start text-green-600 overflow-ellipsis whitespace-nowrap overflow-hidden">
@@ -49,38 +46,17 @@ const CardProduct = ({ product }: Props) => {
 
                 <div
                     className="rounded-sm w-44 h-full bg-cover bg-center bg-no-repeat"
-                    style={{ backgroundImage: `url(${product?.files?.[0].file?.url ?? ""})` }}
+                    style={{ backgroundImage: `url(${product?.image?.url ?? ""})` }}
                 />
             </button>
 
             <ReactModal openModal={openModal} setOpenModal={setOpenModal}>
                 <div className="flex gap-4 px-3">
                     <div className="flex">
-                        <button
-                            type="button"
-                            onClick={() => setNumberImage((ant) => ant - 1)}
-                            className="bg-gray-100 p-0.5 rounded-md"
-                            disabled={numberImage === 0}
-                        >
-                            <FaArrowLeft size={20} className={`text-gray-600 ${numberImage === 0 && "text-opacity-50"}`} />
-                        </button>
-
                         <div
                             className="rounded-sm w-96 h-64 bg-cover bg-center bg-no-repeat"
-                            style={{ backgroundImage: `url(${product?.files?.[numberImage].file?.url ?? ""})` }}
+                            style={{ backgroundImage: `url(${product?.image?.url ?? ""})` }}
                         />
-
-                        <button
-                            type="button"
-                            onClick={() => setNumberImage((ant) => ant + 1)}
-                            className="bg-gray-100 p-0.5 rounded-md"
-                            disabled={numberImage === (product?.files?.length ?? 1) - 1}
-                        >
-                            <FaArrowRight
-                                size={20}
-                                className={`text-gray-600 ${numberImage === (product?.files?.length ?? 1) - 1 && "text-opacity-50"}`}
-                            />
-                        </button>
                     </div>
 
                     <div className="flex flex-1 flex-col">

@@ -94,7 +94,6 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
     };
 
     const initialValues: ProductUpdateType = {
-        pro_description: data?.pro_description ?? "",
         pro_id_category: data?.pro_id_category ?? null,
         pro_ingredients: data?.pro_ingredients ?? "",
         pro_number_people: data?.pro_number_people ?? 1,
@@ -213,23 +212,6 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                                 );
                                             })}
                                         </StyleSelect>
-                                    </div>
-                                </div>
-
-                                <div className="grid grid-cols-1 gap-4 lg:grid-cols-1">
-                                    <div>
-                                        <StyleInput
-                                            errors={errors.pro_description}
-                                            touched={touched.pro_description}
-                                            handleBlur={handleBlur}
-                                            handleChange={handleChange}
-                                            name={"pro_description"}
-                                            title={"Description"}
-                                            type={"text"}
-                                            value={values.pro_description}
-                                            is_required
-                                            multiple
-                                        />
                                     </div>
                                 </div>
 

@@ -13,11 +13,6 @@ export class CreateProductDto {
     @IsNotEmpty()
     @IsString()
     @MaxLength(255)
-    pro_description: string;
-
-    @IsNotEmpty()
-    @IsString()
-    @MaxLength(255)
     pro_ingredients: string;
 
     @IsNotEmpty()

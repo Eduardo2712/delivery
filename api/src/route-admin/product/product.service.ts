@@ -4,9 +4,7 @@ import { FileEntity } from "src/entities/file.entity";
 import { ProductEntity } from "src/entities/product.entity";
 import { DataSource, ILike, Repository } from "typeorm";
 import { UpdateProductDto } from "./dto/update-product.dto";
-import { ProductFileEntity } from "src/entities/product-file.entity";
 import { CreateProductDto } from "./dto/create-product.dto";
-import { ServiceHelpers } from "src/helpers/service.helper";
 import { ProductHistoryEntity } from "src/entities/product-history.entity";
 import { CategoryEntity } from "src/entities/category.entity";
 import { DatatableProductDto } from "./dto/datatable-product.dto";
@@ -20,8 +18,6 @@ export class ProductService {
         private readonly productRepository: Repository<ProductEntity>,
         @InjectRepository(FileEntity)
         private readonly fileRepository: Repository<FileEntity>,
-        @InjectRepository(ProductFileEntity)
-        private readonly productFileRepository: Repository<ProductFileEntity>,
         @InjectRepository(ProductHistoryEntity)
         private readonly productHistoryRepository: Repository<ProductHistoryEntity>,
         @InjectRepository(CategoryEntity)
@@ -44,15 +40,6 @@ export class ProductService {
             await this.productRepository.save(product);
 
             if (pictures) {
-                for (const file of pictures) {
-                    const id = await ServiceHelpers.uploadFile(file, this.fileRepository);
-
-                    await this.productFileRepository.save({
-                        prl_id_product: product.id,
-                        prl_id_file: id,
-                        prl_active: true
-                    });
-                }
             }
 
             await query_runner.commitTransaction();
@@ -95,26 +82,7 @@ export class ProductService {
 
             await this.productRepository.save(product);
 
-            if (updateProductDto.pictures_delete?.length > 0) {
-                for (const id_file of updateProductDto.pictures_delete) {
-                    const aux = await this.productFileRepository.findOneOrFail({ where: { id: id_file }, relations: ["file"] });
-
-                    await ServiceHelpers.removeFile(aux.file.fil_name);
-
-                    await this.productFileRepository.remove(aux);
-                }
-            }
-
             if (pictures) {
-                for (const file of pictures) {
-                    const id = await ServiceHelpers.uploadFile(file, this.fileRepository);
-
-                    await this.productFileRepository.save({
-                        prl_id_product: product.id,
-                        prl_id_file: id,
-                        prl_active: true
-                    });
-                }
             }
 
             return null;
@@ -135,12 +103,10 @@ export class ProductService {
         const obj = await this.productRepository.findOneOrFail({
             where: { id, pro_active: true },
             relations: {
-                files: {
-                    file: true
-                },
                 histories: {
                     admin: true
-                }
+                },
+                image: true
             }
         });
 

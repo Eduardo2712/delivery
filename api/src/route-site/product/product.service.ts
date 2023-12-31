@@ -17,35 +17,39 @@ export class ProductService {
         data: ProductEntity[];
         count: number;
     }> {
-        const skip = (listProductDto.page - 1) * PAGE_LIMIT;
+        try {
+            const skip = (listProductDto.page - 1) * PAGE_LIMIT;
 
-        const products = this.productRepository
-            .createQueryBuilder("product")
-            .leftJoinAndSelect("product.files", "files")
-            .leftJoinAndSelect("files.file", "file")
-            .leftJoinAndSelect("product.extras", "extras")
-            .leftJoinAndSelect("product.ratings", "ratings");
+            const products = this.productRepository
+                .createQueryBuilder("product")
+                .leftJoinAndSelect("product.extras", "extras")
+                .leftJoinAndSelect("product.ratings", "ratings")
+                .leftJoinAndSelect("product.image", "image");
 
-        if (listProductDto.id_category) {
-            products.where("product.pro_id_category = :id_category", { id_category: listProductDto.id_category });
+            if (listProductDto.id_category) {
+                products.where("product.pro_id_category = :id_category", { id_category: listProductDto.id_category });
+            }
+
+            if (listProductDto.search) {
+                products.where("product.pro_name like :search", { search: `%${listProductDto.search}%` });
+            }
+
+            products.orderBy("product.pro_name", "ASC");
+
+            const [data, count] = await products.skip(skip).take(PAGE_LIMIT).getManyAndCount();
+
+            data.forEach((product) => {
+                product.avg_rating =
+                    product.ratings.length > 0 ? product.ratings.reduce((acc, a) => acc + a.prr_rate, 0) / product.ratings.length : null;
+                product.ratings = undefined;
+            });
+
+            return {
+                data,
+                count
+            };
+        } catch (error) {
+            console.error(error);
         }
-
-        if (listProductDto.search) {
-            products.where("product.pro_name like :search", { search: `%${listProductDto.search}%` });
-        }
-
-        products.orderBy("product.pro_name", "ASC");
-
-        const [data, count] = await products.skip(skip).take(PAGE_LIMIT).getManyAndCount();
-
-        data.forEach((product) => {
-            product.avg_rating = product.ratings.length > 0 ? product.ratings.reduce((acc, a) => acc + a.prr_rate, 0) / product.ratings.length : null;
-            product.ratings = undefined;
-        });
-
-        return {
-            data,
-            count
-        };
     }
 }

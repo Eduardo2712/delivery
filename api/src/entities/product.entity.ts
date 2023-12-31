@@ -1,10 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn, ManyToOne } from "typeorm";
-import { ProductFileEntity } from "./product-file.entity";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import { ItemEntity } from "./item.entity";
 import { ProductHistoryEntity } from "./product-history.entity";
 import { CategoryEntity } from "./category.entity";
 import { ProductRatingEntity } from "./product-rating.entity";
 import { ProductExtraEntity } from "./product-extra.entity";
+import { FileEntity } from "./file.entity";
 
 @Entity({
     name: "products"
@@ -20,16 +20,16 @@ export class ProductEntity {
     pro_id_category: number;
 
     @Column({
+        nullable: true,
+        type: "unsigned big int"
+    })
+    pro_id_image: number;
+
+    @Column({
         nullable: false,
         type: "varchar"
     })
     pro_name: string;
-
-    @Column({
-        nullable: false,
-        type: "text"
-    })
-    pro_description: string;
 
     @Column({
         nullable: false,
@@ -74,12 +74,6 @@ export class ProductEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToMany(() => ProductFileEntity, (product_file) => product_file.product, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({ name: "prl_id_product" })
-    files: ProductFileEntity[];
-
     @OneToMany(() => ItemEntity, (item) => item.product, {
         onDelete: "CASCADE"
     })
@@ -96,17 +90,17 @@ export class ProductEntity {
     @JoinColumn({ name: "pro_id_category" })
     category: CategoryEntity;
 
-    @OneToMany(() => ProductRatingEntity, (rating) => rating.product, {
-        onDelete: "CASCADE"
-    })
+    @OneToMany(() => ProductRatingEntity, (rating) => rating.product, { onDelete: "CASCADE" })
     @JoinColumn({ name: "prr_id_product" })
     ratings: ProductRatingEntity[];
 
-    @OneToMany(() => ProductExtraEntity, (extra) => extra.product, {
-        onDelete: "CASCADE"
-    })
+    @OneToMany(() => ProductExtraEntity, (extra) => extra.product, { onDelete: "CASCADE" })
     @JoinColumn({ name: "pex_id_product" })
     extras: ProductExtraEntity[];
+
+    @OneToOne(() => FileEntity, (image) => image.product, { onDelete: "CASCADE" })
+    @JoinColumn({ name: "pro_id_image" })
+    image: FileEntity;
 
     constructor(partial: Partial<ProductEntity>) {
         Object.assign(this, partial);

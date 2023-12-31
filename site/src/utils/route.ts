@@ -6,7 +6,7 @@ export const ROUTES = {
 };
 
 export const checkUserAuthenticated = () => {
-    const token = localStorage.getItem("token") ?? "";
+    const token = localStorage.getItem("token");
 
     return !!token;
 };

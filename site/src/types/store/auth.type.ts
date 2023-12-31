@@ -1,6 +1,7 @@
 export type AuthStoreType = {
     user: UserStoreType | null;
     token: string | null;
+    refresh_token: string | null;
 };
 
 export type UserStoreType = {

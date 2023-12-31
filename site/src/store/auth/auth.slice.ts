@@ -27,7 +27,7 @@ const authSlice = createSlice({
         update: (state, action: PayloadAction<{ user: AdminStoreType | null; token: string | null }>) => {
             state.user = action.payload.user;
         },
-        getUser: (state) => {
+        get: (state) => {
             const user = localStorage.getItem("user");
 
             if (user) {
@@ -37,6 +37,6 @@ const authSlice = createSlice({
     }
 });
 
-export const { login, logout, update, getUser } = authSlice.actions;
+export const { login, logout, update, get } = authSlice.actions;
 
 export default authSlice.reducer;

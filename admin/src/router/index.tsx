@@ -1,4 +1,4 @@
-import { update } from "@/store/auth/auth.slice";
+import { get } from "@/store/auth/auth.slice";
 import { ROUTES, checkIsPublicRoute, checkUserAuthenticated } from "@/utils/route";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, ReactNode } from "react";
@@ -18,11 +18,8 @@ const ProtectedRoute = ({ children }: Props) => {
     const is_public_page = checkIsPublicRoute(path);
 
     useEffect(() => {
-        const user_local = localStorage.getItem("user");
-        const token_local = localStorage.getItem("token");
-
         if (is_user_authenticated) {
-            dispatch(update({ user: JSON.parse(user_local ?? ""), token: JSON.parse(token_local ?? "") }));
+            dispatch(get());
 
             if (is_public_page) {
                 return router.push("/");

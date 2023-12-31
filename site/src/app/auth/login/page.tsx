@@ -33,7 +33,7 @@ const Page = () => {
             }
 
             if (response.data.user && response.data.access_token) {
-                dispatch(login({ ...response.data.user, token: response.data.access_token }));
+                dispatch(login({ ...response.data.user, token: response.data.access_token, refresh_token: response.data.refresh_token }));
 
                 toast.success("Successfully login");
 

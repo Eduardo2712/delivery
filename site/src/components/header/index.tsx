@@ -9,7 +9,9 @@ const Header = () => {
 
     return (
         <header className="flex items-center justify-between h-20 p-5">
-            <p className="text-white text-3xl font-bold italic">Delivery</p>
+            <Link href="/" className="text-white text-3xl font-bold italic">
+                Delivery
+            </Link>
 
             <div className="flex items-center justify-end gap-6">
                 <div className="flex items-center gap-3">

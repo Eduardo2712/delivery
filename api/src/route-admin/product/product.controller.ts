@@ -2,6 +2,7 @@ import {
     Body,
     Controller,
     Delete,
+    FileTypeValidator,
     Get,
     HttpCode,
     HttpStatus,
@@ -10,16 +11,21 @@ import {
     ParseFilePipe,
     Post,
     Query,
-    UploadedFiles,
+    UploadedFile,
     UseInterceptors
 } from "@nestjs/common";
 import { ProductService } from "./product.service";
-import { FilesInterceptor } from "@nestjs/platform-express";
+import { FileInterceptor } from "@nestjs/platform-express";
 import { ConstHelper } from "src/helpers/const.helper";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { ProductEntity } from "src/entities/product.entity";
 import { DatatableProductDto } from "./dto/datatable-product.dto";
+
+const FileConfig = new ParseFilePipe({
+    validators: [new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE }), new FileTypeValidator({ fileType: "image/*" })],
+    fileIsRequired: false
+});
 
 @Controller()
 export class ProductController {
@@ -27,34 +33,25 @@ export class ProductController {
 
     @Post(":id")
     @HttpCode(HttpStatus.OK)
-    @UseInterceptors(FilesInterceptor("pictures", 5))
+    @UseInterceptors(FileInterceptor("picture"))
     async update(
         @Param("id") id: number,
         @Body() updateProductDto: UpdateProductDto,
-        @UploadedFiles(
-            new ParseFilePipe({
-                validators: [new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE })],
-                fileIsRequired: false
-            })
-        )
-        pictures?: Array<Express.Multer.File> | undefined
+        @UploadedFile(FileConfig)
+        picture?: Express.Multer.File
     ): Promise<string | null> {
-        return await this.productService.update(id, updateProductDto, pictures);
+        return await this.productService.update(id, updateProductDto, picture);
     }
 
     @Post("/")
     @HttpCode(HttpStatus.CREATED)
-    @UseInterceptors(FilesInterceptor("pictures", 5))
+    @UseInterceptors(FileInterceptor("picture"))
     async create(
         @Body() createProductDto: CreateProductDto,
-        @UploadedFiles(
-            new ParseFilePipe({
-                validators: [new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE })]
-            })
-        )
-        pictures: Array<Express.Multer.File>
+        @UploadedFile(FileConfig)
+        picture: Express.Multer.File
     ): Promise<string | void> {
-        return await this.productService.create(createProductDto, pictures);
+        return await this.productService.create(createProductDto, picture);
     }
 
     @Get("/datatable")

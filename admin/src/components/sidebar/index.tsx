@@ -4,7 +4,7 @@ import { AdminStoreType } from "@/types/store/auth.type";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
-import { FaBars, FaGauge, FaPlateWheat, FaUser, FaUsers, FaUtensils, FaX } from "react-icons/fa6";
+import { FaBars, FaCirclePlus, FaGauge, FaPlateWheat, FaUser, FaUsers, FaUtensils, FaX } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 import Head from "next/head";
 
@@ -152,6 +152,19 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
                                     <FaPlateWheat className="text-white" />
 
                                     <span className="ml-3">Products</span>
+                                </Link>
+                            </li>
+
+                            <li>
+                                <Link
+                                    href="/extra"
+                                    className={`${
+                                        pathname.includes("extra") ? "bg-gray-700" : ""
+                                    } flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`}
+                                >
+                                    <FaCirclePlus className="text-white" />
+
+                                    <span className="ml-3">Product extras</span>
                                 </Link>
                             </li>
 

@@ -19,7 +19,7 @@ export class AdminService {
     ) {}
 
     async create(createAdminDto: CreateAdminDto, picture: Express.Multer.File): Promise<string | null> {
-        const error = await ServiceHelpers.checkUnique(this.adminRepository, { adm_name: createAdminDto.adm_name, adm_active: true }, "email");
+        const error = await ServiceHelpers.checkUnique(this.adminRepository, { adm_active: true, email: createAdminDto.email }, "email");
 
         if (error) {
             throw new HttpException(error, HttpStatus.BAD_REQUEST);

@@ -2,7 +2,7 @@
 
 import StyleInput from "@/components/style-input";
 import { Form, Formik } from "formik";
-import { FaSpinner } from "react-icons/fa6";
+import { FaSpinner, FaTrash } from "react-icons/fa6";
 import { createFormData, router_base, schemaUpdate } from "../../utils";
 import { useEffect, useState } from "react";
 import { ProductUpdateType } from "@/types/request/product.type";
@@ -71,8 +71,6 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
         setSubmitting(true);
 
         try {
-            delete values.pictures_old;
-
             const response = await edit(id, createFormData(values));
 
             if (response.status !== HttpStatusCode.Ok) {
@@ -100,9 +98,8 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
         pro_name: data?.pro_name ?? "",
         pro_price: data?.pro_price ? formatDecimal(data.pro_price) : "",
         pro_status: data?.pro_status ? "1" : "0",
-        pictures: [],
-        pictures_delete: [],
-        pictures_old: data?.files ?? []
+        picture: undefined,
+        new_picture: false
     };
 
     return (
@@ -113,14 +110,35 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                 <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaUpdate} initialValues={initialValues}>
                     {({ handleChange, handleBlur, values, errors, touched, setFieldValue }) => (
                         <Form method="post" noValidate>
-                            <FileUpload
-                                multiple
-                                pictures={values.pictures}
-                                setFieldValue={setFieldValue}
-                                errors={errors.pictures ?? ""}
-                                touched={touched.pictures ?? false}
-                                pictures_old={values.pictures_old ?? []}
-                            />
+                            {!values.new_picture && data?.image && (
+                                <CustomBox>
+                                    <div className="flex items-center justify-center flex-col">
+                                        <a className="flex justify-center" href={data.image.url} target="_blank">
+                                            <img src={data.image.url} alt={"Picture admin"} className="max-w-md h-full object-cover w-full" />
+                                        </a>
+
+                                        <button
+                                            className="bg-red-600 text-white rounded px-3 py-2 w-full max-w-md flex justify-center items-center gap-3"
+                                            type="button"
+                                            onClick={() => {
+                                                setFieldValue("picture", undefined);
+                                                setFieldValue("new_picture", true);
+                                            }}
+                                        >
+                                            <FaTrash /> Remove
+                                        </button>
+                                    </div>
+                                </CustomBox>
+                            )}
+
+                            {values.new_picture && (
+                                <FileUpload
+                                    picture={values.picture}
+                                    setFieldValue={setFieldValue}
+                                    errors={errors.picture ?? ""}
+                                    touched={touched.picture ?? false}
+                                />
+                            )}
 
                             <CustomBox text="Basic information">
                                 <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">

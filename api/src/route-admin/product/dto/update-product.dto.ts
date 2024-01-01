@@ -1,4 +1,4 @@
-import { IsBooleanString, IsDecimal, IsNotEmpty, IsNumberString, IsOptional, IsString, MaxLength } from "class-validator";
+import { IsBooleanString, IsDecimal, IsNotEmpty, IsNumberString, IsString, MaxLength } from "class-validator";
 
 export class UpdateProductDto {
     @IsNotEmpty()
@@ -30,6 +30,7 @@ export class UpdateProductDto {
     @IsBooleanString()
     pro_status: boolean;
 
-    @IsOptional()
-    pictures_delete: number[];
+    @IsNotEmpty()
+    @IsBooleanString()
+    new_picture: boolean;
 }

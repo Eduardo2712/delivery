@@ -48,7 +48,7 @@ const CustomTable = ({
         rows_per_page: 10,
         id_user: null
     });
-    const debouncedInputValue = useDebounce(params.search, 500);
+    const debounced_input_value = useDebounce(params.search, 500);
 
     const fetchData = async () => {
         setLoading(true);
@@ -100,7 +100,7 @@ const CustomTable = ({
 
     useEffect(() => {
         fetchData();
-    }, [params.page, params.rows_per_page, debouncedInputValue]);
+    }, [params.page, params.rows_per_page, debounced_input_value]);
 
     const buttons = (e: DataItem<number>) => {
         return (

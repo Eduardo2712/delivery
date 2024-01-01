@@ -25,9 +25,7 @@ export const schemaUpdate = Yup.object().shape({
     adm_phone: Yup.string().min(14, "Must contain at least 14 characters!").required("Fill in this field!"),
     adm_status: Yup.number().required("Fill in this field!"),
     picture: Yup.mixed().test("is-picture-required", "Fill in this field!", function () {
-        const newPicture = this.parent.new_picture;
-        const picture = this.parent.picture;
-        return newPicture ? !!picture : true;
+        return this.parent.new_picture ? !!this.parent.picture : true;
     })
 });
 

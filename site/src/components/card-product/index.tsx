@@ -2,6 +2,7 @@ import { ProductType } from "@/types/entity/entity.type";
 import { formatBRL } from "@/utils/other";
 import { useState } from "react";
 import ReactModal from "../react-modal";
+import { FaStar } from "react-icons/fa6";
 
 type Props = {
     product: ProductType;
@@ -27,7 +28,7 @@ const CardProduct = ({ product }: Props) => {
         <>
             <button
                 type="button"
-                className="rounded-sm bg-white px-4 py-5 flex flex-row items-start h-40 hover:bg-gray-200"
+                className="rounded-sm bg-white px-4 py-5 flex flex-row items-start h-44 hover:bg-gray-200"
                 onClick={() => setOpenModal(true)}
             >
                 <div className="overflow-ellipsis whitespace-nowrap overflow-hidden flex-1 flex flex-col h-full">
@@ -35,6 +36,14 @@ const CardProduct = ({ product }: Props) => {
                         <p className="text-md text-start text-black font-semibold mt-1 overflow-ellipsis whitespace-nowrap overflow-hidden flex-1">
                             {product?.pro_name}
                         </p>
+
+                        <div className="flex items-center gap-1 mt-1">
+                            <FaStar size={16} className="text-yellow-500" />
+
+                            <p className="text-sm text-start text-black font-semibold mt-1 overflow-ellipsis whitespace-nowrap overflow-hidden flex-1">
+                                {product?.avg_rating ? Number(product?.avg_rating).toFixed(1) : "N/A"}
+                            </p>
+                        </div>
 
                         <p className="text-sm text-start text-gray-700 mt-3">{product?.pro_ingredients}</p>
                     </div>
@@ -46,7 +55,7 @@ const CardProduct = ({ product }: Props) => {
 
                 <div
                     className="rounded-sm w-44 h-full bg-cover bg-center bg-no-repeat"
-                    style={{ backgroundImage: `url(${product?.image?.url ?? ""})` }}
+                    style={{ backgroundImage: `url(${product?.image ? product?.image?.url : "/images/no_image.jpg"})` }}
                 />
             </button>
 
@@ -55,12 +64,20 @@ const CardProduct = ({ product }: Props) => {
                     <div className="flex">
                         <div
                             className="rounded-sm w-96 h-64 bg-cover bg-center bg-no-repeat"
-                            style={{ backgroundImage: `url(${product?.image?.url ?? ""})` }}
+                            style={{ backgroundImage: `url(${product?.image ? product?.image?.url : "/images/no_image.jpg"})` }}
                         />
                     </div>
 
                     <div className="flex flex-1 flex-col">
                         <p className="text-sm text-black font-medium text-center">{product?.pro_name}</p>
+
+                        <div className="flex items-center gap-1 mt-1">
+                            <FaStar size={16} className="text-yellow-500" />
+
+                            <p className="text-sm text-start text-black font-semibold mt-1 overflow-ellipsis whitespace-nowrap overflow-hidden flex-1">
+                                {product?.avg_rating ? Number(product?.avg_rating).toFixed(1) : "N/A"}
+                            </p>
+                        </div>
 
                         <p className="text-sm text-gray-800 mt-2">{product?.pro_ingredients}</p>
 

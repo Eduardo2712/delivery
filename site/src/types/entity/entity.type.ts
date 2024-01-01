@@ -73,6 +73,7 @@ export type ProductType = {
     pro_status: boolean;
     created_at: Date;
     updated_at: Date;
+    avg_rating: number;
     histories?: ProductHistoryType[] | null;
     image?: FileType | null;
 };

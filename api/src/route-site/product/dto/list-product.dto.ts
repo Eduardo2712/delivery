@@ -1,4 +1,4 @@
-import { IsEmpty, IsNumberString, IsOptional, IsString } from "class-validator";
+import { IsNumberString, IsOptional, IsString } from "class-validator";
 
 export class ListProductDto {
     @IsNumberString()
@@ -6,7 +6,6 @@ export class ListProductDto {
     id_category: number | null;
 
     @IsString()
-    @IsEmpty()
     @IsOptional()
     search: string | null;
 

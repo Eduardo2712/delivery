@@ -1,8 +1,7 @@
-import { IsEmpty, IsNumberString, IsOptional, IsString } from "class-validator";
+import { IsNumberString, IsOptional, IsString } from "class-validator";
 
 export class DatatableOrderDto {
     @IsString()
-    @IsEmpty()
     @IsOptional()
     search: string;
 

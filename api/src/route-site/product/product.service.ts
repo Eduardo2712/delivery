@@ -31,7 +31,7 @@ export class ProductService {
             }
 
             if (listProductDto.search) {
-                products.where("product.pro_name like :search", { search: `%${listProductDto.search}%` });
+                products.andWhere("product.pro_name like :search", { search: `%${listProductDto.search}%` });
             }
 
             products.orderBy("product.pro_name", "ASC");

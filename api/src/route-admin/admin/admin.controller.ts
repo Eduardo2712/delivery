@@ -23,7 +23,7 @@ import { AdminEntity } from "src/entities/admin.entity";
 import { DatatableAdminDto } from "./dto/datatable-admin.dto";
 
 const FileConfig = new ParseFilePipe({
-    validators: [new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE }), new FileTypeValidator({ fileType: /\.(jpg|jpeg|png)$/ })]
+    validators: [new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE }), new FileTypeValidator({ fileType: "image/*" })]
 });
 
 @Controller()

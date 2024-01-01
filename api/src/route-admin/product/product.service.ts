@@ -10,6 +10,7 @@ import { CategoryEntity } from "src/entities/category.entity";
 import { DatatableProductDto } from "./dto/datatable-product.dto";
 import { REQUEST } from "@nestjs/core";
 import { Request } from "express";
+import { ServiceHelpers } from "src/helpers/service.helper";
 
 @Injectable({ scope: Scope.REQUEST })
 export class ProductService {
@@ -26,7 +27,7 @@ export class ProductService {
         private dataSource: DataSource
     ) {}
 
-    async create(createProductDto: CreateProductDto, pictures?: Express.Multer.File[]): Promise<string | void> {
+    async create(createProductDto: CreateProductDto, picture: Express.Multer.File): Promise<string | void> {
         await this.categoryRepository.findOneOrFail({ where: { id: createProductDto.pro_id_category, cat_active: true } });
 
         const query_runner = this.dataSource.createQueryRunner();
@@ -35,12 +36,11 @@ export class ProductService {
         await query_runner.startTransaction();
 
         try {
-            const product = this.productRepository.create({ ...createProductDto, pro_active: true });
+            const id_picture = await ServiceHelpers.uploadFile(picture, this.fileRepository);
+
+            const product = this.productRepository.create({ ...createProductDto, pro_active: true, pro_id_image: id_picture });
 
             await this.productRepository.save(product);
-
-            if (pictures) {
-            }
 
             await query_runner.commitTransaction();
         } catch (error: unknown) {
@@ -56,7 +56,7 @@ export class ProductService {
         }
     }
 
-    async update(id: number, updateProductDto: UpdateProductDto, pictures?: Express.Multer.File[] | undefined): Promise<string | null> {
+    async update(id: number, updateProductDto: UpdateProductDto, picture?: Express.Multer.File): Promise<string | null> {
         await this.categoryRepository.findOneOrFail({ where: { id: updateProductDto.pro_id_category, cat_active: true } });
 
         const product = await this.productRepository.findOneOrFail({ where: { id, pro_active: true } });
@@ -67,6 +67,10 @@ export class ProductService {
         await query_runner.startTransaction();
 
         try {
+            if (picture && updateProductDto.new_picture) {
+                product.pro_id_image = await ServiceHelpers.uploadFile(picture, this.fileRepository);
+            }
+
             if (product.pro_price !== updateProductDto.pro_price) {
                 const aux = this.productHistoryRepository.create({
                     prh_id_product: product.id,
@@ -81,9 +85,6 @@ export class ProductService {
             this.productRepository.merge(product, updateProductDto);
 
             await this.productRepository.save(product);
-
-            if (pictures) {
-            }
 
             return null;
         } catch (error: unknown) {

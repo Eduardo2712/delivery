@@ -12,6 +12,7 @@ import axios, { HttpStatusCode } from "axios";
 import { CategoryType, ProductType } from "@/types/entity/entity.type";
 import LoadingSpinner from "@/components/loading-spinner";
 import CardProduct from "@/components/card-product";
+import useDebounce from "@/hooks/debounce";
 
 const Page: NextPage = () => {
     const [filter, setFilter] = useState<{ search: string; id_category: number | null; page: number }>({
@@ -28,6 +29,8 @@ const Page: NextPage = () => {
 
     const last_page = Math.ceil(products.count / 20);
     const array_page = Array.from({ length: last_page }, (_, index) => index + 1);
+
+    const debounced_input_value = useDebounce(filter.search, 500);
 
     useEffect(() => {
         (async () => {
@@ -71,13 +74,13 @@ const Page: NextPage = () => {
                 setLoading(false);
             }
         })();
-    }, [filter]);
+    }, [filter.id_category, debounced_input_value, filter.page]);
 
     return (
         <>
             <Header />
 
-            <div className="w-full h-48 bg-[url('/images/meal.jpg')] bg-cover bg-center bg-no-repeat">
+            <div className="w-full h-40 bg-[url('/images/meal.jpg')] bg-cover bg-center bg-no-repeat">
                 <div className="container mx-auto h-screen">
                     <div className="pt-12 flex justify-center items-center gap-3 p-3">
                         <input
@@ -87,29 +90,25 @@ const Page: NextPage = () => {
                             value={filter.search}
                             onChange={(e) => setFilter((ant) => ({ ...ant, search: e.target.value }))}
                         />
-
-                        <button type="submit" className="bg-white p-1 rounded-md h-10 w-10 flex justify-center items-center hover:bg-gray-200">
-                            <FaMagnifyingGlass size={20} className="text-gray-800" />
-                        </button>
                     </div>
                 </div>
             </div>
 
             <LoadingSpinner loading={loading}>
-                <div className="container mx-auto mt-4 flex justify-center gap-6 px-4">
+                <div className="container mx-auto mt-6 flex justify-center gap-6 px-4">
                     {categories.map((category) => (
                         <CardCategory
                             key={category.id}
                             category={category}
                             filter_category={filter.id_category}
-                            setFilterCategory={(e) => setFilter((ant) => ({ ...ant, id_category: e }))}
+                            setFilterCategory={(e) => setFilter((ant) => ({ ...ant, id_category: ant.id_category === e ? null : e }))}
                         />
                     ))}
                 </div>
 
                 {products.data.length > 0 ? (
                     <>
-                        <div className="container mx-auto mt-8 px-4">
+                        <div className="container mx-auto mt-6 px-4">
                             <p className="text-gray-100 text-sm">
                                 Found {products.count} {products.count === 1 ? "product" : "products"}
                             </p>
@@ -121,7 +120,7 @@ const Page: NextPage = () => {
                             ))}
                         </div>
 
-                        <div className="flex justify-center items-center gap-3 mt-7">
+                        <div className="flex justify-center items-center gap-3 mt-7 mb-8">
                             {filter.page > 1 && (
                                 <FaAnglesLeft
                                     className="text-gray-400 cursor-pointer"

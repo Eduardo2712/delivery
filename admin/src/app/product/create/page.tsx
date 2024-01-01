@@ -83,7 +83,7 @@ const Page: NextPage = () => {
         pro_name: "",
         pro_price: "",
         pro_status: "",
-        pictures: []
+        picture: undefined
     };
 
     return (
@@ -95,11 +95,10 @@ const Page: NextPage = () => {
                     {({ handleChange, handleBlur, values, errors, touched, setFieldValue }) => (
                         <Form method="post" noValidate>
                             <FileUpload
-                                multiple
-                                pictures={values.pictures}
+                                picture={values.picture}
                                 setFieldValue={setFieldValue}
-                                errors={errors.pictures ?? ""}
-                                touched={touched.pictures ?? false}
+                                errors={errors.picture ?? ""}
+                                touched={touched.picture ?? false}
                             />
 
                             <CustomBox text="Basic information">

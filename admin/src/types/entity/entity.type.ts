@@ -73,7 +73,7 @@ export type ProductType = {
     pro_status: boolean;
     created_at: Date;
     updated_at: Date;
-    files?: ProductFileType[] | null;
+    image: FileType | null;
     histories?: ProductHistoryType[] | null;
 };
 

@@ -130,3 +130,9 @@ export type CategoryType = {
     created_at: Date;
     updated_at: Date;
 };
+
+export type ProductExtra = {
+    id: number;
+    created_at: Date;
+    updated_at: Date;
+};

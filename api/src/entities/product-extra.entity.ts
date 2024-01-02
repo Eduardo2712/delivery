@@ -1,7 +1,6 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { FileEntity } from "./file.entity";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { ExtraEntity } from "./extra.entity";
 import { ProductEntity } from "./product.entity";
-import { ItemExtraEntity } from "./item-extra.entity";
 
 @Entity({
     name: "product_extras"
@@ -14,39 +13,13 @@ export class ProductExtraEntity {
         nullable: false,
         type: "unsigned big int"
     })
-    pex_id_file: number;
+    pre_id_product: number;
 
     @Column({
         nullable: false,
         type: "unsigned big int"
     })
-    pex_id_product: number;
-
-    @Column({
-        nullable: false,
-        type: "text"
-    })
-    pex_description: string;
-
-    @Column({
-        nullable: false,
-        type: "decimal"
-    })
-    pex_price: number;
-
-    @Column({
-        nullable: false,
-        type: "boolean",
-        default: true
-    })
-    pex_status: boolean;
-
-    @Column({
-        nullable: false,
-        default: true,
-        type: "boolean"
-    })
-    pex_active: boolean;
+    pre_id_extra: number;
 
     @CreateDateColumn()
     created_at: Date;
@@ -54,23 +27,21 @@ export class ProductExtraEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToOne(() => FileEntity, (file) => file.extra, {
+    @ManyToOne(() => ExtraEntity, (extra) => extra.products, {
         onDelete: "CASCADE"
     })
-    @JoinColumn({ name: "pex_id_file" })
-    file: FileEntity;
+    @JoinColumn({
+        name: "pre_id_extra"
+    })
+    extra: ExtraEntity;
 
     @ManyToOne(() => ProductEntity, (product) => product.extras, {
         onDelete: "CASCADE"
     })
-    @JoinColumn({ name: "pex_id_product" })
-    product: ProductEntity;
-
-    @OneToOne(() => ItemExtraEntity, (item) => item.extra, {
-        onDelete: "CASCADE"
+    @JoinColumn({
+        name: "pre_id_product"
     })
-    @JoinColumn({ name: "itx_id_extra" })
-    extra: ItemExtraEntity;
+    product: ProductEntity;
 
     constructor(partial: Partial<ProductExtraEntity>) {
         Object.assign(this, partial);

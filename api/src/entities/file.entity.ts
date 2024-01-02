@@ -2,8 +2,8 @@ import { AfterLoad, BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, On
 import { ServiceHelpers } from "src/helpers/service.helper";
 import { AdminEntity } from "./admin.entity";
 import { UserEntity } from "./user.entity";
-import { ProductExtraEntity } from "./product-extra.entity";
 import { ProductEntity } from "./product.entity";
+import { ExtraEntity } from "./extra.entity";
 
 @Entity({
     name: "files"
@@ -54,17 +54,17 @@ export class FileEntity extends BaseEntity {
     @JoinColumn({ name: "use_id_picture" })
     user: UserEntity;
 
-    @OneToOne(() => ProductExtraEntity, (extra) => extra.file, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({ name: "pex_id_file" })
-    extra: ProductExtraEntity;
-
     @OneToOne(() => ProductEntity, (product) => product.image, {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "pro_id_image" })
     product: ProductEntity;
+
+    @OneToOne(() => ExtraEntity, (extra) => extra.image, {
+        onDelete: "CASCADE"
+    })
+    @JoinColumn({ name: "ext_id_picture" })
+    extra: ExtraEntity;
 
     url: string;
 

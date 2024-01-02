@@ -4,5 +4,6 @@ export type DashboardGetType = {
     product_count: number;
     order_count: number;
     value_amount: number;
-    items_count: number;
+    item_count: number;
+    extra_count: number;
 };

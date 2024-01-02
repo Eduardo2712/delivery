@@ -5,6 +5,7 @@ import { Repository } from "typeorm";
 import { UserEntity } from "src/entities/user.entity";
 import { ProductEntity } from "src/entities/product.entity";
 import { OrderEntity } from "src/entities/order.entity";
+import { ExtraEntity } from "src/entities/extra.entity";
 
 @Injectable()
 export class DashboardService {
@@ -16,7 +17,9 @@ export class DashboardService {
         @InjectRepository(ProductEntity)
         private readonly productRepository: Repository<ProductEntity>,
         @InjectRepository(OrderEntity)
-        private readonly orderRepository: Repository<OrderEntity>
+        private readonly orderRepository: Repository<OrderEntity>,
+        @InjectRepository(ExtraEntity)
+        private readonly extraRepository: Repository<ExtraEntity>
     ) {}
 
     async get(): Promise<{
@@ -25,6 +28,7 @@ export class DashboardService {
         product_count: number;
         order_count: number;
         value_amount: number;
+        extra_count: number;
     }> {
         const admin_count = await this.adminRepository.count({
             where: {
@@ -50,6 +54,12 @@ export class DashboardService {
             }
         });
 
+        const extra_count = await this.extraRepository.count({
+            where: {
+                ext_active: true
+            }
+        });
+
         const orders = await this.orderRepository.find({
             relations: ["items"]
         });
@@ -69,7 +79,8 @@ export class DashboardService {
             user_count,
             product_count,
             order_count,
-            value_amount
+            value_amount,
+            extra_count
         };
     }
 }

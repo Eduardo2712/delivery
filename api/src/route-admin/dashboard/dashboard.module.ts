@@ -6,9 +6,10 @@ import { AdminEntity } from "src/entities/admin.entity";
 import { UserEntity } from "src/entities/user.entity";
 import { ProductEntity } from "src/entities/product.entity";
 import { OrderEntity } from "src/entities/order.entity";
+import { ExtraEntity } from "src/entities/extra.entity";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([AdminEntity, UserEntity, ProductEntity, OrderEntity])],
+    imports: [TypeOrmModule.forFeature([AdminEntity, UserEntity, ProductEntity, OrderEntity, ExtraEntity])],
     controllers: [DashboardController],
     providers: [DashboardService]
 })

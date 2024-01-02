@@ -1,6 +1,6 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ItemEntity } from "./item.entity";
-import { ProductExtraEntity } from "./product-extra.entity";
+import { ExtraEntity } from "./extra.entity";
 
 @Entity({
     name: "item_extras"
@@ -23,7 +23,9 @@ export class ItemExtraEntity {
 
     @Column({
         nullable: false,
-        type: "decimal"
+        type: "decimal",
+        precision: 10,
+        scale: 2
     })
     itx_price: number;
 
@@ -33,21 +35,21 @@ export class ItemExtraEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToOne(() => ProductExtraEntity, (extra) => extra.extra, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({
-        name: "itx_id_extra"
-    })
-    extra: ProductExtraEntity;
-
-    @OneToOne(() => ItemEntity, (item) => item.extra, {
+    @ManyToOne(() => ItemEntity, (item) => item.extras, {
         onDelete: "CASCADE"
     })
     @JoinColumn({
         name: "itx_id_item"
     })
     item: ItemEntity;
+
+    @ManyToOne(() => ExtraEntity, (extra) => extra.items, {
+        onDelete: "CASCADE"
+    })
+    @JoinColumn({
+        name: "itx_id_extra"
+    })
+    extra: ExtraEntity;
 
     constructor(partial: Partial<ItemExtraEntity>) {
         Object.assign(this, partial);

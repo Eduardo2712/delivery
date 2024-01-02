@@ -13,7 +13,7 @@ export class OrderService {
 
     async findAll(
         datatableOrderDto: DatatableOrderDto
-    ): Promise<Array<OrderEntity & { items_count: number; order_value: number; status: string; status_color: string }>> {
+    ): Promise<Array<OrderEntity & { item_count: number; order_value: number; status: string; status_color: string }>> {
         const query = this.orderRepository
             .createQueryBuilder("order")
             .where("order.ord_active = :active", { active: true })
@@ -41,7 +41,7 @@ export class OrderService {
 
         const obj = result.map((order) => ({
             ...order,
-            items_count: order.items.length,
+            item_count: order.items.length,
             items: undefined,
             order_status: undefined,
             order_value: order.items.reduce((acc, item) => acc + Number(item.ite_price), 0),

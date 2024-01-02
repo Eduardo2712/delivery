@@ -3,8 +3,8 @@ import { ItemEntity } from "./item.entity";
 import { ProductHistoryEntity } from "./product-history.entity";
 import { CategoryEntity } from "./category.entity";
 import { ProductRatingEntity } from "./product-rating.entity";
-import { ProductExtraEntity } from "./product-extra.entity";
 import { FileEntity } from "./file.entity";
+import { ProductExtraEntity } from "./product-extra.entity";
 
 @Entity({
     name: "products"
@@ -94,13 +94,13 @@ export class ProductEntity {
     @JoinColumn({ name: "prr_id_product" })
     ratings: ProductRatingEntity[];
 
-    @OneToMany(() => ProductExtraEntity, (extra) => extra.product, { onDelete: "CASCADE" })
-    @JoinColumn({ name: "pex_id_product" })
-    extras: ProductExtraEntity[];
-
     @OneToOne(() => FileEntity, (image) => image.product, { onDelete: "CASCADE" })
     @JoinColumn({ name: "pro_id_image" })
     image: FileEntity;
+
+    @OneToMany(() => ProductExtraEntity, (product) => product.extra, { onDelete: "CASCADE" })
+    @JoinColumn({ name: "pre_id_product" })
+    extras: ProductExtraEntity[];
 
     constructor(partial: Partial<ProductEntity>) {
         Object.assign(this, partial);

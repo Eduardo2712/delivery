@@ -14,10 +14,11 @@ const Page: NextPage = () => {
     const [data, setData] = useState<DashboardGetType>({
         admin_count: 0,
         user_count: 0,
-        items_count: 0,
+        item_count: 0,
         order_count: 0,
         product_count: 0,
-        value_amount: 0
+        value_amount: 0,
+        extra_count: 0
     });
 
     useEffect(() => {
@@ -74,6 +75,12 @@ const Page: NextPage = () => {
                         <p className="text-gray-400 font-extrabold text-lg mb-1">Orders</p>
 
                         <p className="text-white font-bold text-lg">{data.order_count}</p>
+                    </div>
+
+                    <div className="bg-gray-700 w-full px-8 rounded-md h-20 flex justify-center flex-col items-center border-b-2 border-b-blue-700">
+                        <p className="text-gray-400 font-extrabold text-lg mb-1">Extras</p>
+
+                        <p className="text-white font-bold text-lg">{data.extra_count}</p>
                     </div>
 
                     <div className="bg-gray-700 w-full px-8 rounded-md h-20 flex justify-center flex-col items-center border-b-2 border-b-blue-700">

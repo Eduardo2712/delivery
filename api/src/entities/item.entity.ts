@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ProductEntity } from "./product.entity";
 import { OrderEntity } from "./order.entity";
 import { ItemExtraEntity } from "./item-extra.entity";
@@ -54,11 +54,11 @@ export class ItemEntity {
     @JoinColumn({ name: "ite_id_order" })
     order: OrderEntity;
 
-    @OneToOne(() => ItemExtraEntity, (item_extra) => item_extra.item, {
+    @OneToMany(() => ItemExtraEntity, (extra) => extra.item, {
         onDelete: "CASCADE"
     })
-    @JoinColumn({ name: "itx_id_extra" })
-    extra: ItemExtraEntity;
+    @JoinColumn({ name: "itx_id_item" })
+    extras: ItemExtraEntity[];
 
     constructor(partial: Partial<ItemEntity>) {
         Object.assign(this, partial);

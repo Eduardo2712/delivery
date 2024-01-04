@@ -8,9 +8,10 @@ import { UserModule } from "./user/user.module";
 import { AdminModule } from "./admin/admin.module";
 import { APP_GUARD } from "@nestjs/core";
 import { JwtGuard } from "./auth/guards/jwt-auth.guard";
+import { ExtraModule } from "./extra/extra.module";
 
 @Module({
-    imports: [AdminModule, AuthModule, CategoryModule, DashboardModule, OrderModule, ProductModule, UserModule],
+    imports: [AdminModule, AuthModule, CategoryModule, DashboardModule, OrderModule, ProductModule, UserModule, ExtraModule],
     controllers: [],
     providers: [
         {

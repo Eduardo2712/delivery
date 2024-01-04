@@ -28,7 +28,15 @@ export class ProductService {
     ) {}
 
     async create(createProductDto: CreateProductDto, picture: Express.Multer.File): Promise<string | void> {
-        await this.categoryRepository.findOneOrFail({ where: { id: createProductDto.pro_id_category, cat_active: true } });
+        const exist = await ServiceHelpers.checkExists(
+            this.categoryRepository,
+            { id: createProductDto.pro_id_category, cat_active: true },
+            "category"
+        );
+
+        if (exist) {
+            throw new BadRequestException(exist);
+        }
 
         const query_runner = this.dataSource.createQueryRunner();
 

@@ -157,14 +157,14 @@ const Sidebar = ({ children }: { children: ReactNode }) => {
 
                             <li>
                                 <Link
-                                    href="/product-extra"
+                                    href="/extra"
                                     className={`${
-                                        pathname.includes("product-extra") ? "bg-gray-700" : ""
+                                        pathname.includes("extra") ? "bg-gray-700" : ""
                                     } flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group`}
                                 >
                                     <FaCirclePlus className="text-white" />
 
-                                    <span className="ml-3">Product extras</span>
+                                    <span className="ml-3">Extras</span>
                                 </Link>
                             </li>
 

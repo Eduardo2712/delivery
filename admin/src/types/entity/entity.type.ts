@@ -131,8 +131,14 @@ export type CategoryType = {
     updated_at: Date;
 };
 
-export type ProductExtra = {
+export type ExtraType = {
     id: number;
+    ext_id_picture: number;
+    ext_name: string;
+    ext_price: number;
+    ext_status: boolean;
+    ext_active: boolean;
     created_at: Date;
     updated_at: Date;
+    picture?: FileType | null;
 };

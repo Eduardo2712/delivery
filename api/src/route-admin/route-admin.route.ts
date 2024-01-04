@@ -2,6 +2,7 @@ import { AdminModule } from "./admin/admin.module";
 import { AuthModule } from "./auth/auth.module";
 import { CategoryModule } from "./category/category.module";
 import { DashboardModule } from "./dashboard/dashboard.module";
+import { ExtraModule } from "./extra/extra.module";
 import { OrderModule } from "./order/order.module";
 import { ProductModule } from "./product/product.module";
 import { UserModule } from "./user/user.module";
@@ -37,6 +38,10 @@ export const RouteAdmin = [
             {
                 path: "user",
                 module: UserModule
+            },
+            {
+                path: "extra",
+                module: ExtraModule
             }
         ]
     }

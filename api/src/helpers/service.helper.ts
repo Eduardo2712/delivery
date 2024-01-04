@@ -11,6 +11,14 @@ const checkUnique = async <T>(repository: Repository<T>, where: FindOptionsWhere
     return obj ? `The ${field} is already in use` : null;
 };
 
+const checkExists = async <T>(repository: Repository<T>, where: FindOptionsWhere<T>, field: string): Promise<string | null> => {
+    const obj = await repository.findOne({
+        where: where
+    });
+
+    return !obj ? `The ${field} does not exist` : null;
+};
+
 const uploadFile = async (file: Express.Multer.File, repository: Repository<FileEntity>): Promise<number | null> => {
     const bucket = createClient(process.env.BUCKET_URL, process.env.BUCKET_KEY, {
         auth: {
@@ -80,5 +88,6 @@ export const ServiceHelpers = {
     checkUnique,
     uploadFile,
     urlFile,
-    removeFile
+    removeFile,
+    checkExists
 };

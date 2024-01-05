@@ -28,7 +28,7 @@ const CardProduct = ({ product }: Props) => {
         <>
             <button
                 type="button"
-                className="rounded-sm bg-white px-4 py-5 flex flex-row items-start h-44 hover:bg-gray-200"
+                className="rounded-sm bg-white px-4 py-5 flex flex-row items-start h-44 hover:bg-gray-100"
                 onClick={() => setOpenModal(true)}
             >
                 <div className="overflow-ellipsis whitespace-nowrap overflow-hidden flex-1 flex flex-col h-full">
@@ -100,7 +100,7 @@ const CardProduct = ({ product }: Props) => {
                     </div>
                 </div>
 
-                <div className="flex justify-end gap-4 border-t-2 border-gray-200 mt-3 py-2 px-3">
+                <div className="flex justify-end gap-4 border-t-2 border-gray-100 mt-3 py-2 px-3">
                     <div className="flex justify-center items-center border-2 border-gray-300 rounded-md">
                         <button
                             type="button"

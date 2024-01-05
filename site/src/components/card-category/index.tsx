@@ -35,7 +35,7 @@ const CardCategory = ({ category, filter_category, setFilterCategory }: Props) =
         <button
             type="button"
             className={`rounded-md w-20 h-16 flex flex-col justify-around items-center ${
-                filter_category === category.id ? "bg-blue-400 hover:bg-blue-500" : "bg-white hover:bg-slate-300"
+                filter_category === category.id ? "bg-blue-400 hover:bg-blue-500" : "bg-white hover:bg-gray-100"
             }`}
             onClick={() => setFilterCategory(category.id)}
         >

@@ -11,12 +11,29 @@ const checkUnique = async <T>(repository: Repository<T>, where: FindOptionsWhere
     return obj ? `The ${field} is already in use` : null;
 };
 
-const checkExists = async <T>(repository: Repository<T>, where: FindOptionsWhere<T>, field: string): Promise<string | null> => {
-    const obj = await repository.findOne({
-        where: where
-    });
+type CheckExistsParams<T> = {
+    repository: Repository<T>;
+    where: FindOptionsWhere<T>;
+    field: string;
+};
 
-    return !obj ? `The ${field} does not exist` : null;
+const checkArrayExists = async <T>(params: CheckExistsParams<T>[]): Promise<string | null> => {
+    const results = await Promise.all(
+        params.map(async (param) => {
+            const obj = await param.repository.findOne({
+                where: param.where
+            });
+
+            if (!obj) {
+                return `The ${param.field} does not exist`;
+            }
+
+            return null;
+        })
+    );
+
+    const error = results.find((result) => result !== null);
+    return error || null;
 };
 
 const uploadFile = async (file: Express.Multer.File, repository: Repository<FileEntity>): Promise<number | null> => {
@@ -89,5 +106,5 @@ export const ServiceHelpers = {
     uploadFile,
     urlFile,
     removeFile,
-    checkExists
+    checkArrayExists
 };

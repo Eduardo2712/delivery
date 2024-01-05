@@ -28,14 +28,16 @@ export class ProductService {
     ) {}
 
     async create(createProductDto: CreateProductDto, picture: Express.Multer.File): Promise<string | void> {
-        const exist = await ServiceHelpers.checkExists(
-            this.categoryRepository,
-            { id: createProductDto.pro_id_category, cat_active: true },
-            "category"
-        );
+        const error = await ServiceHelpers.checkArrayExists([
+            {
+                repository: this.categoryRepository,
+                where: { cat_active: true, id: createProductDto.pro_id_category },
+                field: "category"
+            }
+        ]);
 
-        if (exist) {
-            throw new BadRequestException(exist);
+        if (error) {
+            throw new BadRequestException(error);
         }
 
         const query_runner = this.dataSource.createQueryRunner();
@@ -46,7 +48,11 @@ export class ProductService {
         try {
             const id_picture = await ServiceHelpers.uploadFile(picture, this.fileRepository);
 
-            const product = this.productRepository.create({ ...createProductDto, pro_active: true, pro_id_image: id_picture });
+            const product = this.productRepository.create({
+                ...createProductDto,
+                pro_active: true,
+                pro_id_image: id_picture
+            });
 
             await this.productRepository.save(product);
 
@@ -65,7 +71,17 @@ export class ProductService {
     }
 
     async update(id: number, updateProductDto: UpdateProductDto, picture?: Express.Multer.File): Promise<string | null> {
-        await this.categoryRepository.findOneOrFail({ where: { id: updateProductDto.pro_id_category, cat_active: true } });
+        const error = await ServiceHelpers.checkArrayExists([
+            {
+                repository: this.categoryRepository,
+                where: { cat_active: true, id: updateProductDto.pro_id_category },
+                field: "category"
+            }
+        ]);
+
+        if (error) {
+            throw new BadRequestException(error);
+        }
 
         const product = await this.productRepository.findOneOrFail({ where: { id, pro_active: true } });
 
@@ -93,6 +109,8 @@ export class ProductService {
             this.productRepository.merge(product, updateProductDto);
 
             await this.productRepository.save(product);
+
+            await query_runner.commitTransaction();
 
             return null;
         } catch (error: unknown) {

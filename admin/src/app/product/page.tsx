@@ -12,7 +12,10 @@ import { FaPlus } from "react-icons/fa6";
 const Page: NextPage = () => {
     const buttons_top = (
         <div className="mb-4 flex items-center justify-start flex-1">
-            <Link href={`product/create`} className="bg-blue-700 flex items-center gap-3 rounded px-3 py-2 text-gray-100 font-semibold">
+            <Link
+                href={`product/create`}
+                className="bg-blue-700 flex items-center gap-3 rounded px-3 py-2 text-gray-100 font-semibold hover:bg-blue-600"
+            >
                 <FaPlus fontSize={18} className="cursor-pointer" />
                 New
             </Link>

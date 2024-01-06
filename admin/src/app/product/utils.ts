@@ -33,9 +33,7 @@ export const createFormData = <T extends Record<string, any>>(values: T): FormDa
             value_form_data = formatNumber(value);
         }
 
-        if (key !== "picture" || (key === "picture" && values.new_picture)) {
-            form_data.append(key, value_form_data);
-        }
+        form_data.append(key, value_form_data);
     }
 
     return form_data;

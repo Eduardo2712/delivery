@@ -8,16 +8,16 @@ export type ExtraDatatableType = {
 
 export type ExtraCreateType = {
     ext_name: string;
-    ext_price: number;
-    ext_status: boolean;
-    picture: File;
+    ext_price: number | string;
+    ext_status: number | string;
+    picture: File | undefined;
 };
 
 export type ExtraUpdateType = {
     ext_name: string;
-    ext_price: number;
-    ext_status: boolean;
-    picture: File;
+    ext_price: number | string;
+    ext_status: number | string;
+    picture: File | undefined;
     new_picture: boolean;
 };
 

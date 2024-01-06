@@ -1,4 +1,4 @@
-import { AfterLoad, BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { AfterLoad, BaseEntity, Column, CreateDateColumn, Entity, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ServiceHelpers } from "src/helpers/service.helper";
 import { AdminEntity } from "./admin.entity";
 import { UserEntity } from "./user.entity";
@@ -45,25 +45,21 @@ export class FileEntity extends BaseEntity {
     @OneToOne(() => AdminEntity, (admin) => admin.picture, {
         onDelete: "CASCADE"
     })
-    @JoinColumn({ name: "adm_id_picture" })
     admin: AdminEntity;
 
     @OneToOne(() => UserEntity, (user) => user.picture, {
         onDelete: "CASCADE"
     })
-    @JoinColumn({ name: "use_id_picture" })
     user: UserEntity;
 
     @OneToOne(() => ProductEntity, (product) => product.image, {
         onDelete: "CASCADE"
     })
-    @JoinColumn({ name: "pro_id_image" })
     product: ProductEntity;
 
     @OneToOne(() => ExtraEntity, (extra) => extra.image, {
         onDelete: "CASCADE"
     })
-    @JoinColumn({ name: "ext_id_picture" })
     extra: ExtraEntity;
 
     url: string;

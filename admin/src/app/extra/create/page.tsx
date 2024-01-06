@@ -5,9 +5,8 @@ import { Form, Formik } from "formik";
 import { FaSpinner } from "react-icons/fa6";
 import { createFormData, router_base, schemaCreate } from "../utils";
 import { useState } from "react";
-import { ProductCreateType } from "@/types/request/product.type";
 import Link from "next/link";
-import { create } from "@/requests/product.request";
+import { create } from "@/requests/extra.request";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import axios, { HttpStatusCode } from "axios";
@@ -17,13 +16,14 @@ import { maskMoney } from "@/utils/mask";
 import FileUpload from "@/components/file-upload";
 import StyleSelect from "@/components/style-select";
 import { listEnableDisable } from "@/utils/other";
+import { ExtraCreateType } from "@/types/request/extra.type";
 
 const Page: NextPage = () => {
     const [submitting, setSubmitting] = useState<boolean>(false);
 
     const router = useRouter();
 
-    const onSubmit = async (values: ProductCreateType) => {
+    const onSubmit = async (values: ExtraCreateType) => {
         setSubmitting(true);
 
         try {
@@ -33,7 +33,7 @@ const Page: NextPage = () => {
                 return toast.error(response.data.message);
             }
 
-            toast.success("Product created successfully");
+            toast.success("Extra created successfully");
 
             router.push(router_base);
         } catch (error) {
@@ -47,19 +47,16 @@ const Page: NextPage = () => {
         }
     };
 
-    const initialValues: ProductCreateType = {
-        pro_id_category: null,
-        pro_ingredients: "",
-        pro_number_people: 1,
-        pro_name: "",
-        pro_price: "",
-        pro_status: "",
+    const initialValues: ExtraCreateType = {
+        ext_name: "",
+        ext_price: "",
+        ext_status: "",
         picture: undefined
     };
 
     return (
         <>
-            <p className="text-2xl font-bold">Product - Create</p>
+            <p className="text-2xl font-bold">Extra - Create</p>
 
             <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaCreate} initialValues={initialValues}>
                 {({ handleChange, handleBlur, values, errors, touched, setFieldValue }) => (
@@ -75,28 +72,28 @@ const Page: NextPage = () => {
                             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                                 <div>
                                     <StyleInput
-                                        errors={errors.pro_name}
-                                        touched={touched.pro_name}
+                                        errors={errors.ext_name}
+                                        touched={touched.ext_name}
                                         handleBlur={handleBlur}
                                         handleChange={handleChange}
-                                        name={"pro_name"}
+                                        name={"ext_name"}
                                         title={"Name"}
                                         type={"text"}
-                                        value={values.pro_name}
+                                        value={values.ext_name}
                                         is_required
                                     />
                                 </div>
 
                                 <div>
                                     <StyleInput
-                                        errors={errors.pro_price}
-                                        touched={touched.pro_price}
+                                        errors={errors.ext_price}
+                                        touched={touched.ext_price}
                                         handleBlur={handleBlur}
                                         handleChange={(e) => handleChange(maskMoney(e))}
-                                        name={"pro_price"}
-                                        title={"Current price (R$)"}
+                                        name={"ext_price"}
+                                        title={"Price (R$)"}
                                         type={"text"}
-                                        value={values.pro_price}
+                                        value={values.ext_price}
                                         is_required
                                     />
                                 </div>
@@ -105,13 +102,13 @@ const Page: NextPage = () => {
                             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
                                 <div>
                                     <StyleSelect
-                                        errors={errors.pro_status}
-                                        touched={touched.pro_status}
+                                        errors={errors.ext_status}
+                                        touched={touched.ext_status}
                                         handleBlur={handleBlur}
                                         handleChange={handleChange}
-                                        name={"pro_status"}
+                                        name={"ext_status"}
                                         title={"Status"}
-                                        value={values.pro_status}
+                                        value={values.ext_status}
                                         is_required
                                         emptyOption
                                     >
@@ -123,37 +120,6 @@ const Page: NextPage = () => {
                                             );
                                         })}
                                     </StyleSelect>
-                                </div>
-
-                                <div>
-                                    <StyleInput
-                                        errors={errors.pro_number_people}
-                                        touched={touched.pro_number_people}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                        name={"pro_number_people"}
-                                        title={"Number of people"}
-                                        type={"number"}
-                                        value={values.pro_number_people}
-                                        is_required
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="grid grid-cols-1 gap-4 lg:grid-cols-1">
-                                <div>
-                                    <StyleInput
-                                        errors={errors.pro_ingredients}
-                                        touched={touched.pro_ingredients}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                        name={"pro_ingredients"}
-                                        title={"Ingredients"}
-                                        type={"text"}
-                                        value={values.pro_ingredients}
-                                        is_required
-                                        multiple
-                                    />
                                 </div>
                             </div>
                         </CustomBox>

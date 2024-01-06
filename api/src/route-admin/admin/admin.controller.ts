@@ -1,30 +1,11 @@
-import {
-    Controller,
-    Post,
-    Body,
-    Get,
-    Query,
-    Delete,
-    Param,
-    HttpCode,
-    HttpStatus,
-    UseInterceptors,
-    UploadedFile,
-    ParseFilePipe,
-    MaxFileSizeValidator,
-    FileTypeValidator
-} from "@nestjs/common";
+import { Controller, Post, Body, Get, Query, Delete, Param, HttpCode, HttpStatus, UseInterceptors, UploadedFile } from "@nestjs/common";
 import { AdminService } from "./admin.service";
 import { CreateAdminDto } from "./dto/create-admin.dto";
 import { UpdateAdminDto } from "./dto/update-admin.dto";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { ConstHelper } from "src/helpers/const.helper";
 import { AdminEntity } from "src/entities/admin.entity";
 import { DatatableAdminDto } from "./dto/datatable-admin.dto";
-
-const FileConfig = new ParseFilePipe({
-    validators: [new MaxFileSizeValidator({ maxSize: ConstHelper.MAX_SIZE_FILE }), new FileTypeValidator({ fileType: "image/*" })]
-});
+import { ValidationHelpers } from "src/helpers/validation.helper";
 
 @Controller()
 export class AdminController {
@@ -36,7 +17,7 @@ export class AdminController {
     async update(
         @Param("id") id: number,
         @Body() updateAdminDto: UpdateAdminDto,
-        @UploadedFile(FileConfig)
+        @UploadedFile(ValidationHelpers.FileConfig({ required: false }))
         picture: Express.Multer.File
     ): Promise<string | null> {
         return await this.adminService.update(id, updateAdminDto, picture);
@@ -47,7 +28,7 @@ export class AdminController {
     @UseInterceptors(FileInterceptor("picture"))
     async create(
         @Body() createAdminDto: CreateAdminDto,
-        @UploadedFile(FileConfig)
+        @UploadedFile(ValidationHelpers.FileConfig({ required: false }))
         picture: Express.Multer.File
     ): Promise<string | null> {
         return await this.adminService.create(createAdminDto, picture);

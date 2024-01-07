@@ -133,7 +133,8 @@ export class ProductService {
                 histories: {
                     admin: true
                 },
-                image: true
+                image: true,
+                extras: true
             }
         });
 

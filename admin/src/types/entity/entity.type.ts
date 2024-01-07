@@ -140,5 +140,5 @@ export type ExtraType = {
     ext_active: boolean;
     created_at: Date;
     updated_at: Date;
-    picture?: FileType | null;
+    image?: FileType | null;
 };

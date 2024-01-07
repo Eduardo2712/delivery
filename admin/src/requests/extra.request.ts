@@ -22,3 +22,11 @@ export const edit = (id: number, data: FormData): AxiosPromise<Error> => {
 export const get = (id: number): AxiosPromise<ExtraType & Error> => {
     return axios.get(`${process.env.NEXT_PUBLIC_URL_API}/extra/${id}`);
 };
+
+export const list = (search: string): AxiosPromise<ExtraType[] & Error> => {
+    return axios.get(`${process.env.NEXT_PUBLIC_URL_API}/extra/list`, {
+        params: {
+            search
+        }
+    });
+};

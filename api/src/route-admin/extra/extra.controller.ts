@@ -50,4 +50,10 @@ export class ExtraController {
     async remove(@Param("id") id: number): Promise<string | null> {
         return await this.extraService.remove(id);
     }
+
+    @Get("/list")
+    @HttpCode(HttpStatus.OK)
+    async list(@Query("search") search: string): Promise<ExtraEntity[]> {
+        return await this.extraService.list(search);
+    }
 }

@@ -99,7 +99,9 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
         pro_price: data?.pro_price ? formatDecimal(data.pro_price) : "",
         pro_status: data?.pro_status ? "1" : "0",
         picture: undefined,
-        new_picture: false
+        new_picture: false,
+        extras: [],
+        extras_deleted: []
     };
 
     return (

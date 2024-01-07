@@ -1,4 +1,4 @@
-import { ProductType } from "../entity/entity.type";
+import { ExtraType, ProductType } from "../entity/entity.type";
 
 export type ProductDatatableType = {
     search: string;
@@ -14,6 +14,7 @@ export type ProductCreateType = {
     pro_price: number | string;
     pro_status: number | string;
     picture?: File;
+    extras: Array<ExtraType & { id: number }>;
 };
 
 export type ProductUpdateType = {
@@ -25,6 +26,8 @@ export type ProductUpdateType = {
     pro_status: number | string;
     picture?: File;
     new_picture: boolean;
+    extras: Array<ExtraType & { id: number }>;
+    extras_deleted: number[];
 };
 
 export type ProductGetType = ProductType;

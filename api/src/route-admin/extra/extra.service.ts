@@ -54,6 +54,9 @@ export class ExtraService {
             where: {
                 id,
                 ext_active: true
+            },
+            relations: {
+                image: true
             }
         });
 
@@ -127,5 +130,20 @@ export class ExtraService {
         } finally {
             await query_runner.release();
         }
+    }
+
+    async list(search: string): Promise<ExtraEntity[]> {
+        const extras = await this.extraRepository.find({
+            where: {
+                ext_active: true,
+                ext_status: true,
+                ext_name: ILike(`%${search}%`)
+            },
+            relations: {
+                image: true
+            }
+        });
+
+        return extras;
     }
 }

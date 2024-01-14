@@ -39,6 +39,12 @@ export class ExtraController {
         return await this.extraService.findAll(datatableExtraDto);
     }
 
+    @Get("/list")
+    @HttpCode(HttpStatus.OK)
+    async list(@Query("search") search: string): Promise<ExtraEntity[]> {
+        return await this.extraService.list(search);
+    }
+
     @Get(":id")
     @HttpCode(HttpStatus.OK)
     async findOne(@Param("id") id: number): Promise<ExtraEntity> {
@@ -49,11 +55,5 @@ export class ExtraController {
     @HttpCode(HttpStatus.OK)
     async remove(@Param("id") id: number): Promise<string | null> {
         return await this.extraService.remove(id);
-    }
-
-    @Get("/list")
-    @HttpCode(HttpStatus.OK)
-    async list(@Query("search") search: string): Promise<ExtraEntity[]> {
-        return await this.extraService.list(search);
     }
 }

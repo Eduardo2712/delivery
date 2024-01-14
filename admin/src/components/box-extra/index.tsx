@@ -5,6 +5,7 @@ import TextEmpty from "../text-empty";
 import { ExtraType } from "@/types/entity/entity.type";
 import { FormikErrors } from "formik";
 import { ProductCreateType } from "@/types/request/product.type";
+import AutocompleteExtra from "../autocomplete-extra";
 
 type Props = {
     loading: boolean;
@@ -15,6 +16,8 @@ type Props = {
 const BoxExtra = ({ loading, extras, setFieldValue }: Props) => {
     return (
         <CustomBox text="Extras">
+            <AutocompleteExtra />
+
             {extras.length > 0 ? (
                 <div className="w-full">
                     <DataTable

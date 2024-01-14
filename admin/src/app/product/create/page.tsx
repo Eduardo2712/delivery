@@ -20,9 +20,7 @@ import StyleSelect from "@/components/style-select";
 import { listEnableDisable } from "@/utils/other";
 import { CategoryType } from "@/types/entity/entity.type";
 import LoadingSpinner from "@/components/loading-spinner";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
-import TextEmpty from "@/components/text-empty";
+import BoxExtra from "@/components/box-extra";
 
 const Page: NextPage = () => {
     const [submitting, setSubmitting] = useState<boolean>(false);
@@ -216,27 +214,7 @@ const Page: NextPage = () => {
                                 </div>
                             </CustomBox>
 
-                            <CustomBox text="Extras">
-                                {values.extras.length > 0 ? (
-                                    <div className="w-full">
-                                        <DataTable
-                                            value={values.extras ?? []}
-                                            className="table-auto w-full"
-                                            showGridlines
-                                            stripedRows
-                                            scrollable={true}
-                                            emptyMessage={"No data"}
-                                            paginator
-                                            loading={loading}
-                                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-                                        >
-                                            <Column field="admin.adm_name" header="Admin" />
-                                        </DataTable>
-                                    </div>
-                                ) : (
-                                    <TextEmpty text="No extras" />
-                                )}
-                            </CustomBox>
+                            <BoxExtra extras={values.extras} setFieldValue={setFieldValue} loading={loading} />
 
                             <CustomBox>
                                 <div className="gap-2 flex flex-col justify-between md:flex-row">

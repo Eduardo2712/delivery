@@ -8,18 +8,18 @@ import AsyncSelect from "react-select/async";
 const AutocompleteExtra = () => {
     const [extras, setExtras] = useState<ExtraType[]>([]);
 
-    const promiseOptions = async (search: string) => {
-        try {
-            const response = await list(search);
-            setExtras(response.data);
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                return toast.error(error.response?.data?.message ?? "An error has occurred");
-            } else {
-                return toast.error("An error has occurred");
-            }
-        }
-    };
+    // const promiseOptions = async (search: string) => {
+    //     try {
+    //         const response = await list(search);
+    //         setExtras(response.data);
+    //     } catch (error) {
+    //         if (axios.isAxiosError(error)) {
+    //             return toast.error(error.response?.data?.message ?? "An error has occurred");
+    //         } else {
+    //             return toast.error("An error has occurred");
+    //         }
+    //     }
+    // };
 
     return <AsyncSelect cacheOptions defaultOptions />;
 };

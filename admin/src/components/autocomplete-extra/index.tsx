@@ -21,7 +21,7 @@ const AutocompleteExtra = () => {
     //     }
     // };
 
-    return <AsyncSelect cacheOptions defaultOptions />;
+    // return <AsyncSelect cacheOptions defaultOptions />;
 };
 
 export default AutocompleteExtra;

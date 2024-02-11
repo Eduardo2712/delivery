@@ -1,11 +1,11 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ProductEntity } from "./product.entity";
 import { AdminEntity } from "./admin.entity";
 
 @Entity({
     name: "product_histories"
 })
-export class ProductHistoryEntity {
+export class ProductHistoryEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -55,6 +55,7 @@ export class ProductHistoryEntity {
     admin: AdminEntity;
 
     constructor(partial: Partial<ProductHistoryEntity>) {
+        super();
         Object.assign(this, partial);
     }
 }

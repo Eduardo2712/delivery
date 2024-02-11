@@ -11,7 +11,7 @@ export class OrderController {
     @HttpCode(HttpStatus.OK)
     async findAll(
         @Query() datatableOrderDto: DatatableOrderDto
-    ): Promise<Array<OrderEntity & { item_count: number; order_value: number; status: string; status_color: string }>> {
+    ): Promise<Array<Partial<OrderEntity> & { item_count: number; order_value: number; status: string; status_color: string }>> {
         return await this.orderService.findAll(datatableOrderDto);
     }
 

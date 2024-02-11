@@ -7,10 +7,10 @@ const axios_instance = axios.create({
 
 axios_instance.interceptors.request.use(
     async (config) => {
-        const token = localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token") as string) : null;
+        const token = localStorage.getItem("token");
 
         if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+            config.headers.Authorization = `Bearer ${JSON.parse(token)}`;
         }
 
         return config;
@@ -27,26 +27,28 @@ axios_instance.interceptors.response.use(
     async (error) => {
         const original_request = error.config;
 
-        if (error.response.status === 401 && !original_request._retry) {
+        if (error.response && error.response.status === 401 && !original_request._retry) {
             original_request._retry = true;
 
-            const response = await refreshToken(JSON.parse(localStorage.getItem("refresh_token") as string));
+            const refresh_token = localStorage.getItem("refresh_token");
 
-            const token = response.data.token;
+            if (refresh_token) {
+                try {
+                    const response = await refreshToken(JSON.parse(refresh_token));
+                    const token = response.data.token;
 
-            if (response) {
-                localStorage.setItem("token", JSON.stringify(token));
+                    localStorage.setItem("token", JSON.stringify(token));
+                    axios_instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-                axios_instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
-                return axios_instance(original_request);
-            } else {
-                localStorage.removeItem("token");
-                localStorage.removeItem("refresh_token");
-                localStorage.removeItem("user");
-
-                window.location.href = "/";
+                    return axios_instance(original_request);
+                } catch (refreshError) {
+                    console.error("Failed to refresh token:", refreshError);
+                }
             }
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("refresh_token");
+            localStorage.removeItem("user");
         }
         return Promise.reject(error);
     }

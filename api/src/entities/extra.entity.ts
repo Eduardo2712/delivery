@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { FileEntity } from "./file.entity";
 import { ProductExtraEntity } from "./product-extra.entity";
 import { ItemExtraEntity } from "./item-extra.entity";
@@ -6,7 +6,7 @@ import { ItemExtraEntity } from "./item-extra.entity";
 @Entity({
     name: "extras"
 })
-export class ExtraEntity {
+export class ExtraEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -67,6 +67,7 @@ export class ExtraEntity {
     items: ItemExtraEntity[];
 
     constructor(partial: Partial<ExtraEntity>) {
+        super();
         Object.assign(this, partial);
     }
 }

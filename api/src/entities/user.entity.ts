@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, OneToMany } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToOne, JoinColumn, OneToMany, BaseEntity } from "typeorm";
 import { OrderEntity } from "./order.entity";
 import { FileEntity } from "./file.entity";
 import { UserAddressEntity } from "./user-address.entity";
@@ -8,7 +8,7 @@ import { Exclude } from "class-transformer";
 @Entity({
     name: "users"
 })
-export class UserEntity {
+export class UserEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -93,6 +93,7 @@ export class UserEntity {
     ratings: ProductRatingEntity[];
 
     constructor(partial: Partial<UserEntity>) {
+        super();
         Object.assign(this, partial);
     }
 }

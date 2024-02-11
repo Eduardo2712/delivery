@@ -1,10 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, JoinColumn, ManyToOne, BaseEntity } from "typeorm";
 import { UserEntity } from "./user.entity";
 
 @Entity({
     name: "user_addresses"
 })
-export class UserAddressEntity {
+export class UserAddressEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -76,6 +76,7 @@ export class UserAddressEntity {
     user: UserEntity;
 
     constructor(partial: Partial<UserAddressEntity>) {
+        super();
         Object.assign(this, partial);
     }
 }

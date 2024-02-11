@@ -1,11 +1,11 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ProductEntity } from "./product.entity";
 import { UserEntity } from "./user.entity";
 
 @Entity({
     name: "product_ratings"
 })
-export class ProductRatingEntity {
+export class ProductRatingEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -48,6 +48,7 @@ export class ProductRatingEntity {
     user: UserEntity;
 
     constructor(partial: Partial<ProductRatingEntity>) {
+        super();
         Object.assign(this, partial);
     }
 }

@@ -95,16 +95,16 @@ export class ProductService {
                 product.pro_id_image = await ServiceHelpers.uploadFile(picture, this.fileRepository);
             }
 
-            if (product.pro_price !== updateProductDto.pro_price) {
-                const aux = this.productHistoryRepository.create({
-                    prh_id_product: product.id,
-                    prh_price: updateProductDto.pro_price,
-                    prh_date: new Date(),
-                    prh_id_admin: this.request.user["sub"]
-                });
+            // if (product.pro_price !== updateProductDto.pro_price) {
+            //     const aux = this.productHistoryRepository.create({
+            //         prh_id_product: product.id,
+            //         prh_price: updateProductDto.pro_price,
+            //         prh_date: new Date(),
+            //         prh_id_admin: this.request.user["sub"]
+            //     });
 
-                await this.productHistoryRepository.save(aux);
-            }
+            //     await this.productHistoryRepository.save(aux);
+            // }
 
             this.productRepository.merge(product, updateProductDto);
 

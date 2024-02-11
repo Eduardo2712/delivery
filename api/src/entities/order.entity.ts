@@ -1,4 +1,4 @@
-import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn, JoinColumn, Column, OneToMany } from "typeorm";
+import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn, JoinColumn, Column, OneToMany, BaseEntity } from "typeorm";
 import { UserEntity } from "./user.entity";
 import { ItemEntity } from "./item.entity";
 import { OrderStatusEntity } from "./order-status.entity";
@@ -6,7 +6,7 @@ import { OrderStatusEntity } from "./order-status.entity";
 @Entity({
     name: "orders"
 })
-export class OrderEntity {
+export class OrderEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -116,6 +116,7 @@ export class OrderEntity {
     order_status: OrderStatusEntity[];
 
     constructor(partial: Partial<OrderEntity>) {
+        super();
         Object.assign(this, partial);
     }
 }

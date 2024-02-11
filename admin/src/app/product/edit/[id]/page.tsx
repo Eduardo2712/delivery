@@ -155,6 +155,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                             type={"text"}
                                             value={values.pro_name}
                                             is_required
+                                            disabled
                                         />
                                     </div>
 
@@ -223,6 +224,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                             value={values.pro_id_category}
                                             is_required
                                             emptyOption
+                                            disabled
                                         >
                                             {categories.map((item) => {
                                                 return (

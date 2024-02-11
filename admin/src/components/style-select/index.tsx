@@ -11,9 +11,22 @@ type Props = {
     is_required: boolean;
     children: ReactNode;
     emptyOption?: boolean;
+    disabled?: boolean;
 };
 
-const StyleSelect = ({ handleChange, handleBlur, name, title, errors, touched, value, is_required, children, emptyOption = false }: Props) => {
+const StyleSelect = ({
+    handleChange,
+    handleBlur,
+    name,
+    title,
+    errors,
+    touched,
+    value,
+    is_required,
+    children,
+    emptyOption = false,
+    disabled = false
+}: Props) => {
     return (
         <>
             <label className="block text-sm font-semibold leading-6 text-gray-100" htmlFor={name}>
@@ -27,6 +40,7 @@ const StyleSelect = ({ handleChange, handleBlur, name, title, errors, touched, v
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={value ?? ""}
+                disabled={disabled}
             >
                 {emptyOption && <option value={""}></option>}
 

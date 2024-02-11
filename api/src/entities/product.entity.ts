@@ -1,4 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany, JoinColumn, ManyToOne, OneToOne } from "typeorm";
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    CreateDateColumn,
+    UpdateDateColumn,
+    OneToMany,
+    JoinColumn,
+    ManyToOne,
+    OneToOne,
+    BaseEntity,
+    BeforeUpdate,
+    UpdateEvent
+} from "typeorm";
 import { ItemEntity } from "./item.entity";
 import { ProductHistoryEntity } from "./product-history.entity";
 import { CategoryEntity } from "./category.entity";
@@ -9,7 +22,7 @@ import { ProductExtraEntity } from "./product-extra.entity";
 @Entity({
     name: "products"
 })
-export class ProductEntity {
+export class ProductEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -102,7 +115,28 @@ export class ProductEntity {
     @JoinColumn({ name: "pre_id_product" })
     extras: ProductExtraEntity[];
 
+    @BeforeUpdate()
+    async beforeUpdate(event: UpdateEvent<ProductEntity>) {
+        console.log(event);
+        event.updatedColumns.forEach((column) => {
+            const old_value = event.databaseEntity[column.propertyName];
+            const new_value = event.entity[column.propertyName];
+
+            if (old_value !== new_value && column.propertyName === "pro_price") {
+                const product_history = new ProductHistoryEntity({});
+
+                product_history.prh_id_product = event.entity.id;
+                product_history.prh_id_admin = 1;
+                product_history.prh_price = new_value;
+                product_history.prh_date = new Date();
+
+                product_history.save();
+            }
+        });
+    }
+
     constructor(partial: Partial<ProductEntity>) {
+        super();
         Object.assign(this, partial);
     }
 }

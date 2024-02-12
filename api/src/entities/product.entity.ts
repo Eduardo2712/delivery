@@ -10,7 +10,9 @@ import {
     OneToOne,
     BaseEntity,
     BeforeUpdate,
-    UpdateEvent
+    EventSubscriber,
+    AfterLoad,
+    getMetadataArgsStorage
 } from "typeorm";
 import { ItemEntity } from "./item.entity";
 import { ProductHistoryEntity } from "./product-history.entity";
@@ -19,6 +21,7 @@ import { ProductRatingEntity } from "./product-rating.entity";
 import { FileEntity } from "./file.entity";
 import { ProductExtraEntity } from "./product-extra.entity";
 
+@EventSubscriber()
 @Entity({
     name: "products"
 })
@@ -115,23 +118,23 @@ export class ProductEntity extends BaseEntity {
     @JoinColumn({ name: "pre_id_product" })
     extras: ProductExtraEntity[];
 
+    private old_values: { [key: string]: any } = {};
+
     @BeforeUpdate()
-    async beforeUpdate(event: UpdateEvent<ProductEntity>) {
-        console.log(event);
-        event.updatedColumns.forEach((column) => {
-            const old_value = event.databaseEntity[column.propertyName];
-            const new_value = event.entity[column.propertyName];
-
-            if (old_value !== new_value && column.propertyName === "pro_price") {
-                const product_history = new ProductHistoryEntity({});
-
-                product_history.prh_id_product = event.entity.id;
-                product_history.prh_id_admin = 1;
-                product_history.prh_price = new_value;
-                product_history.prh_date = new Date();
-
-                product_history.save();
+    beforeUpdate() {
+        for (const key in this.old_values) {
+            if (this[key] !== this.old_values[key]) {
+                console.log(`${key} changed from ${this.old_values[key]} to ${this[key]}`);
             }
+        }
+    }
+
+    @AfterLoad()
+    afterLoad() {
+        const columns = getMetadataArgsStorage().columns.filter((col) => col.target === ProductEntity);
+        columns.forEach((col) => {
+            const propertyName = col.propertyName as string;
+            this.old_values[propertyName] = this[propertyName];
         });
     }
 

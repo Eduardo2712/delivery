@@ -17,8 +17,7 @@ export class ProductController {
     async update(
         @Param("id") id: number,
         @Body() updateProductDto: UpdateProductDto,
-        @UploadedFile(ValidationHelpers.FileConfig({ required: true }))
-        picture?: Express.Multer.File
+        @UploadedFile(ValidationHelpers.FileConfig({ required: false })) picture?: Express.Multer.File
     ): Promise<string | null> {
         return await this.productService.update(id, updateProductDto, picture);
     }
@@ -28,8 +27,7 @@ export class ProductController {
     @UseInterceptors(FileInterceptor("picture"))
     async create(
         @Body() createProductDto: CreateProductDto,
-        @UploadedFile(ValidationHelpers.FileConfig({ required: false }))
-        picture: Express.Multer.File
+        @UploadedFile(ValidationHelpers.FileConfig({ required: false })) picture: Express.Multer.File
     ): Promise<string | void> {
         return await this.productService.create(createProductDto, picture);
     }

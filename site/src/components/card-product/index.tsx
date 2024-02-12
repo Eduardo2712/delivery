@@ -41,7 +41,7 @@ const CardProduct = ({ product }: Props) => {
                             <FaStar size={16} className="text-yellow-500" />
 
                             <p className="text-sm text-start text-black font-semibold mt-1 overflow-ellipsis whitespace-nowrap overflow-hidden flex-1">
-                                {product?.avg_rating ? Number(product?.avg_rating).toFixed(1) : "N/A"}
+                                {product?.avg_rating ? Number(product?.avg_rating).toFixed(1) : "--"}
                             </p>
                         </div>
 
@@ -75,7 +75,7 @@ const CardProduct = ({ product }: Props) => {
                             <FaStar size={16} className="text-yellow-500" />
 
                             <p className="text-sm text-start text-black font-semibold mt-1 overflow-ellipsis whitespace-nowrap overflow-hidden flex-1">
-                                {product?.avg_rating ? Number(product?.avg_rating).toFixed(1) : "N/A"}
+                                {product?.avg_rating ? Number(product?.avg_rating).toFixed(1) : "--"}
                             </p>
                         </div>
 

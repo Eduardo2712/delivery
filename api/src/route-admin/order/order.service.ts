@@ -45,7 +45,7 @@ export class OrderService {
             items: undefined,
             order_status: undefined,
             order_value: order.items.reduce((acc, item) => acc + Number(item.ite_price), 0),
-            status: order.order_status?.[0]?.status?.sta_name || "N/A",
+            status: order.order_status?.[0]?.status?.sta_name || "--",
             status_color: order.order_status?.[0]?.status?.sta_color || null
         }));
 

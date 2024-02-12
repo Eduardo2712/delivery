@@ -31,6 +31,8 @@ export const createFormData = <T extends Record<string, any>>(values: T): FormDa
 
         if (key === "pro_price") {
             value_form_data = formatNumber(value);
+        } else if (key === "picture" && !values.picture) {
+            continue;
         }
 
         form_data.append(key, value_form_data);

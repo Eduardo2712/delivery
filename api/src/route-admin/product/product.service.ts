@@ -1,4 +1,4 @@
-import { BadRequestException, Inject, Injectable, Scope } from "@nestjs/common";
+import { BadRequestException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FileEntity } from "src/entities/file.entity";
 import { ProductEntity } from "src/entities/product.entity";
@@ -8,11 +8,9 @@ import { CreateProductDto } from "./dto/create-product.dto";
 import { ProductHistoryEntity } from "src/entities/product-history.entity";
 import { CategoryEntity } from "src/entities/category.entity";
 import { DatatableProductDto } from "./dto/datatable-product.dto";
-import { REQUEST } from "@nestjs/core";
-import { Request } from "express";
 import { ServiceHelpers } from "src/helpers/service.helper";
+import { AsyncLocalStorage } from "async_hooks";
 
-@Injectable({ scope: Scope.REQUEST })
 export class ProductService {
     constructor(
         @InjectRepository(ProductEntity)
@@ -23,7 +21,7 @@ export class ProductService {
         private readonly productHistoryRepository: Repository<ProductHistoryEntity>,
         @InjectRepository(CategoryEntity)
         private readonly categoryRepository: Repository<CategoryEntity>,
-        @Inject(REQUEST) private readonly request: Request,
+        private readonly als: AsyncLocalStorage<any>,
         private dataSource: DataSource
     ) {}
 
@@ -95,16 +93,16 @@ export class ProductService {
                 product.pro_id_image = await ServiceHelpers.uploadFile(picture, this.fileRepository);
             }
 
-            // if (product.pro_price !== updateProductDto.pro_price) {
-            //     const aux = this.productHistoryRepository.create({
-            //         prh_id_product: product.id,
-            //         prh_price: updateProductDto.pro_price,
-            //         prh_date: new Date(),
-            //         prh_id_admin: this.request.user["sub"]
-            //     });
+            if (product.pro_price !== updateProductDto.pro_price) {
+                const aux = this.productHistoryRepository.create({
+                    prh_id_product: product.id,
+                    prh_price: updateProductDto.pro_price,
+                    prh_date: new Date(),
+                    prh_id_admin: this.als.getStore()?.sub
+                });
 
-            //     await this.productHistoryRepository.save(aux);
-            // }
+                await this.productHistoryRepository.save(aux);
+            }
 
             this.productRepository.merge(product, updateProductDto);
 

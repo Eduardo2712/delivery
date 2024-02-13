@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { APP_GUARD, RouterModule } from "@nestjs/core";
@@ -7,6 +7,8 @@ import { RouteAdmin } from "./route-admin/route-admin.route";
 import { RouteAdminModule } from "./route-admin/route-admin.module";
 import { RouteSite } from "./route-site/route-site.route";
 import { RouteSiteModule } from "./route-site/route-site.module";
+import { AlsModule } from "./als/als.module";
+import { AlsMiddleware } from "./als/als.middleware";
 
 @Module({
     imports: [
@@ -35,7 +37,8 @@ import { RouteSiteModule } from "./route-site/route-site.module";
                     limit: 10
                 }
             ]
-        })
+        }),
+        AlsModule
     ],
     providers: [
         {
@@ -44,4 +47,8 @@ import { RouteSiteModule } from "./route-site/route-site.module";
         }
     ]
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(AlsMiddleware).forRoutes("*");
+    }
+}

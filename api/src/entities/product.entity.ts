@@ -9,10 +9,7 @@ import {
     ManyToOne,
     OneToOne,
     BaseEntity,
-    BeforeUpdate,
-    EventSubscriber,
-    AfterLoad,
-    getMetadataArgsStorage
+    EventSubscriber
 } from "typeorm";
 import { ItemEntity } from "./item.entity";
 import { ProductHistoryEntity } from "./product-history.entity";
@@ -117,26 +114,6 @@ export class ProductEntity extends BaseEntity {
     @OneToMany(() => ProductExtraEntity, (product) => product.extra, { onDelete: "CASCADE" })
     @JoinColumn({ name: "pre_id_product" })
     extras: ProductExtraEntity[];
-
-    private old_values: { [key: string]: any } = {};
-
-    @BeforeUpdate()
-    beforeUpdate() {
-        for (const key in this.old_values) {
-            if (this[key] !== this.old_values[key]) {
-                console.log(`${key} changed from ${this.old_values[key]} to ${this[key]}`);
-            }
-        }
-    }
-
-    @AfterLoad()
-    afterLoad() {
-        const columns = getMetadataArgsStorage().columns.filter((col) => col.target === ProductEntity);
-        columns.forEach((col) => {
-            const propertyName = col.propertyName as string;
-            this.old_values[propertyName] = this[propertyName];
-        });
-    }
 
     constructor(partial: Partial<ProductEntity>) {
         super();

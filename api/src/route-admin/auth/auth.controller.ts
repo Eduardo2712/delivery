@@ -13,7 +13,7 @@ export class AuthController {
     @UseGuards(LocalAuthGuard)
     @Post("/login")
     @HttpCode(HttpStatus.OK)
-    async login(@Request() req): Promise<{
+    async login(@Request() req: any): Promise<{
         token: string;
         refresh_token: string;
         admin: AdminEntity;
@@ -25,7 +25,7 @@ export class AuthController {
     @UseGuards(RefreshJwtGuard)
     @Post("/refresh")
     @HttpCode(HttpStatus.OK)
-    async refreshToken(@Request() req): Promise<{
+    async refreshToken(@Request() req: any): Promise<{
         token: string;
     }> {
         return await this.authService.refreshToken(req.user);

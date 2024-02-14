@@ -42,7 +42,6 @@ export type UserType = {
 export type OrderType = {
     id: number;
     ord_id_user: number;
-    ord_delivey_fee: number;
     ord_cep: string;
     ord_street: string;
     ord_number: string;

@@ -51,7 +51,9 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
     }, []);
 
     const orderValue = () => {
-        return formatBRL(data?.items.reduce((total, item) => total + item.ite_price, 0) ?? 0);
+        const sum_itens = data?.items.reduce((total, item) => total + Number(item.ite_price), 0) ?? 0;
+
+        return formatBRL(sum_itens + Number(data?.ord_delivery_fee));
     };
 
     const buttons = (item: ItemType) => {

@@ -1,27 +1,53 @@
 import { list } from "@/requests/extra.request";
-import { ExtraType } from "@/types/entity/entity.type";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import AsyncSelect from "react-select/async";
+import Select from "react-select";
+
+type Item = {
+    value: number;
+    label: string;
+};
 
 const AutocompleteExtra = () => {
-    const [extras, setExtras] = useState<ExtraType[]>([]);
+    const [extras, setExtras] = useState<Item[]>([]);
+    const [selected, setSelected] = useState<Item | null>(null);
+    const [loading, setLoading] = useState<boolean>(false);
 
-    // const promiseOptions = async (search: string) => {
-    //     try {
-    //         const response = await list(search);
-    //         setExtras(response.data);
-    //     } catch (error) {
-    //         if (axios.isAxiosError(error)) {
-    //             return toast.error(error.response?.data?.message ?? "An error has occurred");
-    //         } else {
-    //             return toast.error("An error has occurred");
-    //         }
-    //     }
-    // };
+    useEffect(() => {
+        searchOptions("");
+    }, []);
 
-    return <AsyncSelect cacheOptions defaultOptions />;
+    const searchOptions = async (search: string) => {
+        try {
+            setLoading(true);
+
+            const response = await list(search);
+            const data = response.data.map((extra) => ({ value: extra.id, label: extra.ext_name }));
+
+            setExtras(data);
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                return toast.error(error.response?.data?.message ?? "An error has occurred");
+            } else {
+                return toast.error("An error has occurred");
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <Select
+            value={selected}
+            onChange={(e) => setSelected(e)}
+            onInputChange={searchOptions}
+            options={extras}
+            isClearable
+            placeholder="Select..."
+            isLoading={loading}
+        />
+    );
 };
 
 export default AutocompleteExtra;

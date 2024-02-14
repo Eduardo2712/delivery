@@ -33,7 +33,7 @@ export class OrderService {
 
         query
             .orderBy("order.id", "DESC")
-            .orderBy("order_status.id", "DESC")
+            .addOrderBy("order_status.id", "DESC")
             .take(datatableOrderDto.rows_per_page)
             .skip(datatableOrderDto.rows_per_page * (datatableOrderDto.page - 1));
 

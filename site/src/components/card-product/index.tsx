@@ -91,6 +91,7 @@ const CardProduct = ({ product }: Props) => {
 
                         <div className="h-40 overflow-y-auto">
                             <textarea
+                                rows={3}
                                 className="mt-4 block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-400 sm:text-sm sm:leading-6 resize-none"
                                 placeholder="Any commentary?"
                                 value={formModal.comentary}

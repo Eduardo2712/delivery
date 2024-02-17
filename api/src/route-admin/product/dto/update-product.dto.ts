@@ -1,4 +1,4 @@
-import { IsBooleanString, IsDecimal, IsNotEmpty, IsNumberString, IsOptional, IsString, MaxLength } from "class-validator";
+import { IsArray, IsBooleanString, IsDecimal, IsNotEmpty, IsNumberString, IsOptional, IsString, MaxLength } from "class-validator";
 
 export class UpdateProductDto {
     @IsNotEmpty()
@@ -35,7 +35,8 @@ export class UpdateProductDto {
     new_picture: boolean;
 
     @IsOptional()
-    extras: any;
+    @IsArray()
+    extras: Array<{ id: number; id_old?: number }>;
 
     @IsOptional()
     extras_deleted: number[];

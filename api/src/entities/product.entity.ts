@@ -111,7 +111,7 @@ export class ProductEntity extends BaseEntity {
     @JoinColumn({ name: "pro_id_image" })
     image: FileEntity;
 
-    @OneToMany(() => ProductExtraEntity, (product) => product.extra, { onDelete: "CASCADE" })
+    @OneToMany(() => ProductExtraEntity, (extra) => extra.product, { onDelete: "CASCADE" })
     @JoinColumn({ name: "pre_id_product" })
     extras: ProductExtraEntity[];
 

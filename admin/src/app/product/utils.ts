@@ -1,3 +1,4 @@
+import { ProductCreateType, ProductUpdateType } from "@/types/request/product.type";
 import { formatNumber } from "@/utils/other";
 import * as Yup from "yup";
 
@@ -23,19 +24,29 @@ export const schemaUpdate = Yup.object().shape({
     })
 });
 
-export const createFormData = <T extends Record<string, any>>(values: T): FormData => {
+export const createFormData = (values: Partial<ProductUpdateType> & ProductCreateType): FormData => {
     const form_data = new FormData();
 
     for (const [key, value] of Object.entries(values)) {
         let value_form_data = value;
 
         if (key === "pro_price") {
-            value_form_data = formatNumber(value);
-        } else if (key === "picture" && !values.picture) {
+            value_form_data = formatNumber(value as string);
+        } else if ((key === "picture" && !values.picture) || key === "extras") {
             continue;
         }
 
-        form_data.append(key, value_form_data);
+        form_data.append(key, value_form_data as string);
+    }
+
+    if (values.extras.length > 0) {
+        values.extras.forEach((extra, index) => {
+            form_data.append(`extras[${index}][id]`, extra.id.toString());
+
+            if (extra.id_old) {
+                form_data.append(`extras[${index}][id_old]`, extra.id_old.toString());
+            }
+        });
     }
 
     return form_data;

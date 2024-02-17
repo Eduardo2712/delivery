@@ -214,7 +214,7 @@ const Page: NextPage = () => {
                                 </div>
                             </CustomBox>
 
-                            <BoxExtra extras={values.extras} setFieldValue={setFieldValue} loading={loading} />
+                            <BoxExtra setFieldValue={setFieldValue} values={values} />
 
                             <CustomBox>
                                 <div className="gap-2 flex flex-col justify-between md:flex-row">

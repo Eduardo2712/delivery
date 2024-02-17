@@ -2,7 +2,7 @@ import { BadRequestException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { FileEntity } from "src/entities/file.entity";
 import { ProductEntity } from "src/entities/product.entity";
-import { DataSource, ILike, Repository } from "typeorm";
+import { DataSource, ILike, In, Repository } from "typeorm";
 import { UpdateProductDto } from "./dto/update-product.dto";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { ProductHistoryEntity } from "src/entities/product-history.entity";
@@ -10,6 +10,7 @@ import { CategoryEntity } from "src/entities/category.entity";
 import { DatatableProductDto } from "./dto/datatable-product.dto";
 import { ServiceHelpers } from "src/helpers/service.helper";
 import { AsyncLocalStorage } from "async_hooks";
+import { ProductExtraEntity } from "src/entities/product-extra.entity";
 
 export class ProductService {
     constructor(
@@ -21,6 +22,8 @@ export class ProductService {
         private readonly productHistoryRepository: Repository<ProductHistoryEntity>,
         @InjectRepository(CategoryEntity)
         private readonly categoryRepository: Repository<CategoryEntity>,
+        @InjectRepository(ProductExtraEntity)
+        private readonly productExtraRepository: Repository<ProductExtraEntity>,
         private readonly als: AsyncLocalStorage<any>,
         private dataSource: DataSource
     ) {}
@@ -54,7 +57,20 @@ export class ProductService {
 
             await this.productRepository.save(product);
 
+            if (createProductDto.extras) {
+                for (const extra of createProductDto.extras) {
+                    const aux = this.productExtraRepository.create({
+                        pre_id_product: product.id,
+                        pre_id_extra: extra.id
+                    });
+
+                    await this.productExtraRepository.save(aux);
+                }
+            }
+
             await query_runner.commitTransaction();
+
+            return null;
         } catch (error: unknown) {
             if (error instanceof Error) {
                 await query_runner.rollbackTransaction();
@@ -104,9 +120,29 @@ export class ProductService {
                 await this.productHistoryRepository.save(aux);
             }
 
-            this.productRepository.merge(product, updateProductDto);
+            this.productRepository.merge(product, { ...updateProductDto, extras: undefined });
 
             await this.productRepository.save(product);
+
+            if (updateProductDto.extras) {
+                for (const extra of updateProductDto.extras) {
+                    if (!extra.id_old) {
+                        const aux = this.productExtraRepository.create({
+                            pre_id_product: product.id,
+                            pre_id_extra: extra.id
+                        });
+
+                        await this.productExtraRepository.save(aux);
+                    }
+                }
+            }
+
+            if (updateProductDto.extras_deleted.length > 0) {
+                await this.productExtraRepository.delete({
+                    pre_id_product: product.id,
+                    pre_id_extra: In(updateProductDto.extras_deleted)
+                });
+            }
 
             await query_runner.commitTransaction();
 
@@ -132,7 +168,9 @@ export class ProductService {
                     admin: true
                 },
                 image: true,
-                extras: true
+                extras: {
+                    extra: true
+                }
             }
         });
 

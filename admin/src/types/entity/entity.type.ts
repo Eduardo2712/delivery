@@ -61,6 +61,15 @@ export type OrderType = {
     items: ItemType[];
 };
 
+export type ProductExtraType = {
+    id: number;
+    pre_id_product: number;
+    pre_id_extra: number;
+    created_at: Date;
+    updated_at: Date;
+    extra?: ExtraType;
+};
+
 export type ProductType = {
     id: number;
     pro_name: string;
@@ -74,6 +83,7 @@ export type ProductType = {
     updated_at: Date;
     image: FileType | null;
     histories?: ProductHistoryType[] | null;
+    extras?: ProductExtraType[] | null;
 };
 
 export type ItemType = {

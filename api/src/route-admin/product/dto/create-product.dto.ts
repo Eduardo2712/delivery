@@ -1,4 +1,4 @@
-import { IsBooleanString, IsDecimal, IsNotEmpty, IsNumberString, IsString, MaxLength } from "class-validator";
+import { IsArray, IsBooleanString, IsDecimal, IsNotEmpty, IsNumberString, IsOptional, IsString, MaxLength } from "class-validator";
 
 export class CreateProductDto {
     @IsNotEmpty()
@@ -29,4 +29,8 @@ export class CreateProductDto {
     @IsNotEmpty()
     @IsBooleanString()
     pro_status: boolean;
+
+    @IsOptional()
+    @IsArray()
+    extras: Array<{ id: number }>;
 }

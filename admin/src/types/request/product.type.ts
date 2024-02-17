@@ -14,7 +14,7 @@ export type ProductCreateType = {
     pro_price: number | string;
     pro_status: number | string;
     picture?: File;
-    extras: Array<ExtraType & { id: number }>;
+    extras: ExtraType[];
 };
 
 export type ProductUpdateType = {
@@ -26,7 +26,7 @@ export type ProductUpdateType = {
     pro_status: number | string;
     picture?: File;
     new_picture: boolean;
-    extras: Array<ExtraType & { id: number }>;
+    extras: Array<ExtraType & { id_old?: number }>;
     extras_deleted: number[];
 };
 

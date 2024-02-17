@@ -17,13 +17,14 @@ import { maskMoney } from "@/utils/mask";
 import FileUpload from "@/components/file-upload";
 import { formatBRL, formatDecimal, listEnableDisable } from "@/utils/other";
 import StyleSelect from "@/components/style-select";
-import { CategoryType, ProductType } from "@/types/entity/entity.type";
+import { CategoryType, ExtraType, ProductType } from "@/types/entity/entity.type";
 import LoadingSpinner from "@/components/loading-spinner";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { format } from "date-fns";
 import TextEmpty from "@/components/text-empty";
 import { list } from "@/requests/category.request";
+import BoxExtra from "@/components/box-extra";
 
 type Params = {
     params: { id: number };
@@ -91,17 +92,27 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
         }
     };
 
-    const initialValues: ProductUpdateType = {
-        pro_id_category: data?.pro_id_category ?? null,
-        pro_ingredients: data?.pro_ingredients ?? "",
-        pro_number_people: data?.pro_number_people ?? 1,
-        pro_name: data?.pro_name ?? "",
-        pro_price: data?.pro_price ? formatDecimal(data.pro_price) : "",
-        pro_status: data?.pro_status ? "1" : "0",
-        picture: undefined,
-        new_picture: false,
-        extras: [],
-        extras_deleted: []
+    const initialValues = (): ProductUpdateType => {
+        const array_extras = [] as ProductUpdateType["extras"];
+
+        if (data?.extras) {
+            data?.extras.forEach((extra) => {
+                array_extras.push({ ...(extra.extra as ExtraType), id_old: extra.id });
+            });
+        }
+
+        return {
+            pro_id_category: data?.pro_id_category ?? null,
+            pro_ingredients: data?.pro_ingredients ?? "",
+            pro_number_people: data?.pro_number_people ?? 1,
+            pro_name: data?.pro_name ?? "",
+            pro_price: data?.pro_price ? formatDecimal(data.pro_price) : "",
+            pro_status: data?.pro_status ? "1" : "0",
+            picture: undefined,
+            new_picture: false,
+            extras: array_extras,
+            extras_deleted: []
+        };
     };
 
     return (
@@ -109,7 +120,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
             <p className="text-2xl font-bold">Product - Update</p>
 
             <LoadingSpinner loading={loading}>
-                <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaUpdate} initialValues={initialValues}>
+                <Formik onSubmit={onSubmit} validateOnMount validationSchema={schemaUpdate} initialValues={initialValues()}>
                     {({ handleChange, handleBlur, values, errors, touched, setFieldValue }) => (
                         <Form method="post" noValidate>
                             {!values.new_picture && data?.image && (
@@ -224,7 +235,6 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                             value={values.pro_id_category}
                                             is_required
                                             emptyOption
-                                            disabled
                                         >
                                             {categories.map((item) => {
                                                 return (
@@ -255,7 +265,9 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
                                 </div>
                             </CustomBox>
 
-                            <CustomBox text="Histories">
+                            <BoxExtra setFieldValue={setFieldValue} values={values} />
+
+                            <CustomBox text="Histories price">
                                 {data?.histories && data.histories.length > 0 ? (
                                     <div className="w-full">
                                         <DataTable

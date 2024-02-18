@@ -33,7 +33,7 @@ export class ProductService {
             {
                 repository: this.categoryRepository,
                 where: { cat_active: true, id: createProductDto.pro_id_category },
-                field: "category"
+                name_field: "category"
             }
         ]);
 
@@ -89,7 +89,7 @@ export class ProductService {
             {
                 repository: this.categoryRepository,
                 where: { cat_active: true, id: updateProductDto.pro_id_category },
-                field: "category"
+                name_field: "category"
             }
         ]);
 

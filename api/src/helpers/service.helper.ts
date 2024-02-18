@@ -3,18 +3,18 @@ import { createClient } from "@supabase/supabase-js";
 import { FileEntity } from "src/entities/file.entity";
 import { Repository, FindOptionsWhere } from "typeorm";
 
-const checkUnique = async <T>(repository: Repository<T>, where: FindOptionsWhere<T>, field: string): Promise<string | null> => {
+const checkUnique = async <T>(repository: Repository<T>, where: FindOptionsWhere<T>, name_field: string): Promise<string | null> => {
     const obj = await repository.findOne({
         where: where
     });
 
-    return obj ? `The ${field} is already in use` : null;
+    return obj ? `The ${name_field} is already in use` : null;
 };
 
 type CheckExistsParams<T> = {
     repository: Repository<T>;
     where: FindOptionsWhere<T>;
-    field: string;
+    name_field: string;
 };
 
 const checkArrayExists = async <T>(params: CheckExistsParams<T>[]): Promise<string | null> => {
@@ -25,7 +25,7 @@ const checkArrayExists = async <T>(params: CheckExistsParams<T>[]): Promise<stri
             });
 
             if (!obj) {
-                return `The ${param.field} does not exist`;
+                return `The ${param.name_field} does not exist`;
             }
 
             return null;

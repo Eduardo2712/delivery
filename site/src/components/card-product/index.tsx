@@ -11,7 +11,7 @@ type Props = {
 type FormModal = {
     count: number;
     comentary: string;
-    additional: number[];
+    extras: number[];
 };
 
 const CardProduct = ({ product }: Props) => {
@@ -19,7 +19,7 @@ const CardProduct = ({ product }: Props) => {
     const [formModal, setFormModal] = useState<FormModal>({
         count: 1,
         comentary: "",
-        additional: []
+        extras: []
     });
 
     const value_total = formModal.count * product?.pro_price;
@@ -60,10 +60,10 @@ const CardProduct = ({ product }: Props) => {
             </button>
 
             <ReactModal openModal={openModal} setOpenModal={setOpenModal}>
-                <div className="flex gap-4 px-3">
-                    <div className="flex">
+                <div className="flex flex-col md:flex-row gap-4 px-3">
+                    <div className="flex justify-start md:justify-center">
                         <div
-                            className="rounded-sm w-96 h-64 bg-cover bg-center bg-no-repeat"
+                            className="rounded-sm md:w-96 w-full h-64 bg-cover bg-center bg-no-repeat"
                             style={{ backgroundImage: `url(${product?.image ? product?.image?.url : "/images/no_image.jpg"})` }}
                         />
                     </div>
@@ -88,6 +88,22 @@ const CardProduct = ({ product }: Props) => {
                         <div className="flex justify-between items-center mt-3">
                             <p className="text-sm text-green-600">{formatBRL(product?.pro_price)}</p>
                         </div>
+
+                        {product?.extras && product?.extras.length > 0 && (
+                            <div className="flex justify-between items-center mt-3">
+                                <div className="w-full bg-slate-100 px-2 py-2 rounded-sm">
+                                    <p className="text-sm text-gray-800">Extras</p>
+                                </div>
+
+                                {product.extras.map((extra) => {
+                                    return (
+                                        <div key={extra.id} className="flex">
+                                            <p></p>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )}
 
                         <div className="h-40 overflow-y-auto">
                             <textarea

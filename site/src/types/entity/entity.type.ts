@@ -61,6 +61,27 @@ export type OrderType = {
     items: ItemType[];
 };
 
+export type ExtraType = {
+    id: number;
+    ext_id_picture: number;
+    ext_name: string;
+    ext_price: number;
+    ext_status: boolean;
+    ext_active: boolean;
+    created_at: Date;
+    updated_at: Date;
+    image?: FileType | null;
+};
+
+export type ProductExtraType = {
+    id: number;
+    pre_id_product: number;
+    pre_id_extra: number;
+    created_at: Date;
+    updated_at: Date;
+    extra?: ExtraType;
+};
+
 export type ProductType = {
     id: number;
     pro_name: string;
@@ -75,6 +96,7 @@ export type ProductType = {
     avg_rating: number;
     histories?: ProductHistoryType[] | null;
     image?: FileType | null;
+    extras?: ProductExtraType[] | null;
 };
 
 export type ItemType = {

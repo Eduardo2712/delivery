@@ -17,7 +17,7 @@ const ReactModal = ({ openModal, setOpenModal, children }: Props) => {
             onRequestClose={() => setOpenModal(false)}
             style={{
                 content: {
-                    maxWidth: "1000px",
+                    maxWidth: "1300px",
                     margin: "auto",
                     marginTop: "30px"
                 }

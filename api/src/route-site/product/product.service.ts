@@ -23,8 +23,9 @@ export class ProductService {
             .createQueryBuilder("product")
             .leftJoinAndSelect("product.extras", "extras")
             .leftJoinAndSelect("extras.extra", "extra")
+            .leftJoinAndSelect("extra.image", "extra_image")
             .leftJoinAndSelect("product.ratings", "ratings")
-            .leftJoinAndSelect("product.image", "image");
+            .leftJoinAndSelect("product.image", "product_image");
 
         if (listProductDto.id_category) {
             products.where("product.pro_id_category = :id_category", { id_category: listProductDto.id_category });

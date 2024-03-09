@@ -22,7 +22,7 @@ type Props = {
 };
 
 const BoxExtra = ({ setFieldValue, values }: Props) => {
-    const [extra, setExtra] = useState<ExtraType | undefined>(undefined);
+    const [extra, setExtra] = useState<ExtraType | undefined | null>(undefined);
 
     const addExtra = () => {
         if (!extra) {
@@ -30,7 +30,7 @@ const BoxExtra = ({ setFieldValue, values }: Props) => {
         }
 
         setFieldValue("extras", [...values.extras, extra]);
-        setExtra(undefined);
+        setExtra(null);
     };
 
     const deleteRow = (id: number) => {
@@ -39,6 +39,7 @@ const BoxExtra = ({ setFieldValue, values }: Props) => {
                 "extras",
                 values.extras.filter((extra) => extra.id !== id)
             );
+            setFieldValue("extras_deleted", [...values.extras_deleted, id]);
         });
     };
 

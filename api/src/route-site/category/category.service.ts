@@ -14,6 +14,9 @@ export class CategoryService {
         const categories = await this.categoryRepository.find({
             where: {
                 cat_active: true
+            },
+            order: {
+                cat_name: "ASC"
             }
         });
 

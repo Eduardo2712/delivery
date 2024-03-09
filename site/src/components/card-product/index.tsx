@@ -12,7 +12,7 @@ type Props = {
 type FormModal = {
     count: number;
     comentary: string;
-    extras: Array<{ id: number; count: number }>;
+    extras: Array<{ id: number; count: number; price: number }>;
 };
 
 const CardProduct = ({ product }: Props) => {
@@ -20,10 +20,10 @@ const CardProduct = ({ product }: Props) => {
     const [formModal, setFormModal] = useState<FormModal>({
         count: 1,
         comentary: "",
-        extras: []
+        extras: product.extras?.map((e) => ({ id: e.id, count: 0, price: e.extra?.ext_price ?? 0 })) ?? []
     });
 
-    const value_total = formModal.count * product?.pro_price + (formModal.extras.reduce((acc, a) => acc + a.count * product?.pro_price, 0) || 0);
+    const value_total = formModal.count * product?.pro_price + (formModal.extras.reduce((acc, a) => acc + a.count * a.price, 0) || 0);
 
     return (
         <>
@@ -93,8 +93,8 @@ const CardProduct = ({ product }: Props) => {
 
                             {product?.extras && product?.extras.length > 0 && (
                                 <div className="mt-3">
-                                    <div className="w-full bg-slate-100 px-2 py-2 rounded-sm">
-                                        <p className="text-sm text-gray-800">Extras</p>
+                                    <div className="w-full bg-slate-50 px-2 py-2 rounded-sm">
+                                        <p className="text-sm text-gray-600">Extras</p>
                                     </div>
 
                                     <div className="mt-4 flex flex-col gap-6 px-4">
@@ -108,13 +108,14 @@ const CardProduct = ({ product }: Props) => {
                                                         </div>
 
                                                         <CountItems
-                                                            count={0}
+                                                            count={formModal.extras.find((e) => e.id === extra.id)?.count ?? 0}
                                                             setCount={(count) =>
                                                                 setFormModal((ant) => ({
                                                                     ...ant,
                                                                     extras: ant.extras.map((e) => (e.id === extra.id ? { ...e, count } : e))
                                                                 }))
                                                             }
+                                                            min={0}
                                                         />
                                                     </div>
 
@@ -136,7 +137,7 @@ const CardProduct = ({ product }: Props) => {
                             <div className="overflow-y-auto mt-6 mb-4">
                                 <textarea
                                     rows={3}
-                                    className="block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-400 sm:text-sm sm:leading-6 resize-none"
+                                    className="block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-gray-400 sm:text-sm sm:leading-6 resize-none"
                                     placeholder="Any commentary?"
                                     value={formModal.comentary}
                                     onChange={(e) => setFormModal((ant) => ({ ...ant, comentary: e.target.value }))}

@@ -4,9 +4,10 @@ import { JwtGuard } from "./auth/guards/jwt-auth.guard";
 import { AuthModule } from "./auth/auth.module";
 import { CategoryModule } from "./category/category.module";
 import { ProductModule } from "./product/product.module";
+import { OrderModule } from "./order/order.module";
 
 @Module({
-    imports: [AuthModule, CategoryModule, ProductModule],
+    imports: [AuthModule, CategoryModule, ProductModule, OrderModule],
     controllers: [],
     providers: [
         {

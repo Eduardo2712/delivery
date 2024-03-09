@@ -8,9 +8,9 @@ import { TextField } from "@mui/material";
 import { formatBRL } from "@/utils/other";
 
 type Props = {
-    value: ExtraType | undefined;
+    value: ExtraType | undefined | null;
     setValue: (value: ExtraType | null) => void;
-    array_used?: Number[];
+    array_used?: number[];
 };
 
 const AutocompleteExtra = ({ value, setValue, array_used = [] }: Props) => {
@@ -24,7 +24,7 @@ const AutocompleteExtra = ({ value, setValue, array_used = [] }: Props) => {
             try {
                 const response = await list("");
 
-                setOptions(response.data);
+                setOptions(response.data.filter((option) => !array_used?.includes(option.id)));
             } catch (error) {
                 if (axios.isAxiosError(error)) {
                     return toast.error(error.response?.data?.message ?? "An error has occurred");

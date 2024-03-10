@@ -22,6 +22,8 @@ import { AlsMiddleware } from "./als/als.middleware";
                 password: configService.get("DB_PASS"),
                 database: configService.get("DB_NAME"),
                 entities: ["dist/**/*.entity.js"],
+                migrations: ["dist/migrations/*.js"],
+                migrationsTableName: "migrations_typeorm",
                 synchronize: true,
                 autoLoadEntities: true
             }),

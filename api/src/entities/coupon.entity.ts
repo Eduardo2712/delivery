@@ -41,7 +41,8 @@ export class CouponEntity extends BaseEntity {
 
     @Column({
         type: "varchar",
-        nullable: false
+        nullable: false,
+        default: true
     })
     cup_active: boolean;
 

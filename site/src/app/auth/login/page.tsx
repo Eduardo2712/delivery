@@ -11,16 +11,19 @@ import StyleInput from "@/components/style-input";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
 import axios, { HttpStatusCode } from "axios";
+import { FaSpinner } from "react-icons/fa6";
+import { NextPage } from "next";
+import { AuthRequestType } from "@/types/request/auth.type";
 
-const Page = () => {
-    const [loading, setLoading] = useState<boolean>(false);
+const Page: NextPage = () => {
+    const [submitting, setSubmitting] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
     const router = useRouter();
 
-    const onSubmit = async (values: { email: string; password: string }) => {
-        setLoading(true);
+    const onSubmit = async (values: AuthRequestType) => {
+        setSubmitting(true);
 
         try {
             const response = await auth({
@@ -29,11 +32,17 @@ const Page = () => {
             });
 
             if (response.status !== HttpStatusCode.Ok) {
-                return toast.error(response.data.message);
+                return toast.error(response.data?.message);
             }
 
-            if (response.data.user && response.data.access_token) {
-                dispatch(login({ ...response.data.user, token: response.data.access_token, refresh_token: response.data.refresh_token }));
+            if (response.data.user && response.data.token && response.data.refresh_token) {
+                dispatch(
+                    login({
+                        user: response.data.user,
+                        token: response.data.token,
+                        refresh_token: response.data.refresh_token
+                    })
+                );
 
                 toast.success("Successfully login");
 
@@ -46,11 +55,11 @@ const Page = () => {
                 return toast.error("An error has occurred");
             }
         } finally {
-            setLoading(false);
+            setSubmitting(false);
         }
     };
 
-    const initialValues = {
+    const initialValues: AuthRequestType = {
         email: "",
         password: ""
     };
@@ -93,9 +102,9 @@ const Page = () => {
                                 <div>
                                     <button
                                         type="submit"
-                                        className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 mt-4"
+                                        className="flex w-full h-10 items-center justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 mt-4"
                                     >
-                                        Sign in
+                                        {!submitting ? "Sign in" : <FaSpinner className="animate-spin" size={20} />}
                                     </button>
                                 </div>
                             </div>

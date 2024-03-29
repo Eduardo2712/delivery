@@ -58,7 +58,7 @@ export type OrderType = {
     updated_at: Date;
     user: UserType;
     order_status: OrderStatusType[];
-    items: ItemType[];
+    products: OrderProductType[];
 };
 
 export type ProductExtraType = {
@@ -86,12 +86,12 @@ export type ProductType = {
     extras?: ProductExtraType[] | null;
 };
 
-export type ItemType = {
+export type OrderProductType = {
     id: number;
-    ite_id_product: number;
-    ite_id_order: number;
-    ite_price: number;
-    ite_comment: string;
+    orp_id_product: number;
+    orp_id_order: number;
+    orp_price: number;
+    orp_comment: string;
     created_at: Date;
     updated_at: Date;
     product: ProductType;

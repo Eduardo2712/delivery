@@ -1,11 +1,11 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { ItemEntity } from "./item.entity";
+import { OrderProductEntity } from "./order-product.entity";
 import { ExtraEntity } from "./extra.entity";
 
 @Entity({
-    name: "item_extras"
+    name: "order_product_extras"
 })
-export class ItemExtraEntity extends BaseEntity {
+export class OrderProductExtraEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -13,13 +13,13 @@ export class ItemExtraEntity extends BaseEntity {
         nullable: false,
         type: "unsigned big int"
     })
-    itx_id_item: number;
+    ope_id_item: number;
 
     @Column({
         nullable: false,
         type: "unsigned big int"
     })
-    itx_id_extra: number;
+    ope_id_extra: number;
 
     @Column({
         nullable: false,
@@ -27,7 +27,7 @@ export class ItemExtraEntity extends BaseEntity {
         precision: 10,
         scale: 2
     })
-    itx_price: number;
+    ope_price: number;
 
     @CreateDateColumn()
     created_at: Date;
@@ -35,23 +35,23 @@ export class ItemExtraEntity extends BaseEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToOne(() => ItemEntity, (item) => item.extras, {
+    @ManyToOne(() => OrderProductEntity, (product) => product.products, {
         onDelete: "CASCADE"
     })
     @JoinColumn({
-        name: "itx_id_item"
+        name: "ope_id_item"
     })
-    item: ItemEntity;
+    product: OrderProductEntity;
 
-    @ManyToOne(() => ExtraEntity, (extra) => extra.items, {
+    @ManyToOne(() => ExtraEntity, (extra) => extra.products, {
         onDelete: "CASCADE"
     })
     @JoinColumn({
-        name: "itx_id_extra"
+        name: "ope_id_extra"
     })
     extra: ExtraEntity;
 
-    constructor(partial: Partial<ItemExtraEntity>) {
+    constructor(partial: Partial<OrderProductExtraEntity>) {
         super();
         Object.assign(this, partial);
     }

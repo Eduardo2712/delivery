@@ -18,10 +18,10 @@ export class OrderService {
             .createQueryBuilder("order")
             .where("order.ord_active = :active", { active: true })
             .leftJoin("order.user", "user")
-            .leftJoin("order.items", "items")
+            .leftJoin("order.products", "products")
             .leftJoin("order.order_status", "order_status", "order_status.ors_active = :active", { active: true })
             .leftJoin("order_status.status", "status")
-            .select(["order", "user", "items", "order_status", "status"]);
+            .select(["order", "user", "products", "order_status", "status"]);
 
         if (datatableOrderDto.search && datatableOrderDto.search.trim() !== "") {
             query.andWhere("user.use_name LIKE :name", { name: `%${datatableOrderDto.search}%` });
@@ -41,10 +41,10 @@ export class OrderService {
 
         const obj = result.map((order) => ({
             ...order,
-            item_count: order.items.length,
+            item_count: order.products.length,
             items: undefined,
             order_status: undefined,
-            order_value: order.items.reduce((acc, item) => acc + Number(item.ite_price), 0),
+            order_value: order.products.reduce((acc, product) => acc + Number(product.orp_price), 0),
             status: order.order_status?.[0]?.status?.sta_name || "--",
             status_color: order.order_status?.[0]?.status?.sta_color || null
         }));
@@ -56,12 +56,12 @@ export class OrderService {
         const obj = await this.orderRepository
             .createQueryBuilder("order")
             .where("order.id = :id AND order.ord_active = :active", { id, active: true })
-            .leftJoin("order.items", "items")
-            .leftJoin("items.product", "product")
+            .leftJoin("order.products", "products")
+            .leftJoin("products.product", "product")
             .leftJoin("order.order_status", "order_status", "order_status.ors_active = :active", { active: true })
             .leftJoin("order_status.status", "status")
             .leftJoin("order.user", "user")
-            .select(["order", "items", "product", "order_status", "status", "user"])
+            .select(["order", "products", "product", "order_status", "status", "user"])
             .getOneOrFail();
 
         return obj;

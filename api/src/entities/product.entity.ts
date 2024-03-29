@@ -11,7 +11,7 @@ import {
     BaseEntity,
     EventSubscriber
 } from "typeorm";
-import { ItemEntity } from "./item.entity";
+import { OrderProductEntity } from "./order-product.entity";
 import { ProductHistoryEntity } from "./product-history.entity";
 import { CategoryEntity } from "./category.entity";
 import { ProductRatingEntity } from "./product-rating.entity";
@@ -87,11 +87,11 @@ export class ProductEntity extends BaseEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @OneToMany(() => ItemEntity, (item) => item.product, {
+    @OneToMany(() => OrderProductEntity, (product) => product.product, {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "ite_id_product" })
-    items: ItemEntity[];
+    products: OrderProductEntity[];
 
     @OneToMany(() => ProductHistoryEntity, (product_history) => product_history.product, {
         onDelete: "CASCADE"

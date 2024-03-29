@@ -1,7 +1,6 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { FileEntity } from "./file.entity";
 import { ProductExtraEntity } from "./product-extra.entity";
-import { ItemExtraEntity } from "./item-extra.entity";
 
 @Entity({
     name: "extras"
@@ -59,12 +58,6 @@ export class ExtraEntity extends BaseEntity {
     })
     @JoinColumn({ name: "pre_id_product" })
     products: ProductExtraEntity[];
-
-    @OneToMany(() => ItemExtraEntity, (extra) => extra.item, {
-        onDelete: "CASCADE"
-    })
-    @JoinColumn({ name: "itx_id_extra" })
-    items: ItemExtraEntity[];
 
     constructor(partial: Partial<ExtraEntity>) {
         super();

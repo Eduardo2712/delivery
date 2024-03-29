@@ -32,11 +32,22 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
                         {is_public_page && (
                             <>
                                 <Toaster
+                                    position="top-center"
+                                    reverseOrder={false}
+                                    gutter={8}
+                                    containerClassName=""
+                                    containerStyle={{}}
                                     toastOptions={{
                                         style: {
-                                            background: "#012",
-                                            color: "#fff"
-                                        }
+                                            background: "#fff",
+                                            color: "#000",
+                                            padding: "20px",
+                                            fontSize: "18px",
+                                            border: "1px solid gray",
+                                            borderRadius: "8px"
+                                        },
+                                        position: "top-center",
+                                        duration: 6000
                                     }}
                                 />
                                 {children}
@@ -46,11 +57,22 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
                         {!is_public_page && (
                             <ProtectedRoute>
                                 <Toaster
+                                    position="top-center"
+                                    reverseOrder={false}
+                                    gutter={8}
+                                    containerClassName=""
+                                    containerStyle={{}}
                                     toastOptions={{
                                         style: {
-                                            background: "#012",
-                                            color: "#fff"
-                                        }
+                                            background: "#fff",
+                                            color: "#000",
+                                            padding: "20px",
+                                            fontSize: "18px",
+                                            border: "1px solid gray",
+                                            borderRadius: "8px"
+                                        },
+                                        position: "top-center",
+                                        duration: 6000
                                     }}
                                 />
 

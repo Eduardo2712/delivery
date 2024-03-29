@@ -4,6 +4,11 @@ import { useState } from "react";
 import ReactModal from "../react-modal";
 import { FaStar } from "react-icons/fa6";
 import CountItems from "../count-items";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { UserStoreType } from "@/types/store/auth.type";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type Props = {
     product: ProductType;
@@ -23,7 +28,51 @@ const CardProduct = ({ product }: Props) => {
         extras: product.extras?.map((e) => ({ id: e.id, count: 0, price: e.extra?.ext_price ?? 0 })) ?? []
     });
 
+    const user = useSelector<RootState, UserStoreType | null>((state) => state.auth.user);
+
+    const { push } = useRouter();
+
     const value_total = formModal.count * product?.pro_price + (formModal.extras.reduce((acc, a) => acc + a.count * a.price, 0) || 0);
+
+    const addItem = () => {
+        if (!user) {
+            return toast(
+                (t) => (
+                    <div className="flex flex-col gap-6 items-center justify-center">
+                        <p className="text-md text-black font-semibold">👋 Hello!</p>
+
+                        <p className="text-lg text-black">You must be logged in to add items to the cart</p>
+
+                        <div className="flex gap-2 mt-3">
+                            <button
+                                className="rounded bg-red-600 flex-1 flex justify-center items-center px-3 py-2 text-white text-lg"
+                                type="button"
+                                onClick={() => toast.dismiss(t.id)}
+                            >
+                                Close
+                            </button>
+
+                            <button
+                                className="rounded bg-blue-600 flex-1 flex justify-center items-center px-3 py-2 text-white text-lg"
+                                type="button"
+                                onClick={() => {
+                                    toast.dismiss(t.id);
+
+                                    push("/auth/login");
+                                }}
+                            >
+                                Login
+                            </button>
+                        </div>
+                    </div>
+                ),
+                {
+                    duration: Infinity,
+                    id: "alert"
+                }
+            );
+        }
+    };
 
     return (
         <>
@@ -151,6 +200,7 @@ const CardProduct = ({ product }: Props) => {
                     <CountItems count={formModal.count} setCount={(value) => setFormModal((ant) => ({ ...ant, count: value }))} />
 
                     <button
+                        onClick={() => addItem()}
                         type="button"
                         className="flex items-center justify-between gap-10 text-white bg-red-700 hover:bg-red-800 focus:outline-none font-medium rounded-md text-sm px-6 text-center"
                     >

@@ -1,6 +1,6 @@
 import { CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn, JoinColumn, Column, OneToMany, BaseEntity } from "typeorm";
 import { UserEntity } from "./user.entity";
-import { ItemEntity } from "./item.entity";
+import { OrderProductEntity } from "./order-product.entity";
 import { OrderStatusEntity } from "./order-status.entity";
 
 @Entity({
@@ -103,11 +103,11 @@ export class OrderEntity extends BaseEntity {
     @JoinColumn({ name: "ord_id_user" })
     user: UserEntity;
 
-    @OneToMany(() => ItemEntity, (item) => item.order, {
+    @OneToMany(() => OrderProductEntity, (product) => product.order, {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "ite_id_order" })
-    items: ItemEntity[];
+    products: OrderProductEntity[];
 
     @OneToMany(() => OrderStatusEntity, (order_status) => order_status.order_status, {
         onDelete: "CASCADE"

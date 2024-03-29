@@ -35,7 +35,13 @@ const Page: NextPage = () => {
             }
 
             if (response.data.admin && response.data.token && response.data.refresh_token) {
-                dispatch(login({ user: response.data.admin, token: response.data.token, refresh_token: response.data.refresh_token }));
+                dispatch(
+                    login({
+                        user: response.data.admin,
+                        token: response.data.token,
+                        refresh_token: response.data.refresh_token
+                    })
+                );
 
                 toast.success("Successfully login");
 

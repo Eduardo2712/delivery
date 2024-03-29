@@ -29,7 +29,8 @@ export const toastConfirm = (text: string, functionYes = () => {}) => {
             </div>
         ),
         {
-            duration: Infinity
+            duration: Infinity,
+            id: "confirm"
         }
     );
 };

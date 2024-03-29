@@ -61,7 +61,7 @@ export class DashboardService {
         });
 
         const orders = await this.orderRepository.find({
-            relations: ["items"]
+            relations: ["products"]
         });
 
         let value_amount = 0;
@@ -69,8 +69,8 @@ export class DashboardService {
         orders.forEach((order) => {
             value_amount += Number(order.ord_delivery_fee);
 
-            order.items.forEach((item) => {
-                value_amount += Number(item.ite_price);
+            order.products.forEach((product) => {
+                value_amount += Number(product.orp_price);
             });
         });
 

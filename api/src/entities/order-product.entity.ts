@@ -1,12 +1,12 @@
 import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ProductEntity } from "./product.entity";
 import { OrderEntity } from "./order.entity";
-import { ItemExtraEntity } from "./item-extra.entity";
+import { OrderProductExtraEntity } from "./order-product-extra.entity";
 
 @Entity({
-    name: "items"
+    name: "order_products"
 })
-export class ItemEntity extends BaseEntity {
+export class OrderProductEntity extends BaseEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -14,13 +14,13 @@ export class ItemEntity extends BaseEntity {
         nullable: false,
         type: "unsigned big int"
     })
-    ite_id_product: number;
+    orp_id_product: number;
 
     @Column({
         nullable: false,
         type: "unsigned big int"
     })
-    ite_id_order: number;
+    orp_id_order: number;
 
     @Column({
         nullable: false,
@@ -28,13 +28,13 @@ export class ItemEntity extends BaseEntity {
         precision: 10,
         scale: 2
     })
-    ite_price: number;
+    orp_price: number;
 
     @Column({
         nullable: true,
         type: "text"
     })
-    ite_comment: string;
+    orp_comment: string;
 
     @CreateDateColumn()
     created_at: Date;
@@ -42,25 +42,25 @@ export class ItemEntity extends BaseEntity {
     @UpdateDateColumn()
     updated_at: Date;
 
-    @ManyToOne(() => ProductEntity, (product) => product.items, {
+    @ManyToOne(() => ProductEntity, (product) => product.products, {
         onDelete: "CASCADE"
     })
-    @JoinColumn({ name: "ite_id_product" })
+    @JoinColumn({ name: "orp_id_product" })
     product: ProductEntity;
 
-    @ManyToOne(() => OrderEntity, (order) => order.items, {
+    @ManyToOne(() => OrderEntity, (order) => order.products, {
         onDelete: "CASCADE"
     })
-    @JoinColumn({ name: "ite_id_order" })
+    @JoinColumn({ name: "orp_id_order" })
     order: OrderEntity;
 
-    @OneToMany(() => ItemExtraEntity, (extra) => extra.item, {
+    @OneToMany(() => OrderProductExtraEntity, (extra) => extra.product, {
         onDelete: "CASCADE"
     })
     @JoinColumn({ name: "itx_id_item" })
-    extras: ItemExtraEntity[];
+    products: OrderProductExtraEntity[];
 
-    constructor(partial: Partial<ItemEntity>) {
+    constructor(partial: Partial<OrderProductEntity>) {
         super();
         Object.assign(this, partial);
     }

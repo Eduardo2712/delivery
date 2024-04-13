@@ -11,7 +11,7 @@ import { maskCPF, maskPhone } from "@/utils/mask";
 import axios, { HttpStatusCode } from "axios";
 
 const Page = () => {
-    const [step, setStep] = useState<number>(1);
+    const [step, setStep] = useState<number>(0);
     const [submitting, setSubmitting] = useState<boolean>(false);
 
     const router = useRouter();
@@ -64,20 +64,20 @@ const Page = () => {
     return (
         <div className="container mx-auto h-screen max-w-5xl">
             <div className="flex justify-between items-center px-3 py-4">
-                <div className={`flex justify-center items-center rounded-full ${step === 1 ? "bg-blue-600" : "bg-gray-400"} w-12 h-12`}>
+                <div className={`flex justify-center items-center rounded-full ${step === 0 ? "bg-blue-600" : "bg-gray-400"} w-12 h-12`}>
                     <p className="text-gray-50 font-bold text-xl">1</p>
                 </div>
 
                 <div className="border-b-2 border-gray-400 flex-1 m-3"></div>
 
-                <div className={`flex justify-center items-center rounded-full ${step === 2 ? "bg-blue-600" : "bg-gray-400"} w-12 h-12`}>
+                <div className={`flex justify-center items-center rounded-full ${step === 1 ? "bg-blue-600" : "bg-gray-400"} w-12 h-12`}>
                     <p className="text-gray-50 font-bold text-xl">2</p>
                 </div>
             </div>
 
             <p className="text-center text-2xl font-bold mt-8 text-gray-50">Personal information</p>
 
-            <Formik initialValues={initialValues} validationSchema={schema(step)} validateOnMount onSubmit={onSubmit}>
+            <Formik initialValues={initialValues} validationSchema={schema(step)} onSubmit={onSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
                     <Form method="post" onSubmit={handleSubmit} noValidate className="flex-1 flex-col">
                         <div>
@@ -166,7 +166,7 @@ const Page = () => {
                                 Back
                             </button>
 
-                            <button type="button" className="px-4 py-2 bg-blue-600 text-white rounded-md">
+                            <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md">
                                 Next
                             </button>
                         </div>

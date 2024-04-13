@@ -27,21 +27,19 @@ export const schema = (step: number) => {
                 .oneOf([Yup.ref("password"), undefined], "Passwords must be the same!")
                 .required("Fill in this field!"),
             use_name: Yup.string().required("Fill in this field!"),
-            use_cpf: Yup.string().length(14).required("Fill in this field!"),
+            use_cpf: Yup.string().length(14, "CPF must be at least 14 characters long!").required("Fill in this field!"),
             use_phone: Yup.string().required("Fill in this field!"),
             use_date_birth: Yup.date().required("Fill in this field!")
         });
     } else if (step === 1) {
         return Yup.object().shape({
-            usa_cep: Yup.string().required("Fill in this field!"),
+            usa_cep: Yup.string().length(9, "CEP must be at least 9 characters long!").required("Fill in this field!"),
             usa_street: Yup.string().required("Fill in this field!"),
             usa_number: Yup.string().required("Fill in this field!"),
             usa_neighborhood: Yup.string().required("Fill in this field!"),
-            usa_complement: Yup.string(),
+            usa_complement: Yup.string().optional(),
             usa_city: Yup.string().required("Fill in this field!"),
             usa_state: Yup.string().required("Fill in this field!")
         });
-    } else {
-        return Yup.object().shape({});
     }
 };

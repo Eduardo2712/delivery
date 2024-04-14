@@ -4,6 +4,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { compareSync } from "bcrypt";
 import { UserEntity } from "src/entities/user.entity";
 import { Repository } from "typeorm";
+import { CreateUserDto } from "./dto/create-user.dto";
 
 @Injectable()
 export class AuthService {
@@ -42,5 +43,9 @@ export class AuthService {
             token: this.jwtService.sign(payload),
             user
         };
+    }
+
+    async register(user: CreateUserDto): Promise<UserEntity> {
+        return await "make";
     }
 }

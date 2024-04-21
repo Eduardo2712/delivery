@@ -38,7 +38,7 @@ const StyleInput = ({
     className_input = null
 }: Props) => {
     const component = (
-        <>
+        <div className="h-24">
             <label className="block text-sm font-semibold leading-6 text-gray-100" htmlFor={name}>
                 {`${title}${is_required ? " *" : ""}`}
             </label>
@@ -46,11 +46,11 @@ const StyleInput = ({
             {multiple ? (
                 <textarea
                     style={style_input}
-                    className={`${className_input} bg-slate-700 block w-full rounded-md border-0 py-2 px-2 ${
+                    className={`${className_input} bg-slate-700 block w-full rounded-md py-2 px-2 ${
                         link ? "text-blue-400 font-bold hover:text-blue-500" : "text-gray-100"
                     } shadow-sm ring-1 ring-gray-800 placeholder:text-gray-400 focus:ring-blue-500 sm:text-sm sm:leading-6 disabled:text-gray-300 resize-none h-16 ${
                         link ? "cursor-pointer" : ""
-                    }`}
+                    } ${touched && errors ? "border-red-500 border-2" : "border-0"}`}
                     id={name}
                     name={name}
                     onChange={handleChange}
@@ -63,11 +63,11 @@ const StyleInput = ({
             ) : (
                 <input
                     style={style_input}
-                    className={`${className_input} bg-slate-700 block w-full rounded-md border-0 py-2 px-2 ${
+                    className={`${className_input} bg-slate-700 block w-full rounded-md py-2 px-2 ${
                         link ? "text-blue-400 font-bold hover:text-blue-500" : "text-gray-100"
                     } shadow-sm ring-1 ring-gray-800 placeholder:text-gray-400 focus:ring-blue-500 sm:text-sm sm:leading-6 h-10 disabled:text-gray-300 ${
                         link ? "cursor-pointer" : ""
-                    }`}
+                    } ${touched && errors ? "border-red-500 border-2" : "border-0"}`}
                     id={name}
                     type={type}
                     name={name}
@@ -81,7 +81,7 @@ const StyleInput = ({
             )}
 
             <p className="text-sm font-medium text-red-600">{errors && touched && errors}</p>
-        </>
+        </div>
     );
 
     return <>{link ? <Link href={link}>{component}</Link> : component}</>;

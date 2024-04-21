@@ -21,11 +21,11 @@ const Header = () => {
                         <p className="text-white text-sm">Hello, {user?.use_name}</p>
                     ) : (
                         <div className="text-white text-sm">
-                            <Link className="text-white font-bold" href={`/auth/login`}>
+                            <Link className="text-white font-extrabold" href={`/auth/login`}>
                                 Login
                             </Link>
                             {" or "}
-                            <Link className="text-white font-bold" href={`/auth/register`}>
+                            <Link className="text-white font-extrabold" href={`/auth/register`}>
                                 Register
                             </Link>
                         </div>

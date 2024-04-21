@@ -9,8 +9,10 @@ import { toast } from "react-hot-toast";
 import StyleInput from "@/components/style-input";
 import { maskCPF, maskPhone } from "@/utils/mask";
 import axios, { HttpStatusCode } from "axios";
+import { FaSpinner } from "react-icons/fa6";
+import { NextPage } from "next";
 
-const Page = () => {
+const Page: NextPage = () => {
     const [step, setStep] = useState<number>(0);
     const [submitting, setSubmitting] = useState<boolean>(false);
 
@@ -163,11 +165,11 @@ const Page = () => {
 
                         <div className="sm:columns-2 px-3 mt-6 justify-between flex flex-1">
                             <button type="button" className="px-4 py-2 bg-orange-500 text-white rounded-md">
-                                Back
+                                {!submitting ? `Back` : <FaSpinner className="animate-spin" size={20} />}
                             </button>
 
                             <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded-md">
-                                Next
+                                {!submitting ? `Next` : <FaSpinner className="animate-spin" size={20} />}
                             </button>
                         </div>
                     </Form>

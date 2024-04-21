@@ -1,5 +1,6 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength, Validate } from "class-validator";
 import { validateCPF } from "src/helpers/other.helper";
+import { cepRegex, passwordRegex, phoneRegex } from "src/helpers/regex.helper";
 
 export class CreateUserDto {
     @IsNotEmpty()
@@ -15,6 +16,7 @@ export class CreateUserDto {
     @IsNotEmpty()
     @IsString()
     @MaxLength(11)
+    @Validate((value: string) => phoneRegex.test(value), { message: "Invalid phone number" })
     use_phone: string;
 
     @IsNotEmpty()
@@ -26,6 +28,7 @@ export class CreateUserDto {
     @IsNotEmpty()
     @IsString()
     @MaxLength(255)
+    @Validate((value: string) => cepRegex.test(value), { message: "Invalid CEP" })
     usa_cep: string;
 
     @IsNotEmpty()
@@ -60,11 +63,13 @@ export class CreateUserDto {
 
     @IsNotEmpty()
     @IsString()
-    @MaxLength(255)
+    @MaxLength(50)
+    @Validate((value: string) => passwordRegex.test(value), { message: "Invalid password" })
     password: string;
 
     @IsNotEmpty()
     @IsString()
-    @MaxLength(255)
+    @MaxLength(50)
+    @Validate((value: string) => passwordRegex.test(value), { message: "Invalid password confirmation" })
     password_confirmation: string;
 }

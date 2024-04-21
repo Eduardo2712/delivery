@@ -29,7 +29,7 @@ export class ProductService {
     ) {}
 
     async create(createProductDto: CreateProductDto, picture: Express.Multer.File): Promise<string | void> {
-        const error = await ServiceHelpers.checkArrayExists([
+        const error = await ServiceHelpers.checkInArrayExists([
             {
                 repository: this.categoryRepository,
                 where: { cat_active: true, id: createProductDto.pro_id_category },
@@ -85,7 +85,7 @@ export class ProductService {
     }
 
     async update(id: number, updateProductDto: UpdateProductDto, picture?: Express.Multer.File): Promise<string | null> {
-        const error = await ServiceHelpers.checkArrayExists([
+        const error = await ServiceHelpers.checkInArrayExists([
             {
                 repository: this.categoryRepository,
                 where: { cat_active: true, id: updateProductDto.pro_id_category },

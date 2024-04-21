@@ -17,7 +17,7 @@ type CheckExistsParams<T> = {
     name_field: string;
 };
 
-const checkArrayExists = async <T>(params: CheckExistsParams<T>[]): Promise<string | null> => {
+const checkInArrayExists = async <T>(params: CheckExistsParams<T>[]): Promise<string | null> => {
     const results = await Promise.all(
         params.map(async (param) => {
             const obj = await param.repository.findOne({
@@ -43,9 +43,9 @@ const uploadFile = async (file: Express.Multer.File, repository: Repository<File
         }
     });
 
-    const name_file = `${new Date().getTime()}${file.originalname}`;
+    const file_name = `${new Date().getTime()}${file.originalname}`;
 
-    const data = await bucket.storage.from(process.env.BUCKET_NAME).upload(name_file, file.buffer, {
+    const data = await bucket.storage.from(process.env.BUCKET_NAME).upload(file_name, file.buffer, {
         upsert: true
     });
 
@@ -56,7 +56,7 @@ const uploadFile = async (file: Express.Multer.File, repository: Repository<File
     if (data.data) {
         const new_file = await repository.save({
             fil_url: data.data.path,
-            fil_name: name_file,
+            fil_name: file_name,
             fil_size: file.size,
             fil_mimetype: file.mimetype
         });
@@ -106,5 +106,5 @@ export const ServiceHelpers = {
     uploadFile,
     urlFile,
     removeFile,
-    checkArrayExists
+    checkInArrayExists
 };

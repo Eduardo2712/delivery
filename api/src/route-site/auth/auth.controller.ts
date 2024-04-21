@@ -23,7 +23,7 @@ export class AuthController {
     @Public()
     @Post("/register")
     @HttpCode(HttpStatus.CREATED)
-    async register(@Body() createUserDto: CreateUserDto): Promise<string | void> {
+    async register(@Body() createUserDto: CreateUserDto): Promise<string | UserEntity> {
         return await this.authService.register(createUserDto);
     }
 }

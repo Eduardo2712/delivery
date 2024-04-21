@@ -46,6 +46,26 @@ export class AuthService {
     }
 
     async register(user: CreateUserDto): Promise<UserEntity> {
-        return await "make";
+        const obj = this.userRepository.create({
+            use_name: user.use_name,
+            use_cpf: user.use_cpf,
+            use_phone: user.use_phone,
+            email: user.email,
+            addresses: [
+                {
+                    usa_cep: user.usa_cep,
+                    usa_street: user.usa_street,
+                    usa_number: user.usa_number,
+                    usa_neighborhood: user.usa_neighborhood,
+                    usa_complement: user.usa_complement,
+                    usa_city: user.usa_city,
+                    usa_state: user.usa_state
+                }
+            ]
+        });
+
+        await this.userRepository.save(obj);
+
+        return obj;
     }
 }

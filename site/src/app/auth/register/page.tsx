@@ -36,7 +36,7 @@ const Page: NextPage = () => {
     };
 
     const onSubmit = async (values: TypeFormRegister) => {
-        if (step !== 1) {
+        if (step < 1) {
             return setStep((bef) => bef + 1);
         }
 
@@ -66,7 +66,7 @@ const Page: NextPage = () => {
     return (
         <div className="container mx-auto h-screen max-w-5xl">
             <div className="flex justify-between items-center px-3 py-4">
-                <div className={`flex justify-center items-center rounded-full ${step === 0 ? "bg-blue-600" : "bg-gray-400"} w-12 h-12`}>
+                <div className={`flex justify-center items-center rounded-full ${step >= 0 ? "bg-blue-600" : "bg-gray-400"} w-12 h-12`}>
                     <p className="text-gray-50 font-bold text-xl">1</p>
                 </div>
 
@@ -77,94 +77,112 @@ const Page: NextPage = () => {
                 </div>
             </div>
 
-            <p className="text-center text-2xl font-bold mt-8 text-gray-50">Personal information</p>
+            <p className="text-center text-2xl font-bold mt-8 text-gray-50">{step === 0 ? "Personal information" : "Address information"}</p>
 
             <Formik initialValues={initialValues} validationSchema={schema(step)} onSubmit={onSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, handleSubmit }) => (
                     <Form method="post" onSubmit={handleSubmit} noValidate className="flex-1 flex-col">
                         <div>
-                            <div className="sm:columns-2 px-3 gap-6">
-                                <StyleInput
-                                    errors={errors.use_name}
-                                    touched={touched.use_name}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    name={"use_name"}
-                                    title={"Name"}
-                                    type={"text"}
-                                    value={values.use_name}
-                                    is_required={true}
-                                />
+                            {step === 0 && (
+                                <>
+                                    <div className="sm:columns-2 px-3 gap-6">
+                                        <StyleInput
+                                            errors={errors.use_name}
+                                            touched={touched.use_name}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            name={"use_name"}
+                                            title={"Name"}
+                                            type={"text"}
+                                            value={values.use_name}
+                                            is_required={true}
+                                        />
 
-                                <StyleInput
-                                    errors={errors.use_cpf}
-                                    touched={touched.use_cpf}
-                                    handleBlur={handleBlur}
-                                    handleChange={(e) => handleChange(maskCPF(e))}
-                                    name={"use_cpf"}
-                                    title={"CPF"}
-                                    type={"text"}
-                                    value={values.use_cpf}
-                                    is_required={true}
-                                    max_length={14}
-                                />
-                            </div>
+                                        <StyleInput
+                                            errors={errors.use_cpf}
+                                            touched={touched.use_cpf}
+                                            handleBlur={handleBlur}
+                                            handleChange={(e) => handleChange(maskCPF(e))}
+                                            name={"use_cpf"}
+                                            title={"CPF"}
+                                            type={"text"}
+                                            value={values.use_cpf}
+                                            is_required={true}
+                                            max_length={14}
+                                        />
+                                    </div>
 
-                            <div className="sm:columns-2 px-3 gap-6">
-                                <StyleInput
-                                    errors={errors.use_phone}
-                                    touched={touched.use_phone}
-                                    handleBlur={handleBlur}
-                                    handleChange={(e) => handleChange(maskPhone(e))}
-                                    name={"use_phone"}
-                                    title={"Phone number"}
-                                    type={"text"}
-                                    value={values.use_phone}
-                                    is_required={true}
-                                />
+                                    <div className="sm:columns-2 px-3 gap-6">
+                                        <StyleInput
+                                            errors={errors.use_phone}
+                                            touched={touched.use_phone}
+                                            handleBlur={handleBlur}
+                                            handleChange={(e) => handleChange(maskPhone(e))}
+                                            name={"use_phone"}
+                                            title={"Phone number"}
+                                            type={"text"}
+                                            value={values.use_phone}
+                                            is_required={true}
+                                        />
 
-                                <StyleInput
-                                    errors={errors.email}
-                                    touched={touched.email}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    name={"email"}
-                                    title={"Email"}
-                                    type={"email"}
-                                    value={values.email}
-                                    is_required={true}
-                                />
-                            </div>
+                                        <StyleInput
+                                            errors={errors.email}
+                                            touched={touched.email}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            name={"email"}
+                                            title={"Email"}
+                                            type={"email"}
+                                            value={values.email}
+                                            is_required={true}
+                                        />
+                                    </div>
 
-                            <div className="sm:columns-2 px-3 gap-6">
-                                <StyleInput
-                                    errors={errors.password}
-                                    touched={touched.password}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    name={"password"}
-                                    title={"Password"}
-                                    type={"password"}
-                                    value={values.password}
-                                    is_required={true}
-                                />
+                                    <div className="sm:columns-2 px-3 gap-6">
+                                        <StyleInput
+                                            errors={errors.use_date_birth}
+                                            touched={touched.use_date_birth}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            name={"use_date_birth"}
+                                            title={"Date of birth"}
+                                            type={"date"}
+                                            value={values.use_date_birth}
+                                            is_required={true}
+                                        />
 
-                                <StyleInput
-                                    errors={errors.password_confirmation}
-                                    touched={touched.password_confirmation}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    name={"password_confirmation"}
-                                    title={"Password confirmation"}
-                                    type={"password"}
-                                    value={values.password_confirmation}
-                                    is_required={true}
-                                />
-                            </div>
+                                        <StyleInput
+                                            errors={errors.password}
+                                            touched={touched.password}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            name={"password"}
+                                            title={"Password"}
+                                            type={"password"}
+                                            value={values.password}
+                                            is_required={true}
+                                        />
+                                    </div>
+
+                                    <div className="sm:columns-1 px-3 gap-6">
+                                        <StyleInput
+                                            errors={errors.password_confirmation}
+                                            touched={touched.password_confirmation}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            name={"password_confirmation"}
+                                            title={"Password confirmation"}
+                                            type={"password"}
+                                            value={values.password_confirmation}
+                                            is_required={true}
+                                        />
+                                    </div>
+                                </>
+                            )}
                         </div>
 
                         <div className="sm:columns-2 px-3 mt-6 justify-between flex flex-1">
-                            <button type="button" className="px-4 py-2 bg-orange-500 text-white rounded-md">
+                            <button type="button" onClick={() => setStep((bef) => bef - 1)} className="px-4 py-2 bg-orange-500 text-white rounded-md">
                                 {!submitting ? `Back` : <FaSpinner className="animate-spin" size={20} />}
                             </button>
 

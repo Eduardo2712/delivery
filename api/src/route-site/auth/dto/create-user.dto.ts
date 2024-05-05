@@ -1,8 +1,14 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength, Validate } from "class-validator";
+import { IsDate, IsEmail, IsInt, IsNotEmpty, IsOptional, IsString, Max, MaxLength, Min, Validate, ValidateIf } from "class-validator";
 import { validateCPF } from "src/helpers/other.helper";
 import { cepRegex, passwordRegex, phoneRegex } from "src/helpers/regex.helper";
 
 export class CreateUserDto {
+    @IsNotEmpty()
+    @IsInt()
+    @Min(1)
+    @Max(2)
+    step: number;
+
     @IsNotEmpty()
     @IsString()
     @MaxLength(255)
@@ -26,40 +32,8 @@ export class CreateUserDto {
     email: string;
 
     @IsNotEmpty()
-    @IsString()
-    @MaxLength(255)
-    @Validate((value: string) => cepRegex.test(value), { message: "Invalid CEP" })
-    usa_cep: string;
-
-    @IsNotEmpty()
-    @IsString()
-    @MaxLength(255)
-    usa_street: string;
-
-    @IsNotEmpty()
-    @IsString()
-    @MaxLength(255)
-    usa_number: string;
-
-    @IsNotEmpty()
-    @IsString()
-    @MaxLength(255)
-    usa_neighborhood: string;
-
-    @IsOptional()
-    @IsString()
-    @MaxLength(255)
-    usa_complement: string;
-
-    @IsNotEmpty()
-    @IsString()
-    @MaxLength(255)
-    usa_city: string;
-
-    @IsNotEmpty()
-    @IsString()
-    @MaxLength(255)
-    usa_state: string;
+    @IsDate()
+    use_birth_date: Date;
 
     @IsNotEmpty()
     @IsString()
@@ -72,4 +46,47 @@ export class CreateUserDto {
     @MaxLength(50)
     @Validate((value: string) => passwordRegex.test(value), { message: "Invalid password confirmation" })
     password_confirmation: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @MaxLength(255)
+    @Validate((value: string) => cepRegex.test(value), { message: "Invalid CEP" })
+    @ValidateIf((o) => o.step === 2)
+    usa_cep: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @MaxLength(255)
+    @ValidateIf((o) => o.step === 2)
+    usa_street: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @MaxLength(255)
+    @ValidateIf((o) => o.step === 2)
+    usa_number: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @MaxLength(255)
+    @ValidateIf((o) => o.step === 2)
+    usa_neighborhood: string;
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(255)
+    @ValidateIf((o) => o.step === 2)
+    usa_complement: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @MaxLength(255)
+    @ValidateIf((o) => o.step === 2)
+    usa_city: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @MaxLength(255)
+    @ValidateIf((o) => o.step === 2)
+    usa_state: string;
 }

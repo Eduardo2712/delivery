@@ -85,7 +85,7 @@ const Page: NextPage<Params> = ({ params: { id } }) => {
 
                         <div>
                             <StyleInput
-                                value={data?.use_date_birth ? format(new Date(data.use_date_birth), "dd/MM/yyyy") : ""}
+                                value={data?.use_birth_date ? format(new Date(data.use_birth_date), "dd/MM/yyyy") : ""}
                                 disabled
                                 title={"Birthday"}
                             />

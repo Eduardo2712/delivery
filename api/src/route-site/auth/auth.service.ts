@@ -1,10 +1,11 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { InjectRepository } from "@nestjs/typeorm";
 import { compareSync } from "bcrypt";
 import { UserEntity } from "src/entities/user.entity";
 import { Repository } from "typeorm";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { ServiceHelpers } from "src/helpers/service.helper";
 
 @Injectable()
 export class AuthService {
@@ -45,27 +46,35 @@ export class AuthService {
         };
     }
 
-    async register(user: CreateUserDto): Promise<UserEntity> {
-        const obj = this.userRepository.create({
-            use_name: user.use_name,
-            use_cpf: user.use_cpf,
-            use_phone: user.use_phone,
-            email: user.email,
-            addresses: [
-                {
-                    usa_cep: user.usa_cep,
-                    usa_street: user.usa_street,
-                    usa_number: user.usa_number,
-                    usa_neighborhood: user.usa_neighborhood,
-                    usa_complement: user.usa_complement,
-                    usa_city: user.usa_city,
-                    usa_state: user.usa_state
-                }
-            ]
-        });
+    async register(create_user_dto: CreateUserDto): Promise<UserEntity> {
+        const error = await ServiceHelpers.checkUnique(this.userRepository, { use_active: true, email: create_user_dto.email }, "email");
 
-        await this.userRepository.save(obj);
+        if (error) {
+            throw new HttpException(error, HttpStatus.BAD_REQUEST);
+        }
 
-        return obj;
+        if (create_user_dto.step === 2) {
+            const obj = this.userRepository.create({
+                use_name: create_user_dto.use_name,
+                use_cpf: create_user_dto.use_cpf,
+                use_phone: create_user_dto.use_phone,
+                email: create_user_dto.email,
+                addresses: [
+                    {
+                        usa_cep: create_user_dto.usa_cep,
+                        usa_street: create_user_dto.usa_street,
+                        usa_number: create_user_dto.usa_number,
+                        usa_neighborhood: create_user_dto.usa_neighborhood,
+                        usa_complement: create_user_dto.usa_complement,
+                        usa_city: create_user_dto.usa_city,
+                        usa_state: create_user_dto.usa_state
+                    }
+                ]
+            });
+
+            await this.userRepository.save(obj);
+
+            return obj;
+        }
     }
 }

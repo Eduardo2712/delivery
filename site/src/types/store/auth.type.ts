@@ -16,7 +16,7 @@ export type UserStoreType = {
     id: number;
     email: string;
     use_name: string;
-    use_date_birth: Date;
+    use_birth_date: Date;
     use_phone: string;
     use_cpf: string;
     use_active: boolean;

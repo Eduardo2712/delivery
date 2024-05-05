@@ -27,7 +27,7 @@ export type UserType = {
     id: number;
     email: string;
     use_name: string;
-    use_date_birth: Date;
+    use_birth_date: Date;
     use_phone: string;
     password?: string;
     use_cpf: string;

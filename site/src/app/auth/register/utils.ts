@@ -8,7 +8,7 @@ export type TypeFormRegister = {
     use_name: string;
     use_cpf: string;
     use_phone: string;
-    use_date_birth: string;
+    use_birth_date: string;
     usa_cep: string;
     usa_street: string;
     usa_number: string;
@@ -37,7 +37,7 @@ export const schema = (step: number) => {
             use_phone: Yup.string()
                 .matches(/(\(?\d{2}\)?\s?\d{4,5}\-\d{4})/, "Invalid phone number!")
                 .required("Fill in this field!"),
-            use_date_birth: Yup.date().required("Fill in this field!")
+            use_birth_date: Yup.date().required("Fill in this field!")
         });
     } else if (step === 1) {
         schema = Yup.object().shape({

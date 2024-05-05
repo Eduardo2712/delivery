@@ -9,7 +9,7 @@ export type UserDatatableType = {
 export type UserCreateType = {
     email: string;
     use_name: string;
-    use_date_birth: Date;
+    use_birth_date: Date;
     use_phone: string;
     password: string;
     confirm_password: string;
@@ -19,7 +19,7 @@ export type UserCreateType = {
 export type UserUpdateType = {
     email?: string;
     use_name: string;
-    use_date_birth: Date;
+    use_birth_date: Date;
     use_phone: string;
     password: string;
     confirm_password: string;

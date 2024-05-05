@@ -34,7 +34,7 @@ export class UserEntity extends BaseEntity {
         nullable: false,
         type: "date"
     })
-    use_date_birth: Date;
+    use_birth_date: Date;
 
     @Column({
         nullable: false,
